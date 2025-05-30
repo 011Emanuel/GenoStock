@@ -7,46 +7,118 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/marketplace.css">
+    <link rel="stylesheet" href="css/cattle-details.css">
 </head>
 <body>
     <!-- Header Component -->
     <div id="header-component"></div>
 
-
-    <!-- Cattle Details Section -->
-    <section class="cattle-details">
-
-                <div class="col-lg-8">
-                    <div class="cattle-gallery">
-                        <div class="main-image mb-3">
-                            <img src="https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg" class="img-fluid rounded" alt="Cattle Image">
-                            <img src="https://4368135.fs1.hubspotusercontent-na1.net/hubfs/4368135/raza-angus.jpg" class="img-fluid rounded" alt="Cattle Image">
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Image Carousel -->
+            <div class="col-md-6">
+                <div id="cattleCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#cattleCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#cattleCarousel" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#cattleCarousel" data-bs-slide-to="2"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="" alt="Cattle Image 1" class="d-block w-100 cattle-detail-image">
                         </div>
-                        <div class="thumbnail-gallery d-flex gap-2">
-                            <img src="https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg" class="img-thumbnail" alt="Thumbnail 1">
-                            <img src="https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg" class="img-thumbnail" alt="Thumbnail 2">
-                            <img src="https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg" class="img-thumbnail" alt="Thumbnail 3">
-                            <img src="https://thumbs.dreamstime.com/b/rancho-de-cultivo-angus-y-ganado-hereford-vaca-negra-196819660.jpg" class="img-thumbnail" alt="Thumbnail 1">
-                            <img src="https://ganado.mx/wp-content/uploads/2021/12/Razas-de-Ganado-Bovino-Angus-opt.jpg" class="img-thumbnail" alt="Thumbnail 2">
-                            <img src="https://i.ytimg.com/vi/OtO-4JVU1RQ/sddefault.jpg" class="img-thumbnail" alt="Thumbnail 3">
+                        <div class="carousel-item">
+                            <img src="" alt="Cattle Image 2" class="d-block w-100 cattle-detail-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="" alt="Cattle Image 3" class="d-block w-100 cattle-detail-image">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#cattleCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#cattleCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cattle Information -->
+            <div class="col-md-6">
+                <h2 id="cattleBreed" class="mb-4">Loading...</h2>
+                <div class="cattle-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Price: </span>
+                        <span id="cattlePrice" class="value">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-weight"></i>
+                        <span>Weight: </span>
+                        <span id="cattleWeight" class="value">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Age: </span>
+                        <span id="cattleAge" class="value">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Location: </span>
+                        <span id="cattleLocation" class="value">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4>Description</h4>
+                    <p id="cattleDescription" class="description">Loading...</p>
+                </div>
+
+                <button class="btn btn-success btn-lg mt-3" onclick="addToCart()">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+
+        <!-- Seller Information -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="seller-info">
+                    <h3>Seller Information</h3>
+                    <div class="seller-details">
+                        <div class="seller-avatar">
+                            <img id="sellerAvatar" src="images/default-avatar.png" alt="Seller Avatar">
+                        </div>
+                        <div class="seller-data">
+                            <h4 id="sellerName">Loading...</h4>
+                            <div class="seller-detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>Age: </span>
+                                <span id="sellerAge">Loading...</span>
+                            </div>
+                            <div class="seller-detail-item">
+                                <i class="fas fa-phone"></i>
+                                <span>Contact: </span>
+                                <span id="sellerContact">Loading...</span>
+                            </div>
+                            <div class="seller-detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Location: </span>
+                                <span id="sellerLocation">Loading...</span>
+                            </div>
                         </div>
                     </div>
                 </div>
- <h4>Health Records</h4>
-                    <div class="seller-card">
-                        <h4>Seller Information</h4>
-                        <div class="seller-profile">
-                            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Seller Profile">
-                            <img src="https://img.freepik.com/foto-gratis/vacas-pastando-granja_23-2150454914.jpg" class="rounded-circle mb-3" alt="Seller Profile">
-                            <h5>John Doe</h5>
-                            <p class="text-muted">Verified Seller</p>
-                        </div>
-<h5>John Doe</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Component -->
+    <div id="footer-component"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/components.js"></script>
     <script src="js/cattle-details.js"></script>
-
-
 </body>
 </html> 

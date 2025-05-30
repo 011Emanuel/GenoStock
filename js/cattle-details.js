@@ -107,4 +107,85 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             });
         }
     });
+});
+
+// Mock data - In a real application, this would come from an API
+const cattleData = {
+    1: {
+        breed: "Angus",
+        price: "$2,500",
+        weight: "800 kg",
+        age: "2 years",
+        location: "Texas",
+        description: "High-quality Angus cattle with excellent genetics. Perfect for breeding or meat production. Well-maintained health records and regular veterinary check-ups.",
+        images: [
+            "https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg",
+            "https://4368135.fs1.hubspotusercontent-na1.net/hubfs/4368135/raza-angus.jpg",
+            "https://ganado.mx/wp-content/uploads/2021/12/Razas-de-Ganado-Bovino-Angus-opt.jpg"
+        ],
+        seller: {
+            name: "John Smith",
+            age: "45 years",
+            contact: "+1 (555) 123-4567",
+            location: "Dallas, Texas",
+            avatar: "https://randomuser.me/api/portraits/men/1.jpg"
+        }
+    },
+    2: {
+        breed: "Hereford",
+        price: "$2,800",
+        weight: "850 kg",
+        age: "3 years",
+        location: "Kansas",
+        description: "Premium Hereford cattle from a renowned breeding line. Known for their docile temperament and excellent meat quality.",
+        images: [
+            "https://images.pexels.com/photos/2883050/pexels-photo-2883050.jpeg",
+            "https://www.shutterstock.com/image-photo/hereford-cattle-grazing-green-pasture-600nw-1517400941.jpg",
+            "https://www.lancasterfarming.com/wp-content/uploads/2021/04/5ea9cc0d91ac8.image_.jpg"
+        ],
+        seller: {
+            name: "Mary Johnson",
+            age: "38 years",
+            contact: "+1 (555) 234-5678",
+            location: "Wichita, Kansas",
+            avatar: "https://randomuser.me/api/portraits/women/1.jpg"
+        }
+    }
+    // Add more cattle data as needed
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get cattle ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const cattleId = urlParams.get('id');
+
+    if (cattleId && cattleData[cattleId]) {
+        const cattle = cattleData[cattleId];
+        
+        // Update cattle information
+        document.getElementById('cattleBreed').textContent = cattle.breed;
+        document.getElementById('cattlePrice').textContent = cattle.price;
+        document.getElementById('cattleWeight').textContent = cattle.weight;
+        document.getElementById('cattleAge').textContent = cattle.age;
+        document.getElementById('cattleLocation').textContent = cattle.location;
+        document.getElementById('cattleDescription').textContent = cattle.description;
+
+        // Update carousel images
+        const carouselItems = document.querySelectorAll('.carousel-item img');
+        cattle.images.forEach((imageUrl, index) => {
+            if (carouselItems[index]) {
+                carouselItems[index].src = imageUrl;
+            }
+        });
+
+        // Update seller information
+        document.getElementById('sellerName').textContent = cattle.seller.name;
+        document.getElementById('sellerAge').textContent = cattle.seller.age;
+        document.getElementById('sellerContact').textContent = cattle.seller.contact;
+        document.getElementById('sellerLocation').textContent = cattle.seller.location;
+        document.getElementById('sellerAvatar').src = cattle.seller.avatar;
+    } else {
+        // Handle invalid cattle ID
+        document.body.innerHTML = '<div class="container mt-5"><div class="alert alert-danger">Cattle not found</div></div>';
+    }
 }); 

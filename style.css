@@ -215,6 +215,19 @@ body {
     padding-top: 120px;
     margin-top: 20px;
 }
+.Marketplace-hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: var(--white);
+    text-align: center;
+    position: relative;
+    padding-top: 120px;
+}
+/* Removed invalid HTML code mistakenly placed in the CSS file */
 
 .hero-overlay {
     position: absolute;
@@ -750,3 +763,4 @@ body {
 .scroll-progress.visible {
     opacity: 1;
 }
+
