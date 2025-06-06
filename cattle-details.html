@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cattle Details - Genostock</title>
+    <title>Cattle Details - GenoStock</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -17,7 +17,7 @@
     <div class="container my-5">
         <div class="row">
             <!-- Image Carousel -->
-            <div class="col-md-6">
+            <div class="col-md-6 mb-4">
                 <div id="cattleCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#cattleCarousel" data-bs-slide-to="0" class="active"></button>
@@ -25,15 +25,7 @@
                         <button type="button" data-bs-target="#cattleCarousel" data-bs-slide-to="2"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="" alt="Cattle Image 1" class="d-block w-100 cattle-detail-image">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="" alt="Cattle Image 2" class="d-block w-100 cattle-detail-image">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="" alt="Cattle Image 3" class="d-block w-100 cattle-detail-image">
-                        </div>
+                        <!-- Images will be loaded dynamically -->
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#cattleCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon"></span>
@@ -46,69 +38,94 @@
 
             <!-- Cattle Information -->
             <div class="col-md-6">
-                <h2 id="cattleBreed" class="mb-4">Loading...</h2>
-                <div class="cattle-details">
-                    <div class="detail-item">
-                        <i class="fas fa-tag"></i>
-                        <span>Price: </span>
-                        <span id="cattlePrice" class="value">Loading...</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-weight"></i>
-                        <span>Weight: </span>
-                        <span id="cattleWeight" class="value">Loading...</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-calendar"></i>
-                        <span>Age: </span>
-                        <span id="cattleAge" class="value">Loading...</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Location: </span>
-                        <span id="cattleLocation" class="value">Loading...</span>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <h4>Description</h4>
-                    <p id="cattleDescription" class="description">Loading...</p>
-                </div>
-
-                <button class="btn btn-success btn-lg mt-3" onclick="addToCart()">
-                    <i class="fas fa-shopping-cart"></i> Add to Cart
-                </button>
-            </div>
-        </div>
-
-        <!-- Seller Information -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <div class="seller-info">
-                    <h3>Seller Information</h3>
-                    <div class="seller-details">
-                        <div class="seller-avatar">
-                            <img id="sellerAvatar" src="images/default-avatar.png" alt="Seller Avatar">
+                <h2 id="cattle-breed" class="mb-4">Loading...</h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="detail-item">
+                            <i class="fas fa-tag"></i>
+                            <strong>Price:</strong>
+                            <span id="cattle-price">Loading...</span>
                         </div>
-                        <div class="seller-data">
-                            <h4 id="sellerName">Loading...</h4>
-                            <div class="seller-detail-item">
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <strong>Weight:</strong>
+                            <span id="cattle-weight">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <strong>Age:</strong>
+                            <span id="cattle-age">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <strong>Location:</strong>
+                            <span id="cattle-location">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Description:</strong>
+                            <p id="cattle-description" class="mt-2">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seller Information -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>
+                            Seller Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="seller-info">
+                            <div class="detail-item">
                                 <i class="fas fa-user"></i>
-                                <span>Age: </span>
-                                <span id="sellerAge">Loading...</span>
+                                <strong>Name:</strong>
+                                <span id="seller-name">Loading...</span>
                             </div>
-                            <div class="seller-detail-item">
+                            <div class="detail-item">
+                                <i class="fas fa-birthday-cake"></i>
+                                <strong>Age:</strong>
+                                <span id="seller-age">Loading...</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-flag"></i>
+                                <strong>Nationality:</strong>
+                                <span id="seller-nationality">Loading...</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-star"></i>
+                                <strong>Experience:</strong>
+                                <span id="seller-experience">Loading...</span>
+                            </div>
+                            <div class="detail-item">
                                 <i class="fas fa-phone"></i>
-                                <span>Contact: </span>
-                                <span id="sellerContact">Loading...</span>
+                                <strong>Phone:</strong>
+                                <span id="seller-phone">Loading...</span>
                             </div>
-                            <div class="seller-detail-item">
+                            <div class="detail-item">
+                                <i class="fas fa-envelope"></i>
+                                <strong>Email:</strong>
+                                <span id="seller-email">Loading...</span>
+                            </div>
+                            <div class="detail-item">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span>Location: </span>
-                                <span id="sellerLocation">Loading...</span>
+                                <strong>Location:</strong>
+                                <span id="seller-location">Loading...</span>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-4 d-flex gap-2 justify-content-center">
+                    <button class="btn btn-success btn-lg" onclick="addToCart()">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <a href="marketplace.html" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-arrow-left"></i> Back to Marketplace
+                    </a>
                 </div>
             </div>
         </div>

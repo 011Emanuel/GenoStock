@@ -1,11 +1,12 @@
 /* Marketplace Styles */
 .marketplace-hero {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://www.liderempresarial.com/wp-content/uploads/2020/05/ganado.jpg');
     background-size: cover;
     background-position: center;
     padding: 100px 0;
     color: white;
     margin-top: 76px;
+    position: relative;
 }
 
 .category-filters {
