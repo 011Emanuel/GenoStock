@@ -61,7 +61,7 @@
 }
 
 .cattle-info {
-    flex-grow: 1;
+    flex: 1 1 auto;
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -107,6 +107,7 @@
     display: flex;
     gap: 10px;
     justify-content: center;
+    margin-top: 0 !important;
 }
 
 .cattle-actions .btn-primary {
