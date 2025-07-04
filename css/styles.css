@@ -91,7 +91,7 @@ body {
 
 /* Footer Styles */
 footer {
-    background-color: var(--dark-bg);
+    background-color: var(--primary-color);
     color: white;
     padding: 3rem 0;
 }
