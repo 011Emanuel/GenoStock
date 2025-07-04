@@ -603,8 +603,8 @@ body {
 
 /* Footer */
 .footer {
-    background-color: var(--primary-dark);
-    color: var(--white);
+    background-color: lightgray;
+    color: lightgray;
     padding: 6rem 0 2rem;
 }
 
