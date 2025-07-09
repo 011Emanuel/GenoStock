@@ -4,8 +4,10 @@ async function loadComponent(elementId, componentPath) {
         const response = await fetch(componentPath);
         const html = await response.text();
         document.getElementById(elementId).innerHTML = html;
+        return Promise.resolve();
     } catch (error) {
         console.error('Error loading component:', error);
+        return Promise.reject(error);
     }
 }
 
@@ -13,7 +15,14 @@ async function loadComponent(elementId, componentPath) {
 document.addEventListener('DOMContentLoaded', function() {
     // Load header
     if (document.getElementById('header-component')) {
-        loadComponent('header-component', 'components/header.html');
+        loadComponent('header-component', 'components/header.html').then(() => {
+            // After header loads, setup theme toggle
+            setTimeout(() => {
+                if (typeof setupThemeToggle === 'function') {
+                    setupThemeToggle();
+                }
+            }, 100);
+        });
     }
     
     // Load footer
