@@ -16,7 +16,7 @@ document.querySelectorAll('.category-btn').forEach(button => {
 // Filter cattle based on category
 function filterCattle(category) {
     const cards = document.querySelectorAll('.cattle-card');
-    cards.forEach(card => {
+    cards.forEach(card => 
         const breed = card.querySelector('.cattle-breed').textContent.toLowerCase();
         if (category === 'all' || breed.includes(category)) {
             card.style.display = 'block';
@@ -147,4 +147,11 @@ function getHealthStatus(healthId) {
         case 'health3': return 'certificate';
         default: return '';
     }
-} 
+}
+
+document.querySelectorAll('.cattle-actions .btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = 'cattle-details.html';
+    });
+}); 
