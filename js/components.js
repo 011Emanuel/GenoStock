@@ -13,11 +13,11 @@ async function loadComponent(elementId, componentPath) {
 document.addEventListener('DOMContentLoaded', function() {
     // Load header
     if (document.getElementById('header-component')) {
-        loadComponent('header-component', '/components/header.html');
+        loadComponent('header-component', 'components/header.html');
     }
     
     // Load footer
     if (document.getElementById('footer-component')) {
-        loadComponent('footer-component', '/components/footer.html');
+        loadComponent('footer-component', 'components/footer.html');
     }
 }); 
