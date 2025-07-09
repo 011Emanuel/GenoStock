@@ -147,4 +147,11 @@ function getHealthStatus(healthId) {
         case 'health3': return 'certificate';
         default: return '';
     }
-} 
+}
+
+document.querySelectorAll('.cattle-actions .btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = 'cattle-details.html';
+    });
+}); 
