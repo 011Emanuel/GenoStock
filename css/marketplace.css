@@ -1,12 +1,16 @@
 /* Marketplace Styles */
 .marketplace-hero {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://www.liderempresarial.com/wp-content/uploads/2020/05/ganado.jpg');
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../imagen para fondo hoomepage.jpg');
     background-size: cover;
-    background-position: center;
-    padding: 40px 0;
+    background-position: center top;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
     color: white;
-    margin-top: 40px;
+    text-align: center;
     position: relative;
+    padding-top: 120px;
+    margin-top: 40px;
 }
 
 .category-filters {
