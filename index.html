@@ -311,36 +311,6 @@
             duration: 800,
             once: true
         });
-
-        // Check if user is logged in
-        function isUserLoggedIn() {
-            // Check localStorage for user session
-            const userSession = localStorage.getItem('userSession');
-            const userToken = localStorage.getItem('userToken');
-            return !!(userSession && userToken);
-        }
-
-        // Handle Cattle Owner button click
-        function handleCattleOwnerClick() {
-            if (isUserLoggedIn()) {
-                // User is logged in, redirect to marketplace
-                window.location.href = 'marketplace.html';
-            } else {
-                // User is not logged in, redirect to registration
-                window.location.href = 'register.html';
-            }
-        }
-
-        // Handle Explore Market button click
-        function handleExploreMarketClick() {
-            if (isUserLoggedIn()) {
-                // User is logged in, redirect to marketplace
-                window.location.href = 'marketplace.html';
-            } else {
-                // User is not logged in, redirect to registration
-                window.location.href = 'register.html';
-            }
-        }
     </script>
 </body>
 </html> <
