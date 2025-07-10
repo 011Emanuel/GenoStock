@@ -49,25 +49,27 @@ body {
 }
 
 .navbar-brand {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     font-weight: bold;
     color: var(--white) !important;
     transition: transform 0.3s ease;
 }
 
 .navbar-brand:hover {
-    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .navbar-brand i {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
 }
 
 .nav-link {
     color: var(--white) !important;
     font-weight: 500;
+    font-size: 1.1rem;
     transition: all 0.3s ease;
     position: relative;
+    padding: 0 1rem;
 }
 
 .nav-link::after {
@@ -176,8 +178,11 @@ body {
     border: none;
     border-radius: 20px;
     font-weight: 500;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    transform: none;
+    text-decoration: none;
 }
 
 .login-btn {
@@ -187,18 +192,23 @@ body {
 }
 
 .login-btn:hover {
-    background-color: var(--white);
-    color: var(--primary);
+    background-color: var(--accent);
+    color: var(--white);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(255, 167, 38, 0.5);
 }
 
 .register-btn {
-    background-color: var(--accent);
+    background-color: transparent;
     color: var(--white);
+    border: 2px solid var(--white);
 }
 
 .register-btn:hover {
-    background-color: var(--accent-dark);
-    transform: translateY(-2px);
+    background-color: var(--accent);
+    color: var(--white);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(255, 167, 38, 0.5);
 }
 
 /* Hero Section */

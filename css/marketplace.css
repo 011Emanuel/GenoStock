@@ -3,9 +3,9 @@
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://www.liderempresarial.com/wp-content/uploads/2020/05/ganado.jpg');
     background-size: cover;
     background-position: center;
-    padding: 100px 0;
+    padding: 40px 0;
     color: white;
-    margin-top: 76px;
+    margin-top: 40px;
     position: relative;
 }
 
@@ -75,7 +75,7 @@
 }
 
 .cattle-price {
-    color: #2ecc71;
+    color: #2c5530;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 10px;
@@ -83,6 +83,7 @@
 
 .cattle-price.small {
     font-size: 1rem !important;
+    color: #2c5530 !important;
 }
 
 .cattle-specs {
@@ -98,7 +99,7 @@
 
 .spec-item i {
     margin-right: 5px;
-    color: #2ecc71;
+    color: #2c5530;
 }
 
 .cattle-actions {
