@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/Contactos.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body>
     <!-- Header Component -->
@@ -15,12 +16,12 @@
 
     <!-- Main Content -->
     <div class="main-container">
-        <div class="hero-section">
+        <div class="hero-section" data-aos="fade-up">
             <div class="hero-text">Contact Us</div>
         </div>
         
         <div class="contact-container">
-            <div class="contact-section">
+            <div class="contact-section" data-aos="fade-up" data-aos-delay="100">
                 <h2>Contact Us</h2>
                 <div class="contact-info">
                     <div class="contact-item">
@@ -48,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="contact-section">
+            <div class="contact-section" data-aos="fade-up" data-aos-delay="200">
                 <h2>Follow Us</h2>
                 <div class="social-links">
                     <div class="social-link">
@@ -73,5 +74,12 @@
     
     <!-- Scripts -->
     <script src="js/components.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
 </body>
 </html> 
