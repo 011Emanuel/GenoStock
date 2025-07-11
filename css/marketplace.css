@@ -9,8 +9,7 @@
     color: white;
     text-align: center;
     position: relative;
-    padding-top: 120px;
-    margin-top: 40px;
+    filter: contrast(1.15) brightness(1.05) saturate(1.1);
 }
 
 .category-filters {
