@@ -17,7 +17,7 @@
     <!-- Marketplace Hero -->
     <section class="marketplace-hero" style="background-image: url('https://recorriendopanama.com/wp-content/uploads/2018/12/vacas.jpg?w=1000'); background-size: cover; background-position: center 35%; height: 350px; display: flex; align-items: center;">
         <div class="container text-center text-white">
-            <h1 class="display-4 mb-4" data-aos="fade-up">Cattle Marketplace</h1>
+            <h1 class="display-4 mb-4 fw-bold" data-aos="fade-up">Cattle Marketplace</h1>
             <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">Find and purchase quality cattle from trusted sellers</p>
         </div>
     </section>
@@ -221,7 +221,6 @@
                                         <i class="fas fa-weight"></i> Weight: 200 – 300 kg
                                     </span>
                                     <span class="spec-item">
-
                                         <i class="fas fa-map-marker-alt"></i> Coclé, Panamá Oeste, other provinces
                                     </span>
                                 </div>
@@ -275,7 +274,6 @@
                                     </span>
                                     <span class="spec-item">
                                         <i class="fas fa-map-marker-alt"></i> Chiriquí
-
                                     </span>
                                 </div>
                             </div>
@@ -296,6 +294,19 @@
     
     <script src="js/components.js"></script>
     <script src="js/marketplace.js"></script>
-
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+    <style>
+    @media (max-width: 768px) {
+      .marketplace-hero {
+        height: 200px !important;
+      }
+    }
+    </style>
 </body>
 </html>
