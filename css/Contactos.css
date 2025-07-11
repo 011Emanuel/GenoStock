@@ -1,31 +1,13 @@
 /* Estilos específicos para la página de Contactos */
 
-/* Primera sección - Hero con imagen ancha y corta */
-.hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('../imagen para fondo hoomepage.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 120px; /* Más pequeña como solicitas */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0;
-}
-
-.hero-text {
-    color: white;
-    font-size: 2.5rem;
-    font-weight: bold;
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-}
+/* Hero section now uses the same style as about us */
 
 /* Segunda sección - Contenedor principal dividido */
 .contact-container {
     display: flex;
     min-height: 500px;
     background-color: #f8f9fa;
+    padding: 40px 0;
 }
 
 /* Segunda parte - Contact Us (2/3 del ancho) */
@@ -155,14 +137,6 @@
     .contact-section:last-of-type {
         flex: none;
         margin: 10px;
-    }
-    
-    .hero-text {
-        font-size: 2rem;
-    }
-    
-    .hero-section {
-        height: 100px;
     }
 }
 
