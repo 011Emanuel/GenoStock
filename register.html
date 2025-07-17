@@ -14,8 +14,8 @@
         align-items: center;
         justify-content: center; /* Centra el contenido horizontalmente */
         background: linear-gradient(135deg, #77dd77, #6b8e23); /* Verde caña cálido a verde caña oscuro */
-        padding: 2rem; /* Espaciado interno */
-        margin: 0; /* Elimina cualquier margen externo */ 
+        padding: 0; /* Quitamos el padding superior */
+        margin: 0; /* Aseguramos que no haya margen externo */
         }
         
         .register-card {
@@ -26,6 +26,7 @@
             max-width: 400px;
             width: 100%;
             margin: 0 auto;
+            margin-top: 0; /* Quitamos el margen superior */
         }
         
         .register-header {
@@ -223,15 +224,34 @@
             border-color: var(--primary);
             background: var(--light);
         }
+        .home-btn-top {
+            position: absolute;
+            top: 24px;
+            left: 18px;
+            z-index: 2;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.95rem;
+            border-radius: 20px;
+            box-shadow: none;
+            border-width: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+        .home-btn-top:hover, .home-btn-top:focus {
+            background-color: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(255, 167, 38, 0.5);
+        }
     </style>
 </head>
 <body>
-    <!-- Header Component -->
-    <div id="header-component"></div>
-
     <div class="register-container">
         <div class="container">
-            <div class="register-card">
+            <div class="register-card" style="margin-top: 0; position: relative;">
+                <a href="index.html" class="btn btn-outline-secondary home-btn-top">
+                    <i class="fas fa-arrow-left"></i> Home
+                </a>
                 <div class="register-header">
                     <i class="fas fa-user-plus"></i>
                     <h1>Creat Account</h1>
