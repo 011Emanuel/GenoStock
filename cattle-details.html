@@ -14,10 +14,11 @@
     <div id="header-component"></div>
 
     <!-- Hero Banner -->
-    <section class="marketplace-hero" style="background-image: url('https://static.vecteezy.com/system/resources/previews/024/940/349/non_2x/beef-cattle-breeder-american-brahman-red-on-the-ground-in-the-fram-big-male-brahman-cow-photo.jpg'); background-size: cover; background-position: center top; height: 350px; display: flex; align-items: center;">
-        <div class="container text-center">
-            <h1 class="display-4 mb-4 fw-bold" style="color: #30e07b;">Brahman Livestock</h1>
-            <p class="lead" style="color: #30e07b;">Explore available Brahman cattle for purchase</p>
+    <section class="marketplace-hero" style="background-image: url('https://static.vecteezy.com/system/resources/previews/024/940/349/non_2x/beef-cattle-breeder-american-brahman-red-on-the-ground-in-the-fram-big-male-brahman-cow-photo.jpg'); background-size: cover; background-position: center top; height: 350px; display: flex; align-items: center; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); backdrop-filter: blur(2px);"></div>
+        <div class="container text-center" style="position: relative; z-index: 1;">
+            <h1 class="display-4 mb-4 fw-bold" style="color: #fff;">Brahman Livestock</h1>
+            <p class="lead" style="color: #fff;">Explore available Brahman cattle for purchase</p>
         </div>
     </section>
 
@@ -79,12 +80,78 @@
                         </div>
                     </div>
                 </div>
+                <!-- Brahman Card 3 - Ternero -->
+                <div class="col-md-6 col-lg-3 h-100">
+                    <div class="cattle-card">
+                        <img src="https://shopv8ranch.com/cdn/shop/files/Mr-V8-934-8-3YO-Alt_grande.jpg?v=1696347717" class="cattle-image img-fluid" alt="Brahman Ternero">
+                        <div class="cattle-info p-3">
+                            <h5 class="cattle-breed">Brahman</h5>
+                            <p class="cattle-price small">$350.00</p>
+                            <p class="cattle-category mb-2"><strong>Categoría:</strong> Ternero</p>
+                            <div class="cattle-specs">
+                                <span class="spec-item">
+                                    <i class="fas fa-weight"></i> 180 kg (<strong>397 lbs</strong>)
+                                </span>
+                                <span class="spec-item">
+                                    <i class="fas fa-dollar-sign"></i> $1.95/kg (<strong>$0.89/lb</strong>)
+                                </span>
+                                <span class="spec-item">
+                                    <i class="fas fa-map-marker-alt"></i> Chiriquí
+                                </span>
+                            </div>
+                        </div>
+                        <div class="cattle-actions text-center p-3">
+                            <button class="btn btn-success btn-sm w-100">
+                                <i class="fas fa-shopping-cart"></i> View Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Brahman Card 4 - Toro -->
+                <div class="col-md-6 col-lg-3 h-100">
+                    <div class="cattle-card">
+                        <img src="https://shopv8ranch.com/cdn/shop/files/Mr-V8-934-8-3YO-Alt_grande.jpg?v=1696347717" class="cattle-image img-fluid" alt="Brahman Toro">
+                        <div class="cattle-info p-3">
+                            <h5 class="cattle-breed">Brahman</h5>
+                            <p class="cattle-price small">$1,500.00</p>
+                            <p class="cattle-category mb-2"><strong>Categoría:</strong> Toro</p>
+                            <div class="cattle-specs">
+                                <span class="spec-item">
+                                    <i class="fas fa-weight"></i> 950 kg (<strong>2094 lbs</strong>)
+                                </span>
+                                <span class="spec-item">
+                                    <i class="fas fa-dollar-sign"></i> $1.58/kg (<strong>$0.72/lb</strong>)
+                                </span>
+                                <span class="spec-item">
+                                    <i class="fas fa-map-marker-alt"></i> Herrera
+                                </span>
+                            </div>
+                        </div>
+                        <div class="cattle-actions text-center p-3">
+                            <button class="btn btn-success btn-sm w-100">
+                                <i class="fas fa-shopping-cart"></i> View Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer Componentssss -->
     <div id="footer-component"></div>
+
+    <!-- Contact Card Modal -->
+    <div id="contactCardModal" class="modal" tabindex="-1" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+      <div style="background:#fff; border-radius:16px; max-width:420px; width:95vw; margin:auto; padding:3rem 2rem; box-shadow:0 8px 32px rgba(0,0,0,0.25); text-align:center; position:relative; min-height:480px;">
+        <button onclick="document.getElementById('contactCardModal').style.display='none'" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.8rem; color:#888; cursor:pointer;">&times;</button>
+        <img src="https://img.freepik.com/fotos-premium/hombre-adulto-sombrero-vaquero-campos-castilla-leon-espana_1048944-6425758.jpg?w=360" alt="Miguel Perez" style="width:180px; height:180px; object-fit:cover; border-radius:50%; margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:0.7rem; font-size:2rem;">Miguel Perez</h3>
+        <p style="margin-bottom:0.4rem; font-size:1.2rem;">Edad: 45</p>
+        <p style="margin-bottom:0.4rem; font-size:1.2rem;">Ubicación: Chiriqui, Boquete</p>
+        <p style="margin-bottom:0.4rem; font-size:1.2rem;">Teléfono: 6251-7532</p>
+      </div>
+    </div>
 
     <style>
     @media (max-width: 768px) {
@@ -96,5 +163,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/components.js"></script>
+    <script>
+    document.querySelectorAll('.cattle-actions button').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById('contactCardModal').style.display = 'flex';
+      };
+    });
+    </script>
 </body>
 </html> 
