@@ -79,8 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Datos del formulario:', formData);
         
         // Simular envío exitoso
-        alert('¡Registro exitoso! Por favor, inicia sesión.');
-        window.location.href = 'login.html';
+        showNotification('¡Registro exitoso! Redirigiendo a tu perfil...', 'success');
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 1500);
     });
     
     // Validación de RFC para vendedores
