@@ -46,43 +46,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejar el envío del formulario
     registerForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Validar contraseñas antes de enviar
-        validatePasswords();
-        
-        if (!registerForm.checkValidity()) {
-            e.stopPropagation();
-            registerForm.classList.add('was-validated');
+
+        // Validar campos requeridos
+        const email = document.getElementById('email').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const terms = document.getElementById('terms');
+        const role = document.querySelector('input[name="role"]:checked');
+
+        if (!email || !username || !password || !confirmPassword) {
+            alert('Por favor, completa todos los campos.');
             return;
         }
-        
-        // Obtener el rol seleccionado
-        const selectedRole = document.querySelector('.role-btn.active').dataset.role;
-        
-        // Crear objeto con los datos del formulario
-        const formData = {
-            username: document.getElementById('username').value,
-            email: document.getElementById('email').value,
-            password: passwordInput.value,
-            role: selectedRole
-        };
-        
-        // Si es vendedor, agregar información adicional
-        if (selectedRole === 'seller') {
-            formData.businessName = document.getElementById('businessName').value;
-            formData.rfc = document.getElementById('rfc').value;
-            formData.address = document.getElementById('address').value;
-            formData.phone = document.getElementById('phone').value;
+        if (!role) {
+            alert('Por favor, selecciona un rol.');
+            return;
         }
-        
-        // Aquí iría la lógica para enviar los datos al servidor
-        console.log('Datos del formulario:', formData);
-        
-        // Simular envío exitoso
-        showNotification('¡Registro exitoso! Redirigiendo a tu perfil...', 'success');
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1500);
+        if (password !== confirmPassword) {
+            alert('Las contraseñas no coinciden.');
+            return;
+        }
+        if (!terms || !terms.checked) {
+            alert('Debes aceptar los términos y condiciones para continuar.');
+            return;
+        }
+
+        // Si todo está bien, redirige al dashboard
+        window.location.href = 'dashboard.html';
     });
     
     // Validación de RFC para vendedores
@@ -111,3 +102,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 }); 
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+} 
