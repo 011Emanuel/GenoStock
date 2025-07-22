@@ -309,21 +309,17 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="role" id="buyer" value="buyer" checked>
                                 <label class="form-check-label" for="buyer">
-                                    <i class="fas fa-store"></i> Trader
+                                    <i class="fas fa-tractor"></i> Rancher
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="role" id="seller" value="seller">
                                 <label class="form-check-label" for="seller">
-                                    <i class="fas fa-cow"></i> Rancher
+                                    <i class="fas fa-store"></i> Trader
                                 </label>
                             </div>
                         </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Previous</button>
-                            <button type="button" class="register-btn" onclick="nextStep(2)">Next</button>
-                        </div>
+                        <button type="button" class="register-btn" onclick="nextStep(2)">Next</button>
                     </div>
                     
                     <!-- Step 3: Additional Info (for sellers) -->
@@ -426,6 +422,21 @@
                 showStep(currentStep);
             }
         }
+        
+        // Handle form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get role selection
+            const role = document.querySelector('input[name="role"]:checked').value;
+            
+            // Redirect based on role
+            if (role === 'seller') {
+                window.location.href = 'dashboard-rancher.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        });
         
         // Handle role selection
         document.querySelectorAll('input[name="role"]').forEach(radio => {

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rancher Dashboard - Genostock</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        .health-card {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .health-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .health-card .card-header {
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: none;
+        }
+
+        .health-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .health-item {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .health-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .health-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .status-healthy { background: #4CAF50; }
+        .status-warning { background: #FFA500; }
+        .status-critical { background: #FF4444; }
+
+        .production-card {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .production-card .card-header {
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: none;
+        }
+
+        .planning-card {
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .planning-card .card-header {
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: none;
+        }
+
+        .calendar-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .event-marker {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .event-insemination { background: #4CAF50; }
+        .event-birth { background: #FFC107; }
+        .event-weaning { background: #2196F3; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo_small.png" class="ms-2" style="height: 80px;">
+                <i class="fas fa-cow me-2"></i>Genostock
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="marketplace.html">Marketplace</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about us.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Contactos.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#health" class="nav-link active" data-section="health">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Health Control</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#production" class="nav-link" data-section="production">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Production Analysis</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#planning" class="nav-link" data-section="planning">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Planning</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#inventory" class="nav-link" data-section="inventory">
+                        <i class="fas fa-cow"></i>
+                        <span>Inventory</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#sales" class="nav-link" data-section="sales">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>Sales</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Health Control Section -->
+                <section id="health" class="content-section active">
+                    <div class="section-header">
+                        <h2>Health Control</h2>
+                        <p>Monitor and manage your livestock health</p>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <div class="health-card">
+                                <div class="card-header">
+                                    <h5>Health Status</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="health-list">
+                                        <div class="health-item">
+                                            <div>
+                                                <span class="health-status status-healthy">Healthy</span>
+                                                <span class="ms-2">120 animals</span>
+                                            </div>
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        </div>
+                                        <div class="health-item">
+                                            <div>
+                                                <span class="health-status status-warning">Warning</span>
+                                                <span class="ms-2">15 animals</span>
+                                            </div>
+                                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                                        </div>
+                                        <div class="health-item">
+                                            <div>
+                                                <span class="health-status status-critical">Critical</span>
+                                                <span class="ms-2">3 animals</span>
+                                            </div>
+                                            <i class="fas fa-times-circle text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-light mt-3" data-bs-toggle="modal" data-bs-target="#healthModal">
+                                        <i class="fas fa-plus"></i> Add Health Record
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Production Analysis Section -->
+                <section id="production" class="content-section">
+                    <div class="section-header">
+                        <h2>Production Analysis</h2>
+                        <p>Track your livestock production metrics</p>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="production-card">
+                                <div class="card-header">
+                                    <h5>Production Metrics</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="stat-card">
+                                                <h3>85%</h3>
+                                                <p>Breeding Success Rate</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="stat-card">
+                                                <h3>92%</h3>
+                                                <p>Survival Rate</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <canvas id="productionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="production-card">
+                                <div class="card-header">
+                                    <h5>Recent Production Events</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="production-events">
+                                        <div class="event-item">
+                                            <i class="fas fa-baby"></i>
+                                            <div>
+                                                <h6>New Birth</h6>
+                                                <p>2 new calves born</p>
+                                                <small>2 hours ago</small>
+                                            </div>
+                                        </div>
+                                        <div class="event-item">
+                                            <i class="fas fa-syringe"></i>
+                                            <div>
+                                                <h6>Insemination</h6>
+                                                <p>5 cows inseminated</p>
+                                                <small>1 day ago</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Planning Section -->
+                <section id="planning" class="content-section">
+                    <div class="section-header">
+                        <h2>Planning</h2>
+                        <p>Schedule inseminations, births and weanings</p>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <div class="planning-card">
+                                <div class="card-header">
+                                    <h5>Monthly Calendar</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="calendar-container">
+                                        <div class="calendar-header">
+                                            <button class="btn btn-light me-2" id="prevMonth">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <h4 id="monthYear"></h4>
+                                            <button class="btn btn-light ms-2" id="nextMonth">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                        <div class="calendar-grid">
+                                            <!-- Calendar days will be populated by JavaScript -->
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#planningModal">
+                                            <i class="fas fa-plus"></i> Add Event
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Profile Dropdown Menu -->
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" style="display: none;">
+        <a class="dropdown-item" href="profile.html">
+            <i class="fas fa-user me-2"></i> My Profile
+        </a>
+        <a class="dropdown-item" href="#">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+        <a class="dropdown-item" href="#">
+            <i class="fas fa-key me-2"></i> Change Password
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="index.html">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+    </div>
+
+    <!-- Health Modal -->
+    <div class="modal fade" id="healthModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Health Record</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="healthForm">
+                        <div class="mb-3">
+                            <label class="form-label">Animal ID</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" required>
+                                <option value="healthy">Healthy</option>
+                                <option value="warning">Warning</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveHealthRecord()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Planning Modal -->
+    <div class="modal fade" id="planningModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="planningForm">
+                        <div class="mb-3">
+                            <label class="form-label">Event Type</label>
+                            <select class="form-select" required>
+                                <option value="insemination">Insemination</option>
+                                <option value="birth">Birth</option>
+                                <option value="weaning">Weaning</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Number of Animals</label>
+                            <input type="number" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="savePlanningEvent()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Profile dropdown functionality
+        document.getElementById('profileDropdown').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown-menu') && !e.target.closest('#profileDropdown')) {
+                const dropdownMenu = document.querySelector('.dropdown-menu');
+                dropdownMenu.style.display = 'none';
+            }
+        });
+
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Health Status Colors
+        const statusColors = {
+            healthy: '#4CAF50',
+            warning: '#FFA500',
+            critical: '#FF4444'
+        };
+
+        // Production Chart
+        const ctx = document.getElementById('productionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Breeding Success Rate',
+                    data: [80, 85, 90, 88, 92, 95],
+                    borderColor: '#4CAF50',
+                    tension: 0.4
+                }, {
+                    label: 'Survival Rate',
+                    data: [85, 90, 92, 95, 98, 100],
+                    borderColor: '#2196F3',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        });
+
+        // Calendar Functions
+        const calendarGrid = document.querySelector('.calendar-grid');
+        const monthYear = document.getElementById('monthYear');
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function generateCalendar() {
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDay = firstDay.getDay();
+
+            monthYear.textContent = new Date(currentYear, currentMonth).toLocaleString('default', { 
+                month: 'long',
+                year: 'numeric'
+            });
+
+            calendarGrid.innerHTML = '';
+            
+            // Create empty cells for days before the first day of the month
+            for (let i = 0; i < startDay; i++) {
+                calendarGrid.innerHTML += '<div class="empty-cell"></div>';
+            }
+
+            // Create cells for each day of the month
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = new Date(currentYear, currentMonth, i);
+                const dayCell = document.createElement('div');
+                dayCell.className = 'day-cell';
+                dayCell.textContent = i;
+
+                // Add event markers
+                if (i % 7 === 0) { // Example: add insemination events every 7 days
+                    dayCell.innerHTML += `<span class="event-marker event-insemination"></span>`;
+                }
+                if (i % 10 === 0) { // Example: add birth events every 10 days
+                    dayCell.innerHTML += `<span class="event-marker event-birth"></span>`;
+                }
+                if (i % 14 === 0) { // Example: add weaning events every 14 days
+                    dayCell.innerHTML += `<span class="event-marker event-weaning"></span>`;
+                }
+
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar();
+        });
+
+        // Initialize calendar
+        generateCalendar();
+
+        // Save Health Record
+        function saveHealthRecord() {
+            const form = document.getElementById('healthForm');
+            const data = {
+                animalId: form.elements[0].value,
+                status: form.elements[1].value,
+                notes: form.elements[2].value
+            };
+            // Here you would typically send this data to your backend
+            console.log('Saving health record:', data);
+            form.reset();
+            document.getElementById('healthModal').classList.remove('show');
+        }
+
+        // Save Planning Event
+        function savePlanningEvent() {
+            const form = document.getElementById('planningForm');
+            const data = {
+                eventType: form.elements[0].value,
+                date: form.elements[1].value,
+                numberOfAnimals: form.elements[2].value,
+                notes: form.elements[3].value
+            };
+            // Here you would typically send this data to your backend
+            console.log('Saving planning event:', data);
+            form.reset();
+            document.getElementById('planningModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
