@@ -72,8 +72,27 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Si todo está bien, redirige al dashboard
-        window.location.href = 'dashboard.html';
+        // Validar campos específicos del rancher si es necesario
+        if (role.value === 'seller') {
+            const ranchName = document.getElementById('ranchName')?.value.trim();
+            const location = document.getElementById('location')?.value.trim();
+            const cattleCount = document.getElementById('cattleCount')?.value;
+            
+            if (!ranchName || !location || !cattleCount) {
+                alert('Por favor, completa todos los campos específicos del rancho.');
+                return;
+            }
+        }
+
+        // Obtener el rol seleccionado
+        const selectedRole = role.value;
+        
+        // Redirigir basado en el rol seleccionado
+        if (selectedRole === 'seller') {
+            window.location.href = 'dashboard-rancher.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
     });
     
     // Validación de RFC para vendedores
