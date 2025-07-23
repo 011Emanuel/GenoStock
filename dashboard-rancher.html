@@ -10,6 +10,114 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .profile-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .profile-email {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .profile-dropdown i.fa-chevron-down {
+            transition: transform 0.3s;
+        }
+        
+        .profile-dropdown.active i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            margin: 5px 20px;
+            overflow: hidden;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .dropdown-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Profile Section Styles */
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        #changePictureBtn {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        
+        #profileForm input:not([type='file']),
+        #profileForm textarea {
+            background-color: #f8f9fa;
+        }
+        
+        #profileForm input:disabled,
+        #profileForm textarea:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
         .health-card {
             background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
@@ -131,8 +239,34 @@
     </nav>
 
         <!-- Sidebar -->
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown">
+            <div class="profile-info" id="profileDropdown">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="profile-img">
+                <div class="profile-details">
+                    <span class="profile-name" id="profileName">Nombre del Granjero</span>
+                    <span class="profile-email" id="profileEmail">correo@ejemplo.com</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-menu" id="profileMenu">
+                <a href="#" class="dropdown-item" id="editProfileBtn">
+                    <i class="fas fa-user-edit"></i> Editar Perfil
+                </a>
+                <a href="#" class="dropdown-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </div>
+        </div>
+
         <nav class="sidebar" id="sidebar">
             <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-section="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Mi Perfil</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#health" class="nav-link active" data-section="health">
                         <i class="fas fa-heartbeat"></i>
@@ -169,6 +303,84 @@
         <!-- Main Content -->
         <main class="main-content">
             <div class="content-wrapper">
+                <!-- Profile Section -->
+                <section id="profile" class="content-section">
+                    <div class="section-header">
+                        <h2>Mi Perfil</h2>
+                        <p>Administra la información de tu cuenta</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center mb-4">
+                                        <div class="profile-picture-container mb-3">
+                                            <img src="https://via.placeholder.com/150" alt="Profile" class="rounded-circle" id="profilePicture" style="width: 150px; height: 150px; object-fit: cover;">
+                                            <button class="btn btn-sm btn-outline-primary mt-2" id="changePictureBtn">
+                                                <i class="fas fa-camera"></i> Cambiar foto
+                                            </button>
+                                            <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                                        </div>
+                                    </div>
+                                    
+                                    <form id="profileForm">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="firstName" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" id="firstName" value="Juan" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="lastName" class="form-label">Apellido</label>
+                                                <input type="text" class="form-control" id="lastName" value="Pérez" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="email" value="juan.perez@example.com" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="phone" value="+1234567890">
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="farmName" class="form-label">Nombre de la Granja</label>
+                                            <input type="text" class="form-control" id="farmName" value="Granja Los Pinos">
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Dirección</label>
+                                            <textarea class="form-control" id="address" rows="2">Calle Principal #123, Ciudad</textarea>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <button type="button" class="btn btn-outline-secondary" id="cancelChangesBtn" style="display: none;">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary ms-auto" id="saveProfileBtn">
+                                                <i class="fas fa-save me-2"></i>Guardar Cambios
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Seguridad</h5>
+                                </div>
+                                <div class="card-body">
+                                    <button class="btn btn-outline-danger" id="changePasswordBtn">
+                                        <i class="fas fa-lock me-2"></i>Cambiar Contraseña
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <!-- Health Control Section -->
                 <section id="health" class="content-section active">
                     <div class="section-header">
@@ -418,8 +630,437 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
+        // Profile functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle profile dropdown
+            const profileDropdown = document.getElementById('profileDropdown');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            if (profileDropdown && profileMenu) {
+                profileDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileMenu.classList.toggle('show');
+                    profileDropdown.parentElement.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!profileDropdown.contains(e.target) && !profileMenu.contains(e.target)) {
+                        profileMenu.classList.remove('show');
+                        profileDropdown.parentElement.classList.remove('active');
+                    }
+                });
+                
+                // Profile menu items
+                document.getElementById('editProfileBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Navigate to profile section
+                    document.querySelector('a[href="#profile"]').click();
+                    // Enable form editing
+                    enableProfileEditing();
+                    // Close dropdown
+                    profileMenu.classList.remove('show');
+                    profileDropdown.parentElement.classList.remove('active');
+                });
+                
+                document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        // Redirect to login page or handle logout
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+            
+            // Profile form functionality
+            const profileForm = document.getElementById('profileForm');
+            const inputs = profileForm?.querySelectorAll('input, textarea');
+            const cancelBtn = document.getElementById('cancelChangesBtn');
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const changePictureBtn = document.getElementById('changePictureBtn');
+            const profilePictureInput = document.getElementById('profilePictureInput');
+            const profilePicture = document.getElementById('profilePicture');
+            
+            // Store original values
+            let originalValues = {};
+            
+            if (inputs) {
+                inputs.forEach(input => {
+                    originalValues[input.id] = input.value;
+                    input.disabled = true;
+                });
+            }
+            
+            // Enable form editing
+            function enableProfileEditing() {
+                if (inputs) {
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                    });
+                }
+                if (cancelBtn) cancelBtn.style.display = 'block';
+                if (saveBtn) saveBtn.disabled = false;
+            }
+            
+            // Reset form to original values
+            function resetForm() {
+                if (inputs) {
+                    inputs.forEach(input => {
+                        input.value = originalValues[input.id];
+                        input.disabled = true;
+                    });
+                }
+                if (cancelBtn) cancelBtn.style.display = 'none';
+                if (saveBtn) saveBtn.disabled = true;
+            }
+            
+            // Handle form submission
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Here you would typically send the data to a server
+                    // For now, we'll just update the UI
+                    if (inputs) {
+                        inputs.forEach(input => {
+                            originalValues[input.id] = input.value;
+                            input.disabled = true;
+                        });
+                    }
+                    
+                    // Update profile info in the dropdown
+                    const profileName = document.getElementById('profileName');
+                    const firstName = document.getElementById('firstName')?.value || '';
+                    const lastName = document.getElementById('lastName')?.value || '';
+                    const email = document.getElementById('email')?.value || '';
+                    
+                    if (profileName) {
+                        profileName.textContent = `${firstName} ${lastName}`.trim() || 'Usuario';
+                    }
+                    
+                    const profileEmail = document.getElementById('profileEmail');
+                    if (profileEmail) {
+                        profileEmail.textContent = email || 'correo@ejemplo.com';
+                    }
+                    
+                    if (cancelBtn) cancelBtn.style.display = 'none';
+                    if (saveBtn) saveBtn.disabled = true;
+                    
+                    // Show success message
+                    alert('Perfil actualizado correctamente');
+                });
+            }
+            
+            // Handle cancel button
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    if (confirm('¿Deseas descartar los cambios realizados?')) {
+                        resetForm();
+                    }
+                });
+            }
+            
+            // Handle profile picture change
+            if (changePictureBtn && profilePictureInput && profilePicture) {
+                changePictureBtn.addEventListener('click', function() {
+                    profilePictureInput.click();
+                });
+                
+                profilePictureInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            profilePicture.src = event.target.result;
+                            // Here you would typically upload the image to a server
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Change password button
+            const changePasswordBtn = document.getElementById('changePasswordBtn');
+            if (changePasswordBtn) {
+                changePasswordBtn.addEventListener('click', function() {
+                    // Here you would typically show a change password modal
+                    alert('Funcionalidad de cambio de contraseña se implementará próximamente');
+                });
+            }
+        });
+    </script>
+    <style>
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .profile-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .profile-email {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .profile-dropdown i.fa-chevron-down {
+            transition: transform 0.3s;
+        }
+        
+        .profile-dropdown.active i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            margin: 5px 20px;
+            overflow: hidden;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .dropdown-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Profile Section Styles */
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        #changePictureBtn {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        
+        #profileForm input:not([type='file']),
+        #profileForm textarea {
+            background-color: #f8f9fa;
+        }
+        
+        #profileForm input:disabled,
+        #profileForm textarea:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+    </style>
+    
+    <script>
         // Profile dropdown functionality
-        document.getElementById('profileDropdown').addEventListener('click', function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle profile dropdown
+            const profileDropdown = document.getElementById('profileDropdown');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            if (profileDropdown && profileMenu) {
+                profileDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileMenu.classList.toggle('show');
+                    profileDropdown.parentElement.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!profileDropdown.contains(e.target) && !profileMenu.contains(e.target)) {
+                        profileMenu.classList.remove('show');
+                        profileDropdown.parentElement.classList.remove('active');
+                    }
+                });
+                
+                // Profile menu items
+                document.getElementById('editProfileBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Navigate to profile section
+                    document.querySelector('a[href="#profile"]').click();
+                    // Enable form editing
+                    enableProfileEditing();
+                    // Close dropdown
+                    profileMenu.classList.remove('show');
+                    profileDropdown.parentElement.classList.remove('active');
+                });
+                
+                document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        // Redirect to login page or handle logout
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+            
+            // Profile form functionality
+            const profileForm = document.getElementById('profileForm');
+            const inputs = profileForm?.querySelectorAll('input, textarea');
+            const cancelBtn = document.getElementById('cancelChangesBtn');
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const changePictureBtn = document.getElementById('changePictureBtn');
+            const profilePictureInput = document.getElementById('profilePictureInput');
+            const profilePicture = document.getElementById('profilePicture');
+            
+            // Store original values
+            let originalValues = {};
+            
+            if (inputs) {
+                inputs.forEach(input => {
+                    originalValues[input.id] = input.value;
+                    input.disabled = true;
+                });
+            }
+            
+            // Enable form editing
+            function enableProfileEditing() {
+                if (inputs) {
+                    inputs.forEach(input => {
+                        input.disabled = false;
+                    });
+                }
+                if (cancelBtn) cancelBtn.style.display = 'block';
+                if (saveBtn) saveBtn.disabled = false;
+            }
+            
+            // Reset form to original values
+            function resetForm() {
+                if (inputs) {
+                    inputs.forEach(input => {
+                        input.value = originalValues[input.id];
+                        input.disabled = true;
+                    });
+                }
+                if (cancelBtn) cancelBtn.style.display = 'none';
+                if (saveBtn) saveBtn.disabled = true;
+            }
+            
+            // Handle form submission
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Here you would typically send the data to a server
+                    // For now, we'll just update the UI
+                    if (inputs) {
+                        inputs.forEach(input => {
+                            originalValues[input.id] = input.value;
+                            input.disabled = true;
+                        });
+                    }
+                    
+                    // Update profile info in the dropdown
+                    const profileName = document.getElementById('profileName');
+                    const firstName = document.getElementById('firstName')?.value || '';
+                    const lastName = document.getElementById('lastName')?.value || '';
+                    const email = document.getElementById('email')?.value || '';
+                    
+                    if (profileName) {
+                        profileName.textContent = `${firstName} ${lastName}`.trim() || 'Usuario';
+                    }
+                    
+                    const profileEmail = document.getElementById('profileEmail');
+                    if (profileEmail) {
+                        profileEmail.textContent = email || 'correo@ejemplo.com';
+                    }
+                    
+                    if (cancelBtn) cancelBtn.style.display = 'none';
+                    if (saveBtn) saveBtn.disabled = true;
+                    
+                    // Show success message
+                    alert('Perfil actualizado correctamente');
+                });
+            }
+            
+            // Handle cancel button
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    if (confirm('¿Deseas descartar los cambios realizados?')) {
+                        resetForm();
+                    }
+                });
+            }
+            
+            // Handle profile picture change
+            if (changePictureBtn && profilePictureInput && profilePicture) {
+                changePictureBtn.addEventListener('click', function() {
+                    profilePictureInput.click();
+                });
+                
+                profilePictureInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            profilePicture.src = event.target.result;
+                            // Here you would typically upload the image to a server
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Change password button
+            const changePasswordBtn = document.getElementById('changePasswordBtn');
+            if (changePasswordBtn) {
+                changePasswordBtn.addEventListener('click', function() {
+                    // Here you would typically show a change password modal
+                    alert('Funcionalidad de cambio de contraseña se implementará próximamente');
+                });
+            }
+        });
+        
+        // Existing code
+        document.getElementById('profileDropdown')?.addEventListener('click', function(e) {
             e.preventDefault();
             const dropdownMenu = document.querySelector('.dropdown-menu');
             dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';

@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show success message
                 showNotification('Login successful! Redirecting to dashboard...', 'success');
                 
-                // Redirect to dashboard after a short delay
+                // Redirect to trader dashboard after a short delay
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'dashboard-trader.html';
                 }, 1500);
                 
             }, 1000); // Simulate 1 second loading time
@@ -49,8 +49,8 @@ function checkLoginStatus() {
     const isLoggedIn = localStorage.getItem('userLoggedIn') || sessionStorage.getItem('userLoggedIn');
     
     if (isLoggedIn) {
-        // User is already logged in, redirect to dashboard
-        window.location.href = 'dashboard.html';
+        // User is already logged in, redirect to trader dashboard
+        window.location.href = 'dashboard-trader.html';
     }
 }
 
