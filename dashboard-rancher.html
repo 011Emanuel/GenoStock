@@ -209,34 +209,8 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="logo_small.png" class="ms-2" style="height: 80px;">
-                <i class="fas fa-cow me-2"></i>Genostock
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="marketplace.html">Marketplace</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about us.html">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Contactos.html">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- Header Component -->
+    <geno-header></geno-header>
 
         <!-- Sidebar -->
         <!-- Profile Dropdown -->
@@ -531,101 +505,10 @@
                 </section>
             </div>
         </main>
-    </div>
-
-    <!-- Profile Dropdown Menu -->
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" style="display: none;">
-        <a class="dropdown-item" href="profile.html">
-            <i class="fas fa-user me-2"></i> My Profile
-        </a>
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-cog me-2"></i> Settings
-        </a>
-        <a class="dropdown-item" href="#">
-            <i class="fas fa-key me-2"></i> Change Password
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="index.html">
-            <i class="fas fa-sign-out-alt me-2"></i> Logout
-        </a>
-    </div>
-
-    <!-- Health Modal -->
-    <div class="modal fade" id="healthModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Health Record</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="healthForm">
-                        <div class="mb-3">
-                            <label class="form-label">Animal ID</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" required>
-                                <option value="healthy">Healthy</option>
-                                <option value="warning">Warning</option>
-                                <option value="critical">Critical</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Notes</label>
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveHealthRecord()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Planning Modal -->
-    <div class="modal fade" id="planningModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Event</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="planningForm">
-                        <div class="mb-3">
-                            <label class="form-label">Event Type</label>
-                            <select class="form-select" required>
-                                <option value="insemination">Insemination</option>
-                                <option value="birth">Birth</option>
-                                <option value="weaning">Weaning</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date</label>
-                            <input type="date" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Number of Animals</label>
-                            <input type="number" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Notes</label>
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="savePlanningEvent()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Footer Component -->
+    <geno-footer></geno-footer>
+    <script src="components/header.js"></script>
+    <script src="components/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -1215,5 +1098,6 @@
             document.getElementById('planningModal').classList.remove('show');
         }
     </script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
