@@ -244,10 +244,9 @@ function updateUserInfo() {
 
 // Check if user is logged in
 function checkAuth() {
-    const isLoggedIn = localStorage.getItem('userLoggedIn') || sessionStorage.getItem('userLoggedIn');
-    
-    if (!isLoggedIn) {
-        // User is not logged in, redirect to login
+    const username = localStorage.getItem('username');
+    if (!username) {
+        // Usuario no logueado, redirige a login
         window.location.href = 'login.html';
     }
 }
@@ -256,23 +255,14 @@ function checkAuth() {
 function initLogout() {
     const logoutBtn = document.getElementById('logoutBtn');
     const logoutBtnProfile = document.getElementById('logoutBtnProfile');
-    
     function doLogout() {
-        // Clear all stored data
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userLoggedIn');
-        sessionStorage.removeItem('userEmail');
-        sessionStorage.removeItem('userLoggedIn');
-        
-        // Show logout message
-        showNotification('Logged out successfully!', 'success');
-        
-        // Redirect to login page
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 1000);
+        // Limpiar datos de sesión
+        localStorage.removeItem('username');
+        localStorage.removeItem('name');
+        localStorage.removeItem('role');
+        // Redirigir a login
+        window.location.href = 'login.html';
     }
-    
     if (logoutBtn) {
         logoutBtn.addEventListener('click', doLogout);
     }

@@ -15,19 +15,6 @@ body {
     line-height: 1.6;
 }
 
-/* Navbar Styles */
-.navbar {
-    background-color: var(--primary-color);
-}
-
-.navbar-dark .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.navbar-dark .navbar-nav .nav-link:hover {
-    color: white;
-}
-
 /* Carousel Styles */
 .carousel {
     border-radius: 8px;
@@ -87,22 +74,6 @@ body {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
-}
-
-/* Footer Styles */
-footer {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 3rem 0;
-}
-
-.social-links a {
-    font-size: 1.5rem;
-    transition: opacity 0.3s;
-}
-
-.social-links a:hover {
-    opacity: 0.8;
 }
 
 /* Responsive Adjustments */
