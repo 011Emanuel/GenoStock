@@ -170,17 +170,17 @@
         }
       </style>
       <div class="header-col logo">
-        <a class="navbar-brand" href="/index.html">
-          <img src="/logo_small.png" alt="GenoStock" height="40">
+        <a class="navbar-brand" href="../../index.html">
+          <img src="../../logo_small.png" alt="GenoStock" height="40">
           <span>GenoStock</span>
         </a>
       </div>
       <div class="header-col menu">
         <nav class="nav-menu">
-          <a class="nav-link" href="/index.html">Home</a>
-          <a class="nav-link" href="/marketplace.html">Marketplace</a>
-          <a class="nav-link" href="/about us.html">About Us</a>
-          <a class="nav-link" href="/Contactos.html">Contact Us</a>
+          <a class="nav-link" href="../../index.html">Home</a>
+          <a class="nav-link" href="../../marketplace.html">Marketplace</a>
+          <a class="nav-link" href="../../about us.html">About Us</a>
+          <a class="nav-link" href="../../Contactos.html">Contact Us</a>
         </nav>
       </div>
       <div class="header-col auth">
