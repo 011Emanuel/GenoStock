@@ -248,7 +248,7 @@ class DashboardTrader extends HTMLElement {
       // Cargar header-auth.js si no está cargado
       if (!window.createAuthHeader) {
         const script = document.createElement('script');
-        script.src = '/components/header-auth.js';
+        script.src = '../../components/header-auth.js';
         document.head.appendChild(script);
         script.onload = () => {
           if (window.createAuthHeader) {
