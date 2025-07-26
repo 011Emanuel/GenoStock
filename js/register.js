@@ -93,11 +93,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedRole = role.value;
         
         // Redirigir basado en el rol seleccionado
-        if (selectedRole === 'seller') {
+        if (selectedRole === 'buyer') {  // Rancher
             window.location.href = 'dashboard-rancher.html';
-        } else if (selectedRole === 'trader') {
+        } else if (selectedRole === 'trader') {  // Trader
             window.location.href = 'dashboard-trader.html';
         } else {
+            // Redirección por defecto en caso de que no coincida ningún rol
             window.location.href = 'dashboard.html';
         }
     });
