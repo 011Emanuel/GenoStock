@@ -12,7 +12,7 @@
 </head>
 <body>
     <!-- Header Component -->
-    <div id="header-component"></div>
+    <geno-header id="main-header"></geno-header>
 
     <!-- Marketplace Hero -->
     <section class="marketplace-hero" style="background-image: url('https://recorriendopanama.com/wp-content/uploads/2018/12/vacas.jpg?w=1000'); background-size: cover; background-position: center 35%; height: 350px; display: flex; align-items: center;">
@@ -238,9 +238,16 @@
     </section>
 
     <!-- Footer Component -->
-    <div id="footer-component"></div>
-    
-    <script src="js/components.js"></script>
+    <geno-footer></geno-footer>
+    <script src="components/header.js"></script>
+    <script src="components/header-auth.js"></script>
+    <script>
+      if (localStorage.getItem('username')) {
+        const oldHeader = document.getElementById('main-header');
+        if (oldHeader) oldHeader.remove();
+      }
+    </script>
+    <script src="components/footer.js"></script>
     <script src="js/marketplace.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>

@@ -6,30 +6,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     
-    // Manejar la selección de rol
-    roleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remover clase active de todos los botones
-            roleButtons.forEach(btn => btn.classList.remove('active'));
-            // Agregar clase active al botón seleccionado
-            this.classList.add('active');
+    // Function to toggle rancher fields
+    function toggleRancherFields(show) {
+        const sellerFields = document.getElementById('sellerFields');
+        const inputs = sellerFields ? sellerFields.querySelectorAll('input') : [];
+        
+        if (sellerFields) {
+            sellerFields.style.display = show ? 'block' : 'none';
             
-            // Mostrar/ocultar campos de vendedor
-            if (this.dataset.role === 'seller') {
-                sellerInfo.classList.add('active');
-                // Hacer requeridos los campos de vendedor
-                sellerInfo.querySelectorAll('input').forEach(input => {
-                    input.required = true;
-                });
-            } else {
-                sellerInfo.classList.remove('active');
-                // Remover required de los campos de vendedor
-                sellerInfo.querySelectorAll('input').forEach(input => {
-                    input.required = false;
-                });
+            // Make fields required/not required
+            inputs.forEach(input => {
+                input.required = show;
+            });
+        }
+    }
+    
+    // Handle role selection change
+    document.querySelectorAll('input[name="role"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Show/hide rancher fields based on selection
+            if (this.value === 'buyer') {
+                toggleRancherFields(true);
+            } else if (this.value === 'trader') {
+                toggleRancherFields(false);
             }
         });
     });
+    
+    // Initialize fields based on default selection (Rancher is selected by default)
+    toggleRancherFields(true);
     
     // Validación de contraseñas
     function validatePasswords() {
@@ -72,8 +77,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Si todo está bien, redirige al dashboard
-        window.location.href = 'dashboard.html';
+        // Validar campos específicos del rancher si es necesario
+        if (role.value === 'seller') {
+            const ranchName = document.getElementById('ranchName')?.value.trim();
+            const location = document.getElementById('location')?.value.trim();
+            const cattleCount = document.getElementById('cattleCount')?.value;
+            
+            if (!ranchName || !location || !cattleCount) {
+                alert('Por favor, completa todos los campos específicos del rancho.');
+                return;
+            }
+        }
+
+        // Obtener el rol seleccionado
+        const selectedRole = role.value;
+        
+        // Redirigir basado en el rol seleccionado
+        if (selectedRole === 'seller') {
+            window.location.href = 'dashboard-rancher.html';
+        } else if (selectedRole === 'trader') {
+            window.location.href = 'dashboard-trader.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
     });
     
     // Validación de RFC para vendedores

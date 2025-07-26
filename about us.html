@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-component"></div>
+    <!-- Header Component -->
+    <geno-header id="main-header"></geno-header>
 
     <section class="hero-section about-hero d-flex align-items-center justify-content-center" style="min-height: 40vh; background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('imagen para fondo hoomepage.jpg') center/cover no-repeat;">
         <div class="container text-center text-white">
@@ -138,21 +138,6 @@
           </div>
         </div>
 
-        <!-- Impacto -->
-        <div class="row mb-5 align-items-center bg-primary bg-gradient text-white rounded-4 py-5 px-2" data-aos="fade-up">
-          <div class="col-md-6 mb-4 mb-md-0 text-center">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Impacto rural" class="img-fluid rounded-circle shadow-lg impact-img">
-          </div>
-          <div class="col-md-6">
-            <h3 class="fw-bold mb-3">Our Impact</h3>
-            <ul class="list-unstyled lead">
-              <li><i class="fas fa-arrow-up me-2"></i> +30% productivity in digitized farms</li>
-              <li><i class="fas fa-users me-2"></i> +5,000 users in Latin America</li>
-              <li><i class="fas fa-seedling me-2"></i> Commitment to sustainability</li>
-            </ul>
-            <p class="mb-0">Genostock modernizes the livestock sector, increases rural incomes, and fosters sustainable development with digital tools.</p>
-          </div>
-        </div>
 
         <!-- Equipo -->
         <div class="mb-5">
@@ -282,12 +267,19 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <div id="footer-component"></div>
-
+    <!-- Footer Component -->
+    <geno-footer></geno-footer>
+    <script src="components/header.js"></script>
+    <script src="components/header-auth.js"></script>
+    <script>
+      if (localStorage.getItem('username')) {
+        const oldHeader = document.getElementById('main-header');
+        if (oldHeader) oldHeader.remove();
+      }
+    </script>
+    <script src="components/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script src="js/components.js"></script>
     <script src="js/theme.js"></script>
     <script>
         AOS.init({
