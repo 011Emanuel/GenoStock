@@ -368,133 +368,242 @@ class TraderSettings extends HTMLElement {
         </div>
 
         <div class="settings-container">
-          <!-- Configuración de Notificaciones -->
-          <div class="settings-card notifications">
+          <!-- Account Settings -->
+          <div class="settings-card">
             <div class="settings-header">
-              <div class="settings-icon success">
+              <div class="settings-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
               </div>
-              <h5 class="settings-title">Notificaciones</h5>
+              <h4 class="settings-title">Account Settings</h4>
             </div>
-            
             <div class="settings-body">
-              <form>
-                <div class="form-group">
-                  <label class="form-label">Notificaciones por Email</label>
-                  <div class="checkbox-group">
-                    <div class="checkbox-item">
-                      <input type="checkbox" id="sales-notifications" checked>
-                      <div class="checkbox-icon success">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                      </div>
-                      <div class="checkbox-content">
-                        <label class="checkbox-label" for="sales-notifications">Notificaciones de Ventas</label>
-                        <p class="checkbox-description">Recibe alertas cuando se complete una venta</p>
-                      </div>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                      <input type="checkbox" id="health-alerts" checked>
-                      <div class="checkbox-icon warning">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                      </div>
-                      <div class="checkbox-content">
-                        <label class="checkbox-label" for="health-alerts">Alertas de Salud</label>
-                        <p class="checkbox-description">Notificaciones sobre el estado de tu ganado</p>
-                      </div>
-                    </div>
-                    
-                    <div class="checkbox-item">
-                      <input type="checkbox" id="marketing-emails">
-                      <div class="checkbox-icon info">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                        </svg>
-                      </div>
-                      <div class="checkbox-content">
-                        <label class="checkbox-label" for="marketing-emails">Emails de Marketing</label>
-                        <p class="checkbox-description">Ofertas especiales y novedades del mercado</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label class="form-label">Idioma</label>
-                  <select class="form-select">
-                    <option value="es">Español</option>
-                    <option value="en">English</option>
-                    <option value="pt">Português</option>
-                  </select>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  Guardar Configuración
-                </button>
-              </form>
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-control" value="John Smith">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" value="john.smith@example.com">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" value="+1 (555) 123-4567">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Language</label>
+                <select class="form-select">
+                  <option>English</option>
+                  <option>Spanish</option>
+                  <option>French</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Time Zone</label>
+                <select class="form-select">
+                  <option>UTC-5 (Eastern Time)</option>
+                  <option>UTC-6 (Central Time)</option>
+                  <option>UTC-7 (Mountain Time)</option>
+                  <option>UTC-8 (Pacific Time)</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <!-- Configuración de Seguridad -->
-          <div class="settings-card security">
+          <!-- Security Settings -->
+          <div class="settings-card">
             <div class="settings-header">
-              <div class="settings-icon warning">
+              <div class="settings-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
                 </svg>
               </div>
-              <h5 class="settings-title">Seguridad</h5>
+              <h4 class="settings-title">Security Settings</h4>
             </div>
-            
             <div class="settings-body">
-              <form>
-                <div class="form-group">
-                  <label class="form-label">Contraseña Actual</label>
-                  <input type="password" class="form-control" placeholder="Ingresa tu contraseña actual">
+              <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" placeholder="Enter current password">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" placeholder="Enter new password">
+                <div class="password-strength strong">
+                  <div class="strength-bar"></div>
+                  <span>Strong password</span>
                 </div>
-                
-                <div class="form-group">
-                  <label class="form-label">Nueva Contraseña</label>
-                  <input type="password" class="form-control" placeholder="Ingresa tu nueva contraseña">
-                  <div class="password-strength strong">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    Contraseña fuerte
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" placeholder="Confirm new password">
+              </div>
+              
+              <div class="security-tips">
+                <h6>Password Requirements:</h6>
+                <ul>
+                  <li>At least 8 characters long</li>
+                  <li>Include uppercase and lowercase letters</li>
+                  <li>Include numbers and special characters</li>
+                  <li>Not used in previous passwords</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notification Settings -->
+          <div class="settings-card">
+            <div class="settings-header">
+              <div class="settings-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                </svg>
+              </div>
+              <h4 class="settings-title">Notification Settings</h4>
+            </div>
+            <div class="settings-body">
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Email Notifications</div>
+                      <div class="checkbox-description">Receive notifications about sales and livestock updates</div>
+                    </div>
                   </div>
+                  <input type="checkbox" checked>
                 </div>
                 
-                <div class="form-group">
-                  <label class="form-label">Confirmar Nueva Contraseña</label>
-                  <input type="password" class="form-control" placeholder="Confirma tu nueva contraseña">
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">SMS Notifications</div>
+                      <div class="checkbox-description">Get important alerts via text message</div>
+                    </div>
+                  </div>
+                  <input type="checkbox">
                 </div>
                 
-                <button type="submit" class="btn btn-warning">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9v2H6V8c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  Cambiar Contraseña
-                </button>
-                
-                <div class="security-tips">
-                  <h6>Consejos de Seguridad</h6>
-                  <ul>
-                    <li>Usa al menos 8 caracteres</li>
-                    <li>Incluye mayúsculas, minúsculas y números</li>
-                    <li>Evita información personal obvia</li>
-                    <li>Cambia tu contraseña regularmente</li>
-                  </ul>
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Health Check Reminders</div>
+                      <div class="checkbox-description">Reminders for livestock health checks and vaccinations</div>
+                    </div>
+                  </div>
+                  <input type="checkbox" checked>
                 </div>
-              </form>
+                
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Market Updates</div>
+                      <div class="checkbox-description">Receive market price updates and trends</div>
+                    </div>
+                  </div>
+                  <input type="checkbox" checked>
+                </div>
+                
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Weekly Reports</div>
+                      <div class="checkbox-description">Get weekly summary reports of your livestock business</div>
+                    </div>
+                  </div>
+                  <input type="checkbox">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Privacy Settings -->
+          <div class="settings-card">
+            <div class="settings-header">
+              <div class="settings-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
+              <h4 class="settings-title">Privacy Settings</h4>
+            </div>
+            <div class="settings-body">
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Profile Visibility</div>
+                      <div class="checkbox-description">Allow other users to see your profile information</div>
+                    </div>
+                  </div>
+                  <input type="checkbox" checked>
+                </div>
+                
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Livestock Catalog</div>
+                      <div class="checkbox-description">Show your livestock in the public marketplace</div>
+                    </div>
+                  </div>
+                  <input type="checkbox" checked>
+                </div>
+                
+                <div class="checkbox-item">
+                  <div class="checkbox-content">
+                    <div class="checkbox-icon">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">Analytics Sharing</div>
+                      <div class="checkbox-description">Share anonymous data to improve the platform</div>
+                    </div>
+                  </div>
+                  <input type="checkbox">
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -56,13 +56,16 @@ class TraderProfile extends HTMLElement {
 
         .profile-sidebar {
           background: var(--white);
-          border-radius: var(--border-radius);
-          box-shadow: var(--shadow);
-          padding: 2rem;
+          border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          padding: 1.5rem;
           text-align: center;
           position: relative;
           overflow: hidden;
-          transition: var(--transition);
+          transition: all 0.3s ease;
+          border: 1px solid rgba(44, 85, 48, 0.1);
+          max-width: 280px;
+          margin: 0 auto;
         }
 
         .profile-sidebar::before {
@@ -71,32 +74,58 @@ class TraderProfile extends HTMLElement {
           top: 0;
           left: 0;
           right: 0;
-          height: 4px;
-          background: var(--gradient-accent);
+          height: 3px;
+          background: linear-gradient(135deg, var(--accent), var(--accent-dark));
         }
 
         .profile-sidebar:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--shadow-hover);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
 
         .profile-avatar {
-          width: 120px;
-          height: 120px;
-          margin: 0 auto 1.5rem;
+          width: 90px;
+          height: 90px;
+          margin: 0 auto 1rem;
           border-radius: 50%;
-          background: var(--gradient-primary);
+          position: relative;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          border: 4px solid var(--white);
+          overflow: hidden;
+          background: var(--white);
+        }
+
+        .profile-avatar img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+
+        .avatar-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
-          box-shadow: 0 8px 25px rgba(44, 85, 48, 0.2);
+          opacity: 0;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          border-radius: 50%;
         }
 
-        .profile-avatar svg {
-          width: 60px;
-          height: 60px;
+        .avatar-overlay svg {
+          width: 24px;
+          height: 24px;
           color: var(--white);
+        }
+
+        .profile-avatar:hover .avatar-overlay {
+          opacity: 1;
         }
 
         .profile-avatar::after {
@@ -104,64 +133,70 @@ class TraderProfile extends HTMLElement {
           position: absolute;
           bottom: 5px;
           right: 5px;
-          width: 30px;
-          height: 30px;
+          width: 24px;
+          height: 24px;
           background: var(--accent);
           border-radius: 50%;
           border: 3px solid var(--white);
           display: flex;
           align-items: center;
           justify-content: center;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .profile-name {
-          font-size: 1.5rem;
+          font-size: 1.25rem;
           font-weight: 700;
           color: var(--primary);
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.25rem;
         }
 
         .profile-role {
-          color: var(--gray);
-          font-size: 1rem;
-          margin-bottom: 1.5rem;
-          padding: 0.5rem 1rem;
-          background: var(--light-gray);
-          border-radius: 20px;
+          color: var(--text-gray);
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+          padding: 0.4rem 0.8rem;
+          background: #f8f9fa;
+          border-radius: 12px;
           display: inline-block;
+          font-weight: 500;
         }
 
         .profile-stats {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-          margin: 1.5rem 0;
+          gap: 0.75rem;
+          margin: 1rem 0;
         }
 
         .stat-item {
           text-align: center;
-          padding: 1rem;
-          background: var(--light-gray);
-          border-radius: 12px;
-          transition: var(--transition);
+          padding: 0.75rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+          border: 1px solid #e9ecef;
         }
 
         .stat-item:hover {
-          background: var(--gradient-primary);
-          color: var(--white);
-          transform: scale(1.05);
+          background: var(--white);
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .stat-number {
-          font-size: 1.5rem;
+          font-size: 1.1rem;
           font-weight: 700;
           color: var(--primary);
+          margin-bottom: 0.2rem;
         }
 
         .stat-label {
-          font-size: 0.9rem;
-          color: var(--gray);
-          margin-top: 0.25rem;
+          font-size: 0.75rem;
+          color: var(--text-gray);
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .btn {
@@ -212,68 +247,112 @@ class TraderProfile extends HTMLElement {
           transform: translateY(-2px);
         }
 
+        .change-photo-btn {
+          font-size: 0.85rem;
+          padding: 0.6rem 1rem;
+          margin-top: 0.5rem;
+          border-radius: 20px;
+          border-width: 1.5px;
+        }
+
+        .change-photo-btn:hover {
+          background: var(--primary);
+          color: var(--white);
+          transform: translateY(-1px);
+        }
+
+        /* Indicador de estado online mejorado */
+        .profile-avatar::before {
+          content: '';
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          width: 12px;
+          height: 12px;
+          background: #10b981;
+          border-radius: 50%;
+          border: 2px solid var(--white);
+          z-index: 2;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
         .profile-form {
           background: var(--white);
-          border-radius: var(--border-radius);
-          box-shadow: var(--shadow);
-          padding: 2rem;
-          transition: var(--transition);
+          border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          padding: 1.5rem;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(44, 85, 48, 0.1);
+          max-width: 600px;
+          margin: 0 auto;
         }
 
         .profile-form:hover {
-          box-shadow: var(--shadow-hover);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+          transform: translateY(-2px);
         }
 
         .form-header {
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
           padding-bottom: 1rem;
-          border-bottom: 2px solid var(--light-gray);
+          border-bottom: 1px solid var(--light-gray);
+          text-align: center;
         }
 
-        .form-header h5 {
-          font-size: 1.5rem;
+        .form-header h4 {
+          font-size: 1.25rem;
           font-weight: 700;
           color: var(--primary);
-          margin: 0;
+          margin: 0 0 0.5rem 0;
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          justify-content: center;
+          gap: 0.5rem;
         }
 
-        .form-header h5::before {
+        .form-header h4::before {
           content: '';
-          width: 4px;
-          height: 24px;
-          background: var(--gradient-accent);
+          width: 3px;
+          height: 20px;
+          background: linear-gradient(135deg, var(--accent), var(--accent-dark));
           border-radius: 2px;
         }
 
+        .form-header p {
+          color: var(--text-gray);
+          font-size: 0.9rem;
+          margin: 0;
+        }
+
         .form-group {
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
         }
 
         .form-label {
           font-weight: 600;
           color: var(--dark-gray);
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.4rem;
           display: block;
-          font-size: 0.95rem;
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .form-control {
           width: 100%;
-          padding: 1rem;
-          border: 2px solid var(--border);
-          border-radius: 12px;
-          font-size: 1rem;
-          transition: var(--transition);
+          padding: 0.75rem 1rem;
+          border: 1.5px solid #e1e5e9;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          transition: all 0.2s ease;
           background: var(--white);
+          color: var(--dark-gray);
         }
 
         .form-control:focus {
           outline: none;
           border-color: var(--primary);
-          box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.1);
+          box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.08);
           transform: translateY(-1px);
         }
 
@@ -283,20 +362,58 @@ class TraderProfile extends HTMLElement {
 
         textarea.form-control {
           resize: vertical;
-          min-height: 100px;
+          min-height: 80px;
         }
 
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1rem;
+          gap: 0.75rem;
         }
 
         .form-actions {
-          margin-top: 2rem;
-          padding-top: 1.5rem;
-          border-top: 2px solid var(--light-gray);
+          margin-top: 1.5rem;
+          padding-top: 1rem;
+          border-top: 1px solid var(--light-gray);
           display: flex;
+          gap: 0.75rem;
+          justify-content: center;
+        }
+
+        .btn-save {
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+          color: var(--white);
+          border: none;
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 0.9rem;
+          transition: all 0.2s ease;
+          min-width: 120px;
+        }
+
+        .btn-save:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(44, 85, 48, 0.3);
+        }
+
+        .btn-cancel {
+          background: transparent;
+          color: var(--text-gray);
+          border: 1.5px solid #e1e5e9;
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 0.9rem;
+          transition: all 0.2s ease;
+          min-width: 120px;
+        }
+
+        .btn-cancel:hover {
+          background: #f8f9fa;
+          border-color: var(--primary-light);
+          transform: translateY(-1px);
+        }
           gap: 1rem;
           justify-content: flex-end;
         }
@@ -367,90 +484,112 @@ class TraderProfile extends HTMLElement {
       
       <section>
         <div class="section-header">
-          <h2>Mi Perfil</h2>
-          <p>Gestiona tu información personal y configuración</p>
+          <h2>My Profile</h2>
+          <p>Manage your personal information and settings</p>
         </div>
         
         <div class="profile-container">
           <!-- Sidebar con información del perfil -->
           <div class="profile-sidebar">
             <div class="profile-avatar">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Profile">
+              <div class="avatar-overlay">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
             </div>
-            
-            <div class="profile-name">John Doe</div>
-            <div class="profile-role">Ganadero Profesional</div>
+            <h3 class="profile-name">John Smith</h3>
+            <p class="profile-role">Livestock Trader</p>
             
             <div class="profile-stats">
               <div class="stat-item">
                 <div class="stat-number">156</div>
-                <div class="stat-label">Cabezas</div>
+                <div class="stat-label">Total Livestock</div>
               </div>
               <div class="stat-item">
-                <div class="stat-number">23</div>
-                <div class="stat-label">Ventas</div>
+                <div class="stat-number">$45,230</div>
+                <div class="stat-label">Total Sales</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Success Rate</div>
               </div>
             </div>
             
-            <button class="btn btn-outline-primary">
+            <button class="btn btn-outline-primary change-photo-btn">
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path d="M12 19v-6M12 5v2m0 0a7 7 0 1 1 0 14a7 7 0 0 1 0-14z" stroke="currentColor" stroke-width="2"/>
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
               </svg>
-              Cambiar Foto
+              Change Photo
             </button>
             
             <button class="btn btn-outline-danger" id="logoutBtnProfile" style="margin-top: 1rem; width: 100%;">
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                 <path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2"/>
               </svg>
-              Cerrar Sesión
+              Sign Out
             </button>
           </div>
           
           <!-- Formulario principal -->
           <div class="profile-form">
             <div class="form-header">
-              <h5>Información Personal</h5>
+              <h4>Personal Information</h4>
+              <p>Update your profile information and preferences</p>
             </div>
             
             <form>
               <div class="form-row">
                 <div class="form-group">
-                  <label class="form-label">Nombre</label>
-                  <input type="text" class="form-control" value="John" placeholder="Tu nombre">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-control" value="John">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Apellido</label>
-                  <input type="text" class="form-control" value="Doe" placeholder="Tu apellido">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control" value="Smith">
                 </div>
               </div>
               
               <div class="form-row">
                 <div class="form-group">
-                  <label class="form-label">Correo Electrónico</label>
-                  <input type="email" class="form-control" value="john.doe@example.com" placeholder="tu@email.com">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control" value="john.smith@example.com">
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Teléfono</label>
-                  <input type="tel" class="form-control" value="+507 6123-4567" placeholder="+507 0000-0000">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" value="+1 (555) 123-4567">
                 </div>
               </div>
               
               <div class="form-group">
-                <label class="form-label">Dirección</label>
-                <textarea class="form-control" rows="3" placeholder="Tu dirección completa">Chiriquí, Panama</textarea>
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" value="Smith Livestock Co.">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Address</label>
+                <textarea class="form-control" rows="3">123 Cattle Drive, Farmville, TX 12345</textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">City</label>
+                  <input type="text" class="form-control" value="Farmville">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">State</label>
+                  <input type="text" class="form-control" value="Texas">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">ZIP Code</label>
+                  <input type="text" class="form-control" value="12345">
+                </div>
               </div>
               
               <div class="form-actions">
-                <button type="button" class="btn btn-cancel">Cancelar</button>
-                <button type="submit" class="btn btn-save">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  Guardar Cambios
-                </button>
+                <button type="submit" class="btn btn-save">Save Changes</button>
+                <button type="button" class="btn btn-cancel">Cancel</button>
               </div>
             </form>
           </div>

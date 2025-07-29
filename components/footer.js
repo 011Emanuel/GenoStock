@@ -8,6 +8,8 @@ class GenoFooter extends HTMLElement {
           background: linear-gradient(135deg, var(--primary), var(--primary-dark));
           color: #fff;
           padding: 3.5rem 2.2rem 0 2.2rem;
+          width: 100%;
+          margin: 0;
         }
         .footer-container {
           max-width: 1200px;
@@ -142,37 +144,46 @@ class GenoFooter extends HTMLElement {
         .footer-newsletter button:hover {
           background: var(--primary-dark);
         }
+        .privacy-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 0.7rem;
+        }
+        .privacy-link {
+          color: var(--accent);
+          text-decoration: none;
+          font-size: 1.08rem;
+          font-weight: 500;
+          letter-spacing: 0.01em;
+          transition: color 0.2s, border-bottom 0.2s;
+          border-bottom: 2px solid transparent;
+          padding-bottom: 2px;
+          display: inline-block;
+        }
+        .privacy-link:hover {
+          color: #fff;
+          border-bottom: 2px solid var(--accent);
+        }
         .footer-bottom {
-          width: 100vw;
-          left: 0;
-          position: relative;
+          width: 100%;
+          margin-left: calc(-50vw + 50%);
+          margin-right: calc(-50vw + 50%);
           background: rgba(0,0,0,0.13);
           color: #e0e0e0;
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          justify-content: space-between;
+          justify-content: center;
           padding: 0.7rem 2.2rem 1.2rem 2.2rem;
           font-size: 1.01rem;
           margin-top: 0.5rem;
           border-top: 1.5px solid rgba(255,255,255,0.08);
         }
-        .footer-bottom-left {
+        .footer-bottom-center {
           display: flex;
           align-items: center;
-          gap: 1.2rem;
-        }
-        .footer-bottom-links {
-          display: flex;
-          gap: 0.7rem;
-        }
-        .footer-bottom-links a {
-          color: var(--accent);
-          text-decoration: none;
-          transition: color 0.2s;
-        }
-        .footer-bottom-links a:hover {
-          color: #fff;
+          justify-content: center;
         }
         @media (max-width: 900px) {
           .footer-container {
@@ -231,21 +242,18 @@ class GenoFooter extends HTMLElement {
             </div>
           </div>
           <div class="footer-col">
-            <h5>Newsletter</h5>
-            <p>Subscribe to our newsletter for the latest updates and cattle management tips.</p>
-            <form class="input-group" autocomplete="off">
-              <input type="email" placeholder="Enter your email" aria-label="Email address">
-              <button type="submit">Subscribe</button>
-            </form>
+            <h5>Privacy Terms</h5>
+            <p>We protect your data and ensure transparency in our privacy practices. Your information is secure with us.</p>
+            <div class="privacy-links">
+              <a href="#" class="privacy-link">Privacy Policy</a>
+              <a href="#" class="privacy-link">Terms of Service</a>
+              <a href="#" class="privacy-link">Data Protection</a>
+            </div>
           </div>
         </div>
         <div class="footer-bottom">
-          <div class="footer-bottom-left">
+          <div class="footer-bottom-center">
             <span>&copy; 2024 GenoStock. All rights reserved.</span>
-          </div>
-          <div class="footer-bottom-links">
-            <a href="#" tabindex="0">Privacy Policy</a>
-            <a href="#" tabindex="0">Terms of Service</a>
           </div>
         </div>
       </footer>

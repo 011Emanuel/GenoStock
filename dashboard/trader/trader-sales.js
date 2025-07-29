@@ -415,89 +415,92 @@ class TraderSales extends HTMLElement {
       
       <section>
         <div class="section-header">
-          <h2>Ventas</h2>
-          <p>Gestiona y rastrea tus transacciones comerciales</p>
+          <h2>Sales</h2>
+          <p>Manage and track your commercial transactions</p>
         </div>
 
-        <!-- Estadísticas de ventas -->
+        <!-- Sales Statistics -->
         <div class="sales-stats">
-          <div class="stat-card success">
+          <div class="stat-card">
             <div class="stat-header">
-              <div>
-                <div class="stat-number">$5,150</div>
-                <div class="stat-label">Ventas Totales</div>
-                <div class="stat-change">+12.5% vs mes anterior</div>
-              </div>
-              <div class="stat-icon success">
+              <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  <path d="M12 21V3M6 8l6-5 6 5"/>
                 </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">$45,230</div>
+                <div class="stat-label">Total Sales</div>
+                <div class="stat-change positive">+12.5%</div>
               </div>
             </div>
           </div>
-
-          <div class="stat-card warning">
+          
+          <div class="stat-card">
             <div class="stat-header">
-              <div>
-                <div class="stat-number">6</div>
-                <div class="stat-label">Transacciones</div>
-                <div class="stat-change">+2 este mes</div>
-              </div>
-              <div class="stat-icon warning">
+              <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  <path d="M3 12h18M12 3v18"/>
                 </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">23</div>
+                <div class="stat-label">This Month</div>
+                <div class="stat-change positive">+8.2%</div>
               </div>
             </div>
           </div>
-
-          <div class="stat-card accent">
+          
+          <div class="stat-card">
             <div class="stat-header">
-              <div>
-                <div class="stat-number">85%</div>
-                <div class="stat-label">Tasa de Éxito</div>
-                <div class="stat-change">+5% vs mes anterior</div>
-              </div>
-              <div class="stat-icon accent">
+              <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
               </div>
+              <div class="stat-content">
+                <div class="stat-number">156</div>
+                <div class="stat-label">Total Livestock</div>
+                <div class="stat-change positive">+5.1%</div>
+              </div>
             </div>
           </div>
-
+          
           <div class="stat-card">
             <div class="stat-header">
-              <div>
-                <div class="stat-number">$858</div>
-                <div class="stat-label">Promedio por Venta</div>
-                <div class="stat-change">+8.3% vs mes anterior</div>
-              </div>
-              <div class="stat-icon primary">
+              <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                 </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Success Rate</div>
+                <div class="stat-change positive">+2.3%</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Tabla de ventas -->
+        <!-- Sales Table -->
         <div class="sales-container">
           <div class="sales-header">
-            <h5 class="sales-title">Ventas Recientes</h5>
+            <div>
+              <h3 class="sales-title">Recent Sales</h3>
+              <p>Track your livestock sales and performance</p>
+            </div>
             <div class="sales-actions">
-              <button class="btn btn-outline-primary btn-sm">
+              <button class="btn btn-outline-secondary">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z" stroke="currentColor" stroke-width="2"/>
                 </svg>
-                Filtrar
+                Export
               </button>
-              <button class="btn btn-primary btn-sm">
+              <button class="btn btn-primary">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                   <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2"/>
                 </svg>
-                Nueva Venta
+                New Sale
               </button>
             </div>
           </div>
@@ -506,77 +509,122 @@ class TraderSales extends HTMLElement {
             <table class="sales-table">
               <thead>
                 <tr>
-                  <th>Fecha</th>
-                  <th>Ganado</th>
-                  <th>Raza</th>
-                  <th>Cantidad</th>
-                  <th>Precio</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
+                  <th>Livestock</th>
+                  <th>Breed</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td class="date">15 Ene 2024</td>
-                  <td class="livestock-name">Brahman</td>
-                  <td class="breed">Pura</td>
-                  <td><span class="quantity">3</span></td>
-                  <td class="price">$2,400</td>
-                  <td><span class="badge badge-success">Completada</span></td>
+                  <td>
+                    <div class="livestock-name">
+                      <strong>Brahman #001</strong>
+                      <span class="livestock-id">#001</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="breed">Pure Breed</span>
+                  </td>
+                  <td>
+                    <span class="price">$2,400</span>
+                  </td>
+                  <td>
+                    <span class="quantity">3 heads</span>
+                  </td>
+                  <td>
+                    <span class="date">Dec 15, 2024</span>
+                  </td>
+                  <td>
+                    <span class="badge badge-success">Completed</span>
+                  </td>
                   <td>
                     <div class="action-buttons">
-                      <button class="btn-icon success" title="Ver detalles">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                      <button class="btn-icon" title="View Details">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
                         </svg>
                       </button>
-                      <button class="btn-icon" title="Editar">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                      <button class="btn-icon" title="Edit Sale">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
                         </svg>
                       </button>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td class="date">10 Ene 2024</td>
-                  <td class="livestock-name">Gyr</td>
-                  <td class="breed">Cruzada</td>
-                  <td><span class="quantity">2</span></td>
-                  <td class="price">$1,800</td>
-                  <td><span class="badge badge-warning">Pendiente</span></td>
+                  <td>
+                    <div class="livestock-name">
+                      <strong>Gyr #002</strong>
+                      <span class="livestock-id">#002</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="breed">Cross Breed</span>
+                  </td>
+                  <td>
+                    <span class="price">$1,800</span>
+                  </td>
+                  <td>
+                    <span class="quantity">2 heads</span>
+                  </td>
+                  <td>
+                    <span class="date">Dec 12, 2024</span>
+                  </td>
+                  <td>
+                    <span class="badge badge-success">Completed</span>
+                  </td>
                   <td>
                     <div class="action-buttons">
-                      <button class="btn-icon warning" title="Ver detalles">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                      <button class="btn-icon" title="View Details">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
                         </svg>
                       </button>
-                      <button class="btn-icon" title="Editar">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                      <button class="btn-icon" title="Edit Sale">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
                         </svg>
                       </button>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td class="date">05 Ene 2024</td>
-                  <td class="livestock-name">Nelore</td>
-                  <td class="breed">Pura</td>
-                  <td><span class="quantity">1</span></td>
-                  <td class="price">$950</td>
-                  <td><span class="badge badge-success">Completada</span></td>
+                  <td>
+                    <div class="livestock-name">
+                      <strong>Nelore #003</strong>
+                      <span class="livestock-id">#003</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="breed">Pure Breed</span>
+                  </td>
+                  <td>
+                    <span class="price">$3,200</span>
+                  </td>
+                  <td>
+                    <span class="quantity">4 heads</span>
+                  </td>
+                  <td>
+                    <span class="date">Dec 10, 2024</span>
+                  </td>
+                  <td>
+                    <span class="badge badge-warning">Pending</span>
+                  </td>
                   <td>
                     <div class="action-buttons">
-                      <button class="btn-icon success" title="Ver detalles">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                      <button class="btn-icon" title="View Details">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
                         </svg>
                       </button>
-                      <button class="btn-icon" title="Editar">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                      <button class="btn-icon" title="Edit Sale">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
                         </svg>
                       </button>
                     </div>
