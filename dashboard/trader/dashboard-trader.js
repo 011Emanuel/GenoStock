@@ -42,6 +42,11 @@ class DashboardTrader extends HTMLElement {
           display: flex;
           flex: 1 1 auto;
           min-height: 0;
+          margin-left: var(--sidebar-width);
+          transition: margin-left var(--transition);
+        }
+        .main-content.sidebar-collapsed {
+          margin-left: var(--sidebar-collapsed-width);
         }
         .sidebar {
           width: var(--sidebar-width);
@@ -52,26 +57,56 @@ class DashboardTrader extends HTMLElement {
           flex-direction: column;
           align-items: stretch;
           min-width: 0;
-          position: relative;
           z-index: 10;
           box-shadow: 2px 0 12px rgba(44,85,48,0.07);
+          height: 100vh;
+          position: fixed;
+          top: 0;
+          left: 0;
         }
         .sidebar.collapsed {
           width: var(--sidebar-collapsed-width);
         }
+        .sidebar.collapsed .sidebar-nav {
+          align-items: center;
+        }
+        .sidebar.collapsed .sidebar-link {
+          justify-content: center;
+          padding: 0.8rem 0.5rem;
+        }
         .sidebar-toggle {
-          background: none;
-          border: none;
+          background: rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.2);
           color: var(--sidebar-text);
-          padding: 1.1rem 0.5rem 1.1rem 0.5rem;
+          padding: 0.8rem;
           cursor: pointer;
           outline: none;
-          align-self: flex-end;
-          font-size: 1.4rem;
-          transition: color 0.2s;
+          align-self: flex-start;
+          font-size: 1.2rem;
+          transition: all 0.2s ease;
+          border-radius: 8px;
+          margin: 1rem;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          z-index: 20;
         }
         .sidebar-toggle:hover {
           color: var(--accent);
+          background: rgba(255,255,255,0.3);
+          transform: scale(1.1);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .sidebar.collapsed .sidebar-toggle {
+          margin: 1rem 0.5rem;
+          width: 32px;
+          height: 32px;
+          right: 0.5rem;
         }
         .sidebar-nav {
           flex: 1 1 auto;
@@ -103,6 +138,10 @@ class DashboardTrader extends HTMLElement {
         .sidebar.collapsed .sidebar-label {
           display: none;
         }
+        .sidebar.collapsed .sidebar-icon {
+          width: 20px;
+          height: 20px;
+        }
         .sidebar-icon {
           width: 26px;
           height: 26px;
@@ -113,9 +152,10 @@ class DashboardTrader extends HTMLElement {
           padding: 2.5rem 2.8rem 2.2rem 2.8rem;
           min-width: 0;
           background: #f5f7fa;
-          transition: margin-left var(--transition);
+          transition: all var(--transition);
           display: flex;
           flex-direction: column;
+          width: 100%;
         }
         ::slotted(section),
         ::slotted(trader-overview),
@@ -139,22 +179,13 @@ class DashboardTrader extends HTMLElement {
           opacity: 1;
           transform: translateX(0);
         }
-        .footer {
-          height: var(--footer-height);
-          background: #232e23;
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.05rem;
-          letter-spacing: 0.01em;
-          padding: 0 1.5rem;
-          border-top: 1px solid #e0e0e0;
+        #footer-container {
+          margin-top: auto;
+          margin-left: var(--sidebar-width);
+          transition: margin-left var(--transition);
         }
-        .footer a {
-          color: var(--accent);
-          margin-left: 8px;
-          text-decoration: underline;
+        #footer-container.sidebar-collapsed {
+          margin-left: var(--sidebar-collapsed-width);
         }
         @media (max-width: 991px) {
           .dashboard-layout {
@@ -172,9 +203,25 @@ class DashboardTrader extends HTMLElement {
             position: sticky;
             top: var(--header-height);
             z-index: 99;
+            position: relative;
+            height: auto;
+            position: fixed;
+            top: var(--header-height);
           }
           .sidebar.collapsed {
             width: 60px;
+          }
+          .main-content {
+            margin-left: 0;
+          }
+          .main-content.sidebar-collapsed {
+            margin-left: 0;
+          }
+          #footer-container {
+            margin-left: 0;
+          }
+          #footer-container.sidebar-collapsed {
+            margin-left: 0;
           }
           .sidebar-nav {
             flex-direction: row;
@@ -197,6 +244,7 @@ class DashboardTrader extends HTMLElement {
           ::slotted(trader-settings) {
             padding: 1.2rem 0.7rem 1rem 0.7rem;
           }
+
         }
       </style>
       <div class="dashboard-layout">
@@ -204,7 +252,9 @@ class DashboardTrader extends HTMLElement {
         <div class="main-content">
           <nav class="sidebar" id="sidebar">
             <button class="sidebar-toggle" id="sidebarToggle" title="Expand/collapse sidebar">
-              <svg class="sidebar-icon" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1" fill="currentColor"/></svg>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" width="20" height="20">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </button>
             <div class="sidebar-nav">
               <a class="sidebar-link active" data-section="overview">
@@ -233,9 +283,7 @@ class DashboardTrader extends HTMLElement {
             <slot></slot>
           </div>
         </div>
-        <footer class="footer">
-          &copy; 2024 GenoStock. <a href="#">Políticas</a>
-        </footer>
+        <div id="footer-container"></div>
       </div>
     `;
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
@@ -259,11 +307,46 @@ class DashboardTrader extends HTMLElement {
         headerContainer.appendChild(window.createAuthHeader());
       }
     }
+    
+    // Insertar footer-auth
+    const footerContainer = this.shadowRoot.getElementById('footer-container');
+    if (footerContainer) {
+      footerContainer.innerHTML = '';
+      // Cargar footer-auth.js si no está cargado
+      if (!window.createAuthFooter) {
+        const script = document.createElement('script');
+        script.src = '../../components/footer-auth.js';
+        document.head.appendChild(script);
+        script.onload = () => {
+          if (window.createAuthFooter) {
+            footerContainer.appendChild(window.createAuthFooter());
+          }
+        };
+      } else {
+        footerContainer.appendChild(window.createAuthFooter());
+      }
+    }
     // Sidebar toggle
     const sidebar = this.shadowRoot.getElementById('sidebar');
+    const mainContent = this.shadowRoot.querySelector('.main-content');
     const toggle = this.shadowRoot.getElementById('sidebarToggle');
     toggle.addEventListener('click', () => {
       sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('sidebar-collapsed');
+      
+      // Actualizar el footer también
+      const footerContainer = this.shadowRoot.getElementById('footer-container');
+      if (footerContainer) {
+        footerContainer.classList.toggle('sidebar-collapsed');
+      }
+      
+      // Cambiar el icono del botón
+      const icon = toggle.querySelector('svg');
+      if (sidebar.classList.contains('collapsed')) {
+        icon.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+      } else {
+        icon.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+      }
     });
     // Navegación de secciones
     const links = this.shadowRoot.querySelectorAll('.sidebar-link');
