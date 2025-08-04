@@ -25,3 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 }); 
+
+// Parallax effect for 'What Makes Us Different?' section
+window.addEventListener('scroll', function() {
+  const parallaxSection = document.querySelector('.diferentes-section-parallax .parallax-bg');
+  if (parallaxSection) {
+    const scrolled = window.scrollY;
+    // Ajusta el factor para más o menos movimiento
+    parallaxSection.style.backgroundPosition = `center ${-scrolled * 0.25}px`;
+  }
+}); 
