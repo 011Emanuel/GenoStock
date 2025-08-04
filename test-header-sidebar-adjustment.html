@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Header Sidebar Adjustment - GenoStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cargar componentes -->
+  <script src="components/header-auth.js"></script>
+  <script src="dashboard/trader/dashboard-trader.js"></script>
+</head>
+<body>
+  <!-- Simular usuario logueado -->
+  <script>
+    localStorage.setItem('username', 'trader1');
+    localStorage.setItem('name', 'Carlos Ruiz');
+    localStorage.setItem('role', 'trader');
+  </script>
+  
+  <!-- Crear dashboard de prueba -->
+  <dashboard-trader>
+    <trader-overview class="active"></trader-overview>
+    <trader-profile></trader-profile>
+    <trader-sales></trader-sales>
+    <trader-livestock></trader-livestock>
+    <trader-settings></trader-settings>
+  </dashboard-trader>
+  
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h2>Test Header Sidebar Adjustment</h2>
+        <p>Verificando que el header se ajuste correctamente al sidebar:</p>
+        
+        <div class="alert alert-success">
+          <strong>Cambios Realizados:</strong>
+          <br>• Agregado display: flex al .main-header
+          <br>• Configurado grid-template-columns para el header
+          <br>• Asegurado que el header herede el ancho del contenedor
+          <br>• Mantenido el transition para animación suave
+        </div>
+        
+        <div class="alert alert-info">
+          <strong>Comportamiento Esperado:</strong>
+          <br>• Header se expande cuando sidebar se contrae
+          <br>• Header se contrae cuando sidebar se expande
+          <br>• Transición suave entre estados
+          <br>• Dropdown funciona correctamente en ambos estados
+        </div>
+        
+        <div class="alert alert-warning">
+          <strong>Instrucciones de Prueba:</strong>
+          <br>1. Haz click en el botón de toggle del sidebar
+          <br>2. Verifica que el header se expanda/contraiga
+          <br>3. Verifica que el dropdown funcione en ambos estados
+          <br>4. Verifica que la transición sea suave
+          <br>5. Verifica que no haya desbordamiento
+        </div>
+        
+        <div class="alert alert-primary">
+          <strong>CSS Aplicado:</strong>
+          <br>• .main-header: display: flex, align-items: center
+          <br>• .main-header .header-bar: grid-template-columns: 1fr 300px
+          <br>• Transición mantenida para animación suave
+          <br>• Overflow hidden para evitar desbordamiento
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Simple Sidebar Header - GenoStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cargar componentes -->
+  <script src="components/header-auth.js"></script>
+  <script src="dashboard/trader/dashboard-trader.js"></script>
+</head>
+<body>
+  <!-- Simular usuario logueado -->
+  <script>
+    localStorage.setItem('username', 'trader1');
+    localStorage.setItem('name', 'Carlos Ruiz');
+    localStorage.setItem('role', 'trader');
+  </script>
+  
+  <!-- Crear dashboard de prueba -->
+  <dashboard-trader>
+    <trader-overview class="active"></trader-overview>
+    <trader-profile></trader-profile>
+    <trader-sales></trader-sales>
+    <trader-livestock></trader-livestock>
+    <trader-settings></trader-settings>
+  </dashboard-trader>
+  
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h2>Test Simple Sidebar Header</h2>
+        <p>Verificando que el header del sidebar sea simple (solo avatar) pero con dropdown funcional:</p>
+        
+        <div class="alert alert-success">
+          <strong>Cambios Aplicados:</strong>
+          <br>• Header del sidebar ahora es simple (solo avatar)
+          <br>• Avatar centrado verticalmente con borde naranja
+          <br>• Dropdown funcional con todas las opciones
+          <br>• Event listeners aplicados correctamente
+          <br>• Responsive design para sidebar contraído
+        </div>
+        
+        <div class="alert alert-info">
+          <strong>Funcionalidades del Sidebar Header Simple:</strong>
+          <br>• Solo avatar (sin nombre ni rol)
+          <br>• Avatar centrado verticalmente
+          <br>• Click en avatar abre dropdown
+          <br>• Dropdown con Marketplace, Dashboard, Profile, Settings, Logout
+          <br>• Funciona en sidebar expandido y contraído
+        </div>
+        
+        <div class="alert alert-warning">
+          <strong>Instrucciones de Prueba:</strong>
+          <br>1. Haz click en el avatar en el sidebar (lado izquierdo)
+          <br>2. Verifica que el dropdown se abra
+          <br>3. Haz click fuera del dropdown para cerrarlo
+          <br>4. Presiona Escape para cerrar el dropdown
+          <br>5. Prueba el logout desde el dropdown del sidebar
+          <br>6. Contrae el sidebar y verifica que solo se vea el avatar
+          <br>7. Compara con el header principal (lado derecho) que tiene logo + avatar + nombre
+        </div>
+        
+        <div class="alert alert-primary">
+          <strong>Diferencias con el Header Principal:</strong>
+          <br>• Sidebar: Solo avatar (simple)
+          <br>• Principal: Logo + Avatar + Nombre + Rol (completo)
+          <br>• Sidebar: Dropdown centrado debajo del avatar
+          <br>• Principal: Dropdown alineado a la derecha
+          <br>• Ambos tienen la misma funcionalidad de dropdown
+        </div>
+        
+        <div class="alert alert-secondary">
+          <strong>Mensajes Esperados en Consola:</strong>
+          <br>• "Sidebar dropdown elements: {...}" - Elementos encontrados
+          <br>• "Sidebar dropdown event listeners attached successfully" - Event listeners aplicados
+          <br>• "Sidebar avatar clicked" - Click en avatar del sidebar
+          <br>• "Sidebar dropdown visibility: true/false" - Cambio de visibilidad
+          <br>• "Sidebar dropdown closed by outside click" - Cierre por click fuera
+          <br>• "Sidebar dropdown closed by Escape key" - Cierre por Escape
+          <br>• "Sidebar logout clicked" - Click en logout del sidebar
+        </div>
+        
+        <div class="alert alert-dark">
+          <strong>Estructura Final:</strong>
+          <br>• Sidebar Header: Solo avatar con dropdown funcional
+          <br>• Main Header: Logo + Avatar + Nombre + Rol con dropdown funcional
+          <br>• Ambos headers tienen la misma funcionalidad pero diferente diseño
+          <br>• Sidebar simple y limpio, main header completo y detallado
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

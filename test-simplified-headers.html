@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Simplified Headers - GenoStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cargar componentes -->
+  <script src="components/header-auth.js"></script>
+  <script src="dashboard/trader/dashboard-trader.js"></script>
+</head>
+<body>
+  <!-- Simular usuario logueado -->
+  <script>
+    localStorage.setItem('username', 'trader1');
+    localStorage.setItem('name', 'Carlos Ruiz');
+    localStorage.setItem('role', 'trader');
+  </script>
+  
+  <!-- Crear dashboard de prueba -->
+  <dashboard-trader>
+    <trader-overview class="active"></trader-overview>
+    <trader-profile></trader-profile>
+    <trader-sales></trader-sales>
+    <trader-livestock></trader-livestock>
+    <trader-settings></trader-settings>
+  </dashboard-trader>
+  
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h2>Test Simplified Headers</h2>
+        <p>Verificando que los headers simplificados funcionan correctamente:</p>
+        
+        <div class="alert alert-success">
+          <strong>Cambios Aplicados:</strong>
+          <br>• Header principal: Solo logo y logout (sin search, sin avatar)
+          <br>• Sidebar header: Solo avatar, nombre y rol (sin dropdown)
+          <br>• Diseño limpio y simple
+          <br>• Funcionalidad de logout en ambos lugares
+          <br>• Responsive design mantenido
+        </div>
+        
+        <div class="alert alert-info">
+          <strong>Funcionalidades del Header Principal:</strong>
+          <br>• Logo de GenoStock a la izquierda
+          <br>• Botón de logout a la derecha
+          <br>• Diseño simple y limpio
+          <br>• Se ajusta cuando el sidebar se expande/contrae
+        </div>
+        
+        <div class="alert alert-warning">
+          <strong>Funcionalidades del Sidebar Header:</strong>
+          <br>• Avatar centrado (50px con borde naranja)
+          <br>• Nombre del usuario debajo del avatar
+          <br>• Rol del usuario como badge debajo del nombre
+          <br>• En sidebar contraído: solo avatar visible
+          <br>• Sin dropdown, solo información estática
+        </div>
+        
+        <div class="alert alert-primary">
+          <strong>Instrucciones de Prueba:</strong>
+          <br>1. Verifica que el header principal tenga logo y logout
+          <br>2. Haz click en el logout del header principal
+          <br>3. Verifica que el sidebar tenga avatar, nombre y rol
+          <br>4. Contrae el sidebar y verifica que solo se vea el avatar
+          <br>5. Expande el sidebar y verifica que se vea toda la información
+          <br>6. Prueba el logout desde el footer del sidebar
+        </div>
+        
+        <div class="alert alert-secondary">
+          <strong>Diferencias con la Versión Anterior:</strong>
+          <br>• Header principal: Antes tenía logo + search + avatar + dropdown
+          <br>• Header principal: Ahora solo logo + logout
+          <br>• Sidebar header: Antes tenía avatar con dropdown
+          <br>• Sidebar header: Ahora tiene avatar + nombre + rol (sin dropdown)
+          <br>• Diseño más simple y enfocado
+        </div>
+        
+        <div class="alert alert-dark">
+          <strong>Estructura Final:</strong>
+          <br>• Main Header: Logo + Logout (simple y funcional)
+          <br>• Sidebar Header: Avatar + Nombre + Rol (información estática)
+          <br>• Sidebar Footer: Logout adicional (opcional)
+          <br>• Ambos headers son simples y sin dropdowns
+        </div>
+        
+        <div class="alert alert-info">
+          <strong>Configuración del Header Principal:</strong>
+          <br>• Logo: 42px de altura con texto "GenoStock"
+          <br>• Logout: Botón rojo con icono y texto
+          <br>• Layout: Flexbox con space-between
+          <br>• Responsive: Se ajusta al sidebar
+        </div>
+        
+        <div class="alert alert-warning">
+          <strong>Configuración del Sidebar Header:</strong>
+          <br>• Avatar: 50px con borde naranja (40px cuando contraído)
+          <br>• Nombre: Fuente blanca, peso 600
+          <br>• Rol: Badge naranja con fondo semi-transparente
+          <br>• Layout: Flexbox column con gap 0.8rem
+          <br>• Responsive: Información se oculta cuando contraído
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 
