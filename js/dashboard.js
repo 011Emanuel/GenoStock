@@ -8,8 +8,8 @@ function initDashboard() {
     // Check authentication first
     checkAuth();
     
-    // Sidebar navigation functionality
-    const navLinks = document.querySelectorAll('.nav-link[data-section]');
+    // Sidebar navigation functionality - Fixed selectors
+    const navLinks = document.querySelectorAll('.sidebar-link[data-section]');
     const contentSections = document.querySelectorAll('.content-section');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
@@ -44,7 +44,7 @@ function initDashboard() {
     // Mobile sidebar toggle
     if (sidebarToggle && sidebar) {
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
+            sidebar.classList.toggle('collapsed');
         });
     }
 
@@ -53,7 +53,7 @@ function initDashboard() {
         document.addEventListener('click', function(e) {
             if (window.innerWidth <= 768) {
                 if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-                    sidebar.classList.remove('active');
+                    sidebar.classList.remove('collapsed');
                 }
             }
         });
@@ -63,7 +63,7 @@ function initDashboard() {
     if (sidebar) {
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
-                sidebar.classList.remove('active');
+                sidebar.classList.remove('collapsed');
             }
         });
     }

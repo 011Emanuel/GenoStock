@@ -1,0 +1,1072 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rancher Dashboard - Genostock</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Header Buttons */
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .btn-marketplace {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-marketplace:hover {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.5);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #e94560 0%, #f39c12 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 80px;
+            height: calc(100vh - 80px);
+            width: 250px;
+            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
+            color: white;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-nav {
+            padding: 1rem;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #e94560 0%, #f39c12 100%);
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
+        }
+
+        .nav-item i {
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            overflow-x: hidden;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 2.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tables */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                margin-top: 80px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .btn-marketplace, .btn-logout {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-cow me-2"></i>
+            GenoStock - Rancher Dashboard
+        </div>
+        <div class="header-buttons">
+            <span id="user-name" style="margin-right: 2rem; font-size: 1.1rem; font-weight: 500;">Usuario</span>
+            <a href="marketplace.html" class="btn btn-marketplace">
+                <i class="fas fa-shopping-cart"></i> Marketplace
+            </a>
+            <button class="btn btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-nav">
+            <div class="nav-item active" data-section="overview">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Overview</span>
+            </div>
+            <div class="nav-item" data-section="profile">
+                <i class="fas fa-user"></i>
+                <span>Mi Perfil</span>
+            </div>
+            <div class="nav-item" data-section="health">
+                <i class="fas fa-heartbeat"></i>
+                <span>Health Control</span>
+            </div>
+            <div class="nav-item" data-section="production">
+                <i class="fas fa-chart-line"></i>
+                <span>Production</span>
+            </div>
+            <div class="nav-item" data-section="inventory">
+                <i class="fas fa-cow"></i>
+                <span>Inventory</span>
+            </div>
+            <div class="nav-item" data-section="sales">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Sales</span>
+            </div>
+            <div class="nav-item" data-section="planning">
+                <i class="fas fa-calendar"></i>
+                <span>Planning</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Overview Section -->
+        <div id="overview" class="content-section active">
+            <h2 class="mb-4">Dashboard Overview</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Total Livestock</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Health Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$45K</div>
+                    <div class="stat-label">Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">Transactions</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Recent Activity
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>New Birth</strong>
+                                        <br><small>2 new calves born</small>
+                                    </div>
+                                    <span class="badge bg-success">2 hours ago</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Health Check</strong>
+                                        <br><small>15 animals checked</small>
+                                    </div>
+                                    <span class="badge bg-info">1 day ago</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Sale Completed</strong>
+                                        <br><small>Angus Bull sold</small>
+                                    </div>
+                                    <span class="badge bg-primary">3 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Alerts
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                3 animals need health check
+                            </div>
+                            <div class="alert alert-info">
+                                <i class="fas fa-calendar me-2"></i>
+                                5 inseminations scheduled this week
+                            </div>
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                All vaccinations up to date
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile" class="content-section">
+            <h2 class="mb-4">Mi Perfil</h2>
+            <p class="text-muted mb-4">✨ Gestiona tu cuenta y desbloquea funciones premium</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Total Livestock</div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Health Rate</div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 98%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$45K</div>
+                    <div class="stat-label">Revenue</div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 72%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">Rating</div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar" style="width: 96%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user me-2"></i>
+                            Información Personal
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" value="Juan Pérez">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" value="juan.perez@genostock.com">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" value="+1 234 567 8900">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Ubicación</label>
+                                        <input type="text" class="form-control" value="Texas, USA">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Seguridad
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fas fa-key me-2"></i>Cambiar Contraseña
+                            </button>
+                            <button class="btn btn-outline-warning w-100 mb-2">
+                                <i class="fas fa-bell me-2"></i>Notificaciones
+                            </button>
+                            <button class="btn btn-outline-info w-100">
+                                <i class="fas fa-download me-2"></i>Exportar Datos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Control Section -->
+        <div id="health" class="content-section">
+            <h2 class="mb-4">Health Control</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">120</div>
+                    <div class="stat-label">Healthy Animals</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Warning</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Critical</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Overall Health</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-heartbeat me-2"></i>
+                    Health Status Details
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Animal ID</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Last Check</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#001</td>
+                                    <td>Angus Bull</td>
+                                    <td><span class="badge bg-success">Healthy</span></td>
+                                    <td>2 days ago</td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>#002</td>
+                                    <td>Holstein Cow</td>
+                                    <td><span class="badge bg-warning">Warning</span></td>
+                                    <td>1 day ago</td>
+                                    <td><button class="btn btn-sm btn-outline-warning">Check</button></td>
+                                </tr>
+                                <tr>
+                                    <td>#003</td>
+                                    <td>Brahman Heifer</td>
+                                    <td><span class="badge bg-danger">Critical</span></td>
+                                    <td>Today</td>
+                                    <td><button class="btn btn-sm btn-outline-danger">Urgent</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Production Section -->
+        <div id="production" class="content-section">
+            <h2 class="mb-4">Production Analysis</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">Breeding Success</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label">Survival Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">New Births</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Production Metrics
+                        </div>
+                        <div class="card-body">
+                            <canvas id="productionChart" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-clock me-2"></i>
+                            Recent Production Events
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-baby text-success me-3"></i>
+                                        <div>
+                                            <strong>New Birth</strong>
+                                            <br><small>2 new calves born</small>
+                                            <br><small class="text-muted">2 hours ago</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-syringe text-primary me-3"></i>
+                                        <div>
+                                            <strong>Insemination</strong>
+                                            <br><small>5 cows inseminated</small>
+                                            <br><small class="text-muted">1 day ago</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-weight text-warning me-3"></i>
+                                        <div>
+                                            <strong>Weaning</strong>
+                                            <br><small>8 calves weaned</small>
+                                            <br><small class="text-muted">3 days ago</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Section -->
+        <div id="inventory" class="content-section">
+            <h2 class="mb-4">Inventory Management</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">Breeding Cows</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Bulls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">55</div>
+                    <div class="stat-label">Calves</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Total Animals</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list me-2"></i>
+                    Recent Inventory Changes
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-01-15</td>
+                                    <td><span class="badge bg-success">Birth</span></td>
+                                    <td>New calf born</td>
+                                    <td>+1</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-14</td>
+                                    <td><span class="badge bg-info">Purchase</span></td>
+                                    <td>Bought new breeding cow</td>
+                                    <td>+1</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-13</td>
+                                    <td><span class="badge bg-warning">Sale</span></td>
+                                    <td>Sold mature bull</td>
+                                    <td>-1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Section -->
+        <div id="sales" class="content-section">
+            <h2 class="mb-4">Sales & Revenue</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">$45K</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">Transactions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12%</div>
+                    <div class="stat-label">Growth Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-history me-2"></i>
+                    Recent Sales
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Livestock</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-01-15</td>
+                                    <td>Angus Bull</td>
+                                    <td>Sale</td>
+                                    <td>$2,500</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-14</td>
+                                    <td>Holstein Cow</td>
+                                    <td>Sale</td>
+                                    <td>$1,800</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-13</td>
+                                    <td>Brahman Heifer</td>
+                                    <td>Sale</td>
+                                    <td>$1,200</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Planning Section -->
+        <div id="planning" class="content-section">
+            <h2 class="mb-4">Planning & Scheduling</h2>
+            <p class="text-muted mb-4">Schedule inseminations, births and weanings</p>
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-calendar me-2"></i>
+                            Monthly Calendar
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-container">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <button class="btn btn-outline-primary" id="prevMonth">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <h4 id="monthYear">January 2024</h4>
+                                    <button class="btn btn-outline-primary" id="nextMonth">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-grid" id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;">
+                                    <!-- Calendar will be generated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Add Event
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-list me-2"></i>
+                            Upcoming Events
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Insemination</strong>
+                                            <br><small>5 cows scheduled</small>
+                                        </div>
+                                        <span class="badge bg-primary">Tomorrow</span>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Health Check</strong>
+                                            <br><small>15 animals</small>
+                                        </div>
+                                        <span class="badge bg-info">3 days</span>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Weaning</strong>
+                                            <br><small>8 calves</small>
+                                        </div>
+                                        <span class="badge bg-warning">1 week</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Simple dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update user name
+            const userName = localStorage.getItem('name') || username;
+            document.getElementById('user-name').textContent = userName;
+
+            // Navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active from all
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+
+                    // Add active to clicked
+                    this.classList.add('active');
+
+                    // Show section
+                    const targetSection = this.getAttribute('data-section');
+                    const section = document.getElementById(targetSection);
+                    if (section) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+
+            // Production Chart
+            const ctx = document.getElementById('productionChart');
+            if (ctx && typeof Chart !== 'undefined') {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Breeding Success Rate',
+                            data: [80, 85, 90, 88, 92, 95],
+                            borderColor: '#2c5530',
+                            backgroundColor: 'rgba(44, 85, 48, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Simple Calendar
+            const calendarGrid = document.getElementById('calendarGrid');
+            const monthYear = document.getElementById('monthYear');
+            const prevMonthBtn = document.getElementById('prevMonth');
+            const nextMonthBtn = document.getElementById('nextMonth');
+
+            if (calendarGrid && monthYear) {
+                let currentMonth = new Date().getMonth();
+                let currentYear = new Date().getFullYear();
+
+                function generateCalendar() {
+                    const firstDay = new Date(currentYear, currentMonth, 1);
+                    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                    const daysInMonth = lastDay.getDate();
+                    const startDay = firstDay.getDay();
+
+                    monthYear.textContent = new Date(currentYear, currentMonth).toLocaleString('default', { 
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    calendarGrid.innerHTML = '';
+                    
+                    // Day headers
+                    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                    days.forEach(day => {
+                        const dayHeader = document.createElement('div');
+                        dayHeader.className = 'text-center fw-bold p-2 border-bottom';
+                        dayHeader.style.backgroundColor = '#f8f9fa';
+                        dayHeader.textContent = day;
+                        calendarGrid.appendChild(dayHeader);
+                    });
+
+                    // Empty cells
+                    for (let i = 0; i < startDay; i++) {
+                        const emptyCell = document.createElement('div');
+                        emptyCell.className = 'p-2 border';
+                        emptyCell.style.backgroundColor = '#f8f9fa';
+                        calendarGrid.appendChild(emptyCell);
+                    }
+
+                    // Day cells
+                    for (let i = 1; i <= daysInMonth; i++) {
+                        const dayCell = document.createElement('div');
+                        dayCell.className = 'p-2 text-center border position-relative';
+                        dayCell.style.cursor = 'pointer';
+                        dayCell.style.minHeight = '40px';
+                        dayCell.style.display = 'flex';
+                        dayCell.style.alignItems = 'center';
+                        dayCell.style.justifyContent = 'center';
+                        dayCell.textContent = i;
+
+                        // Add event markers
+                        if (i % 7 === 0) {
+                            const marker = document.createElement('div');
+                            marker.className = 'position-absolute';
+                            marker.style.width = '6px';
+                            marker.style.height = '6px';
+                            marker.style.backgroundColor = '#4CAF50';
+                            marker.style.borderRadius = '50%';
+                            marker.style.bottom = '3px';
+                            marker.style.right = '3px';
+                            dayCell.appendChild(marker);
+                        }
+                        if (i % 10 === 0) {
+                            const marker = document.createElement('div');
+                            marker.className = 'position-absolute';
+                            marker.style.width = '6px';
+                            marker.style.height = '6px';
+                            marker.style.backgroundColor = '#FFC107';
+                            marker.style.borderRadius = '50%';
+                            marker.style.bottom = '3px';
+                            marker.style.left = '3px';
+                            dayCell.appendChild(marker);
+                        }
+                        if (i % 14 === 0) {
+                            const marker = document.createElement('div');
+                            marker.className = 'position-absolute';
+                            marker.style.width = '6px';
+                            marker.style.height = '6px';
+                            marker.style.backgroundColor = '#2196F3';
+                            marker.style.borderRadius = '50%';
+                            marker.style.top = '3px';
+                            marker.style.right = '3px';
+                            dayCell.appendChild(marker);
+                        }
+
+                        // Hover effect
+                        dayCell.addEventListener('mouseenter', () => {
+                            dayCell.style.backgroundColor = '#e3f2fd';
+                        });
+                        dayCell.addEventListener('mouseleave', () => {
+                            dayCell.style.backgroundColor = '';
+                        });
+
+                        calendarGrid.appendChild(dayCell);
+                    }
+                }
+
+                if (prevMonthBtn) {
+                    prevMonthBtn.addEventListener('click', () => {
+                        currentMonth--;
+                        if (currentMonth < 0) {
+                            currentMonth = 11;
+                            currentYear--;
+                        }
+                        generateCalendar();
+                    });
+                }
+
+                if (nextMonthBtn) {
+                    nextMonthBtn.addEventListener('click', () => {
+                        currentMonth++;
+                        if (currentMonth > 11) {
+                            currentMonth = 0;
+                            currentYear++;
+                        }
+                        generateCalendar();
+                    });
+                }
+
+                generateCalendar();
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('name');
+            localStorage.removeItem('role');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html> 
