@@ -72,8 +72,8 @@ class GenoFooter extends HTMLElement {
           list-style: none;
         }
         .footer-links a {
-          color: var(--accent);
-          text-decoration: none;
+          color: #ff8c00 !important;
+          text-decoration: none !important;
           font-size: 1.12rem;
           font-weight: 500;
           letter-spacing: 0.01em;
@@ -83,8 +83,8 @@ class GenoFooter extends HTMLElement {
           display: inline-block;
         }
         .footer-links a:hover {
-          color: #fff;
-          border-bottom: 2px solid var(--accent);
+          color: #ffa500 !important;
+          border-bottom: 2px solid #ff8c00 !important;
         }
         .footer-contact p {
           margin: 0 0 0.5rem 0;
