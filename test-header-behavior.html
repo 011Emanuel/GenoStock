@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Header Behavior - GenoStock</title>
+  <style>
+    :root {
+      --sidebar-width: 280px;
+      --sidebar-collapsed-width: 70px;
+      --transition: 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .test-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background: #232e23;
+      color: white;
+      transition: width var(--transition);
+      padding: 1rem;
+    }
+    
+    .sidebar.collapsed {
+      width: var(--sidebar-collapsed-width);
+    }
+    
+    .main-content {
+      flex: 1;
+      margin-left: 0;
+      transition: margin-left var(--transition);
+      background: #f5f7fa;
+    }
+    
+    .main-content.sidebar-collapsed {
+      margin-left: calc(var(--sidebar-width) - var(--sidebar-collapsed-width));
+    }
+    
+    .header {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      transition: all var(--transition);
+    }
+    
+    .header-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 1.5rem;
+      width: 100%;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2c5530;
+    }
+    
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+    
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: #ffa726;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .username {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .user-role {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    
+    .toggle-btn {
+      background: #2c5530;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    
+    .content {
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <div class="sidebar" id="sidebar">
+      <button class="toggle-btn" onclick="toggleSidebar()">Toggle Sidebar</button>
+      <p>Sidebar Content</p>
+    </div>
+    
+    <div class="main-content" id="mainContent">
+      <div class="header">
+        <div class="header-content">
+          <div class="logo">GenoStock</div>
+          <div class="user-section">
+            <div class="user-info">
+              <span class="username">Carlos Ruiz</span>
+              <span class="user-role">Trader</span>
+            </div>
+            <div class="avatar">CR</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content">
+        <h2>Test Header Behavior</h2>
+        <p>Este es un test para verificar que el header se ajuste correctamente al sidebar.</p>
+        
+        <div style="background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+          <h3>Instrucciones:</h3>
+          <ol>
+            <li>Haz click en "Toggle Sidebar" para contraer/expandir el sidebar</li>
+            <li>Observa cómo el header se ajusta automáticamente</li>
+            <li>Verifica que la transición sea suave</li>
+            <li>Verifica que no haya desbordamiento</li>
+          </ol>
+        </div>
+        
+        <div style="background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+          <h3>Comportamiento Esperado:</h3>
+          <ul>
+            <li>✅ Header se expande cuando sidebar se contrae</li>
+            <li>✅ Header se contrae cuando sidebar se expande</li>
+            <li>✅ Transición suave entre estados</li>
+            <li>✅ No hay desbordamiento de contenido</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('sidebar-collapsed');
+    }
+  </script>
+</body>
+</html> 

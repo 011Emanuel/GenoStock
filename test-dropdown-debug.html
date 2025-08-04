@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Dropdown Debug - GenoStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cargar componentes -->
+  <script src="components/header-auth.js"></script>
+  <script src="dashboard/trader/dashboard-trader.js"></script>
+</head>
+<body>
+  <!-- Simular usuario logueado -->
+  <script>
+    localStorage.setItem('username', 'trader1');
+    localStorage.setItem('name', 'Carlos Ruiz');
+    localStorage.setItem('role', 'trader');
+  </script>
+  
+  <!-- Crear dashboard de prueba -->
+  <dashboard-trader>
+    <trader-overview class="active"></trader-overview>
+    <trader-profile></trader-profile>
+    <trader-sales></trader-sales>
+    <trader-livestock></trader-livestock>
+    <trader-settings></trader-settings>
+  </dashboard-trader>
+  
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h2>Test Dropdown Debug</h2>
+        <p>Verificando que el dropdown del header funcione correctamente con debugging:</p>
+        
+        <div class="alert alert-success">
+          <strong>Mejoras Aplicadas:</strong>
+          <br>• Agregado console.log para debugging
+          <br>• Mejorado el event listener con addEventListener
+          <br>• Aumentado timeout a 200ms
+          <br>• Agregado verificación de elementos
+          <br>• Mejorado el manejo de eventos
+        </div>
+        
+        <div class="alert alert-info">
+          <strong>Debugging Disponible:</strong>
+          <br>• Console.log muestra elementos encontrados
+          <br>• Console.log muestra clicks en dropdown
+          <br>• Console.log muestra cambios de visibilidad
+          <br>• Console.log muestra cierre por click fuera
+          <br>• Console.log muestra cierre por Escape
+        </div>
+        
+        <div class="alert alert-warning">
+          <strong>Instrucciones de Prueba:</strong>
+          <br>1. Abre la consola del navegador (F12)
+          <br>2. Haz click en el avatar/nombre en el header
+          <br>3. Verifica los mensajes en la consola
+          <br>4. Verifica que el dropdown se abra/cierre
+          <br>5. Prueba click fuera y tecla Escape
+          <br>6. Verifica que el logout funcione
+        </div>
+        
+        <div class="alert alert-primary">
+          <strong>Mensajes Esperados en Consola:</strong>
+          <br>• "Dropdown elements: {...}" - Elementos encontrados
+          <br>• "Dropdown event listeners attached successfully" - Event listeners aplicados
+          <br>• "Toggle dropdown clicked" - Click en avatar
+          <br>• "Dropdown visibility: true/false" - Cambio de visibilidad
+          <br>• "Dropdown closed by outside click" - Cierre por click fuera
+          <br>• "Dropdown closed by Escape key" - Cierre por Escape
+          <br>• "Logout clicked" - Click en logout
+        </div>
+        
+        <div class="alert alert-secondary">
+          <strong>Si no hay mensajes en consola:</strong>
+          <br>• El header no se está cargando correctamente
+          <br>• Los elementos del dropdown no existen
+          <br>• Hay un problema con el Shadow DOM
+          <br>• Necesitamos revisar la carga del componente
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 
