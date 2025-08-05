@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        /* Modern Dashboard Layout */
+        /* Modern Dashboard Layout - Restored & Enhanced */
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
@@ -28,28 +28,25 @@
             z-index: 1000;
         }
 
-        /* Sidebar Styles - Modern Design */
+        /* Enhanced Sidebar Styles */
         .sidebar {
             position: fixed;
             left: 0;
             top: 84px;
             height: calc(100vh - 84px);
-            width: 240px;
-            background: linear-gradient(180deg, #232e23 80%, #1b3a1d 100%);
+            width: 260px;
+            background: linear-gradient(180deg, #232e23 0%, #1b3a1d 100%);
             color: #e0e0e0;
             z-index: 1000;
-            transition: width 0.28s cubic-bezier(.4,2,.6,1);
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
             display: flex;
             flex-direction: column;
-            align-items: stretch;
-            min-width: 0;
-            position: relative;
-            box-shadow: 2px 0 12px rgba(44,85,48,0.07);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
             overflow-y: auto;
         }
 
         .sidebar.collapsed {
-            width: 64px;
+            width: 70px;
         }
 
         .sidebar.collapsed .sidebar-label {
@@ -60,144 +57,94 @@
             background: none;
             border: none;
             color: #e0e0e0;
-            padding: 1.1rem 0.5rem 1.1rem 0.5rem;
+            padding: 1rem;
             cursor: pointer;
             outline: none;
             align-self: flex-end;
-            font-size: 1.4rem;
-            transition: color 0.2s;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
         }
 
         .sidebar-toggle:hover {
             color: #ffa726;
         }
 
-        /* Navigation Menu */
+        /* Enhanced Navigation Menu */
         .sidebar-nav {
-            flex: 1 1 auto;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
-            margin-top: 1.2rem;
-            padding: 0 0.75rem;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0 1rem;
         }
 
         .sidebar-link {
             display: flex;
             align-items: center;
-            gap: 1.1rem;
-            padding: 0.95rem 1.3rem;
+            gap: 1rem;
+            padding: 1rem 1.2rem;
             color: #e0e0e0;
             text-decoration: none;
-            font-size: 1.13rem;
+            font-size: 1rem;
             border-radius: 12px;
-            transition: background 0.28s cubic-bezier(.4,2,.6,1), color 0.28s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
             cursor: pointer;
             white-space: nowrap;
             font-weight: 500;
-            letter-spacing: 0.01em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #ffa726, #ff9800);
+            transition: width 0.3s ease;
+            z-index: -1;
         }
 
         .sidebar-link.active, .sidebar-link:hover {
-            background: #2c5530;
+            background: rgba(255, 167, 38, 0.1);
             color: #ffa726;
-            box-shadow: 0 2px 12px rgba(255,167,38,0.08);
+            transform: translateX(5px);
+        }
+
+        .sidebar-link.active::before, .sidebar-link:hover::before {
+            width: 100%;
         }
 
         .sidebar-icon {
-            width: 26px;
-            height: 26px;
-            display: inline-block;
-        }
-
-        .sidebar-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Dropdown Menu */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            margin: 0.4rem 0.75rem;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown-menu.show {
-            display: block;
-            animation: fadeInDown 0.3s ease;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dropdown-item {
-            padding: 0.8rem 1.2rem;
-            color: #333;
-            text-decoration: none;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 0.9rem;
+            justify-content: center;
         }
 
-        .dropdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-item:hover {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            color: #2c5530;
-            transform: translateX(3px);
-        }
-
-        .dropdown-item i {
-            margin-right: 10px;
-            width: 18px;
-            text-align: center;
-            color: #6c757d;
-        }
-
-        .dropdown-item:hover i {
-            color: #2c5530;
-        }
-
-        /* Main Content */
+        /* Enhanced Main Content */
         .main-content {
-            margin-left: 240px;
+            margin-left: 260px;
             margin-top: 84px;
             min-height: calc(100vh - 84px);
             transition: all 0.3s ease;
         }
 
         .content-wrapper {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .section-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
         .section-header h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             background: linear-gradient(135deg, #2c5530 0%, #4a7c59 50%, #6b9c7a 100%);
             -webkit-background-clip: text;
@@ -208,11 +155,11 @@
 
         .section-header p {
             color: #6c757d;
-            font-size: 1rem;
+            font-size: 1.1rem;
             margin: 0;
         }
 
-        /* Content Sections */
+        /* Enhanced Content Sections */
         .content-section {
             display: none;
             animation: fadeInUp 0.6s ease-out;
@@ -222,22 +169,12 @@
             display: block !important;
         }
 
-        /* Ensure sections are visible when active */
-        #profile.active,
-        #health.active,
-        #production.active,
-        #planning.active,
-        #inventory.active,
-        #sales.active {
-            display: block !important;
-        }
-
-        /* Stats Cards - More Compact */
+        /* Enhanced Stats Cards */
         .stat-card-hover {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(44, 85, 48, 0.1);
             position: relative;
@@ -251,15 +188,15 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 4px;
             background: linear-gradient(135deg, #2c5530, #4a7c59);
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
 
         .stat-card-hover:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .stat-card-hover:hover::before {
@@ -267,21 +204,21 @@
         }
 
         .stat-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
             background: linear-gradient(135deg, #2c5530, #4a7c59);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(44, 85, 48, 0.3);
+            font-size: 1.8rem;
+            box-shadow: 0 6px 20px rgba(44, 85, 48, 0.3);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: #2c5530;
             margin: 0;
@@ -290,7 +227,7 @@
 
         .stat-label {
             color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 500;
             margin: 0.5rem 0;
             text-transform: uppercase;
@@ -298,46 +235,46 @@
         }
 
         .stat-progress {
-            height: 4px;
+            height: 6px;
             background: #e9ecef;
-            border-radius: 2px;
+            border-radius: 3px;
             overflow: hidden;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
         }
 
         .progress-bar {
             height: 100%;
             background: linear-gradient(135deg, #2c5530, #4a7c59);
-            border-radius: 2px;
+            border-radius: 3px;
             transition: width 0.3s ease;
         }
 
-        /* Health Cards - More Compact */
+        /* Enhanced Health Cards */
         .health-card {
             background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
-            border-radius: 16px;
-            margin-bottom: 1rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
             transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.2);
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.2);
             overflow: hidden;
         }
 
         .health-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.3);
         }
 
         .health-card .card-header {
             background: rgba(0, 0, 0, 0.2);
             border-bottom: none;
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .health-card .card-body {
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
         }
 
         .health-list {
@@ -348,9 +285,9 @@
 
         .health-item {
             background: rgba(255, 255, 255, 0.1);
-            margin: 0.5rem 0;
-            padding: 1rem;
-            border-radius: 10px;
+            margin: 0.8rem 0;
+            padding: 1.2rem;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -359,14 +296,14 @@
 
         .health-item:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateX(3px);
+            transform: translateX(5px);
         }
 
         .health-status {
             display: inline-block;
-            padding: 0.4rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -385,34 +322,34 @@
             color: #FF4444;
         }
 
-        /* Production Cards - More Compact */
+        /* Enhanced Production Cards */
         .production-card {
             background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
             color: white;
-            border-radius: 16px;
-            margin-bottom: 1rem;
-            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.2);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(33, 150, 243, 0.2);
             transition: all 0.3s ease;
         }
 
         .production-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(33, 150, 243, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.3);
         }
 
         .production-card .card-header {
             background: rgba(0, 0, 0, 0.2);
             border-bottom: none;
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .production-card .card-body {
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
         }
 
-        /* Production Events */
+        /* Enhanced Production Events */
         .production-events {
             display: flex;
             flex-direction: column;
@@ -423,105 +360,106 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 1rem;
+            padding: 1.2rem;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 12px;
             transition: all 0.3s ease;
         }
 
         .event-item:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateX(3px);
+            transform: translateX(5px);
         }
 
         .event-item i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #FFC107;
         }
 
         .event-item h6 {
             margin: 0;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .event-item p {
-            margin: 0.2rem 0;
-            font-size: 0.9rem;
+            margin: 0.3rem 0;
+            font-size: 1rem;
             opacity: 0.9;
         }
 
         .event-item small {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             opacity: 0.7;
         }
 
-        /* Stat Cards for Production */
+        /* Enhanced Stat Cards for Production */
         .stat-card {
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 1rem;
         }
 
         .stat-card h3 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: #FFC107;
         }
 
         .stat-card p {
             margin: 0.5rem 0 0 0;
-            font-size: 0.9rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
 
-        /* Planning Cards - More Compact */
+        /* Enhanced Planning Cards */
         .planning-card {
             background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
             color: white;
-            border-radius: 16px;
-            margin-bottom: 1rem;
-            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.2);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(156, 39, 176, 0.2);
             transition: all 0.3s ease;
         }
 
         .planning-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(156, 39, 176, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(156, 39, 176, 0.3);
         }
 
         .planning-card .card-header {
             background: rgba(0, 0, 0, 0.2);
             border-bottom: none;
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .planning-card .card-body {
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
         }
 
+        /* Enhanced Calendar */
         .calendar-container {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1rem;
+            border-radius: 16px;
+            padding: 1.5rem;
         }
 
         .calendar-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
 
         .day-cell {
@@ -530,17 +468,17 @@
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .day-cell:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .empty-cell {
@@ -548,37 +486,37 @@
         }
 
         .event-marker {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             display: inline-block;
             position: absolute;
-            bottom: 3px;
-            right: 3px;
+            bottom: 4px;
+            right: 4px;
         }
 
         .event-insemination { background: #4CAF50; }
         .event-birth { background: #FFC107; }
         .event-weaning { background: #2196F3; }
 
-        /* Buttons */
+        /* Enhanced Buttons */
         .btn-modern {
-            padding: 0.6rem 1.2rem;
-            border-radius: 10px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .btn-modern:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        /* Dropdown Menu */
+        /* Enhanced Dropdown Menu */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -586,10 +524,10 @@
             left: 0;
             right: 0;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             z-index: 1000;
-            margin: 0.4rem 0.75rem;
+            margin: 0.5rem 1rem;
             overflow: hidden;
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
@@ -602,7 +540,7 @@
         @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(-8px);
+                transform: translateY(-10px);
             }
             to {
                 opacity: 1;
@@ -611,14 +549,14 @@
         }
 
         .dropdown-item {
-            padding: 0.8rem 1.2rem;
+            padding: 1rem 1.5rem;
             color: #333;
             text-decoration: none;
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .dropdown-item:last-child {
@@ -628,12 +566,12 @@
         .dropdown-item:hover {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             color: #2c5530;
-            transform: translateX(3px);
+            transform: translateX(5px);
         }
 
         .dropdown-item i {
-            margin-right: 10px;
-            width: 18px;
+            margin-right: 12px;
+            width: 20px;
             text-align: center;
             color: #6c757d;
         }
@@ -642,11 +580,11 @@
             color: #2c5530;
         }
 
-        /* Animations */
+        /* Enhanced Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -663,12 +601,12 @@
             }
         }
 
-        /* Responsive */
+        /* Enhanced Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
                 top: 84px;
-                width: 240px;
+                width: 260px;
             }
             
             .sidebar.show {
@@ -685,7 +623,7 @@
             }
             
             .section-header h2 {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
         }
     </style>
@@ -694,52 +632,40 @@
     <!-- Header -->
     <div id="header-auth"></div>
 
-    <!-- Sidebar -->
+    <!-- Enhanced Sidebar -->
     <nav class="sidebar" id="sidebar">
         <button class="sidebar-toggle" id="sidebarToggle" title="Expand/collapse sidebar">
-            <svg class="sidebar-icon" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1" fill="currentColor"/></svg>
+            <i class="fas fa-bars"></i>
         </button>
         <div class="sidebar-nav">
             <a class="sidebar-link" data-section="profile">
-                <span class="sidebar-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M4 20c0-4 8-4 8-4s8 0 8 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-                </span>
+                <i class="fas fa-user sidebar-icon"></i>
                 <span class="sidebar-label">Mi Perfil</span>
             </a>
             <a class="sidebar-link active" data-section="health">
-                <span class="sidebar-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-                </span>
+                <i class="fas fa-heartbeat sidebar-icon"></i>
                 <span class="sidebar-label">Health Control</span>
             </a>
             <a class="sidebar-link" data-section="production">
-                <span class="sidebar-icon">
-                    <svg viewBox="0 0 24 24"><path d="M3 3v18h18" stroke="currentColor" stroke-width="2" fill="none"/><path d="M18 17V9M12 17V5M6 17v-3" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-                </span>
+                <i class="fas fa-chart-line sidebar-icon"></i>
                 <span class="sidebar-label">Production Analysis</span>
             </a>
             <a class="sidebar-link" data-section="planning">
-                <span class="sidebar-icon">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/></svg>
-                </span>
+                <i class="fas fa-calendar-alt sidebar-icon"></i>
                 <span class="sidebar-label">Planning</span>
             </a>
             <a class="sidebar-link" data-section="inventory">
-                <span class="sidebar-icon">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="5" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="17" cy="12" r="2" fill="currentColor"/></svg>
-                </span>
+                <i class="fas fa-cow sidebar-icon"></i>
                 <span class="sidebar-label">Inventory</span>
             </a>
             <a class="sidebar-link" data-section="sales">
-                <span class="sidebar-icon">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="7" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M16 11V7a4 4 0 0 0-8 0v4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-                </span>
+                <i class="fas fa-dollar-sign sidebar-icon"></i>
                 <span class="sidebar-label">Sales</span>
             </a>
         </div>
     </nav>
 
-    <!-- Main Content -->
+    <!-- Enhanced Main Content -->
     <main class="main-content">
         <div class="content-wrapper">
             <!-- Profile Section -->
@@ -749,8 +675,8 @@
                     <p>✨ Gestiona tu cuenta y desbloquea funciones premium</p>
                 </div>
                 
-                <div class="row g-3">
-                    <!-- Profile Stats Cards -->
+                <div class="row g-4">
+                    <!-- Enhanced Profile Stats Cards -->
                     <div class="col-lg-3 col-md-6">
                         <div class="stat-card-hover">
                             <div class="stat-icon">
@@ -813,14 +739,14 @@
                 </div>
             </section>
 
-            <!-- Health Control Section -->
+            <!-- Enhanced Health Control Section -->
             <section id="health" class="content-section active">
                 <div class="section-header">
                     <h2>Health Control</h2>
                     <p>Monitor and manage your livestock health</p>
                 </div>
                 
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-md-12">
                         <div class="health-card">
                             <div class="card-header">
@@ -850,7 +776,7 @@
                                         <i class="fas fa-times-circle text-danger"></i>
                                     </div>
                                 </div>
-                                <button class="btn btn-light btn-modern mt-3" data-bs-toggle="modal" data-bs-target="#healthModal">
+                                <button class="btn btn-light btn-modern mt-4" data-bs-toggle="modal" data-bs-target="#healthModal">
                                     <i class="fas fa-plus me-2"></i>Add Health Record
                                 </button>
                             </div>
@@ -859,14 +785,14 @@
                 </div>
             </section>
 
-            <!-- Production Analysis Section -->
+            <!-- Enhanced Production Analysis Section -->
             <section id="production" class="content-section">
                 <div class="section-header">
                     <h2>Production Analysis</h2>
                     <p>Track your livestock production metrics</p>
                 </div>
                 
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-md-6">
                         <div class="production-card">
                             <div class="card-header">
@@ -887,7 +813,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-3">
+                                <div class="mt-4">
                                     <canvas id="productionChart" height="200"></canvas>
                                 </div>
                             </div>
@@ -916,6 +842,14 @@
                                             <small>1 day ago</small>
                                         </div>
                                     </div>
+                                    <div class="event-item">
+                                        <i class="fas fa-cut"></i>
+                                        <div>
+                                            <h6>Weaning</h6>
+                                            <p>3 calves weaned</p>
+                                            <small>3 days ago</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -923,14 +857,14 @@
                 </div>
             </section>
 
-            <!-- Planning Section -->
+            <!-- Enhanced Planning Section -->
             <section id="planning" class="content-section">
                 <div class="section-header">
                     <h2>Planning</h2>
                     <p>Schedule inseminations, births and weanings</p>
                 </div>
                 
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-md-12">
                         <div class="planning-card">
                             <div class="card-header">
@@ -939,11 +873,11 @@
                             <div class="card-body">
                                 <div class="calendar-container">
                                     <div class="calendar-header">
-                                        <button class="btn btn-light btn-modern me-2" id="prevMonth">
+                                        <button class="btn btn-light btn-modern me-3" id="prevMonth">
                                             <i class="fas fa-chevron-left"></i>
                                         </button>
                                         <h4 id="monthYear"></h4>
-                                        <button class="btn btn-light btn-modern ms-2" id="nextMonth">
+                                        <button class="btn btn-light btn-modern ms-3" id="nextMonth">
                                             <i class="fas fa-chevron-right"></i>
                                         </button>
                                     </div>
@@ -951,7 +885,7 @@
                                         <!-- Calendar days will be populated by JavaScript -->
                                     </div>
                                 </div>
-                                <div class="mt-3">
+                                <div class="mt-4">
                                     <button class="btn btn-light btn-modern" data-bs-toggle="modal" data-bs-target="#planningModal">
                                         <i class="fas fa-plus me-2"></i>Add Event
                                     </button>
@@ -962,14 +896,14 @@
                 </div>
             </section>
 
-            <!-- Inventory Section -->
+            <!-- Enhanced Inventory Section -->
             <section id="inventory" class="content-section">
                 <div class="section-header">
                     <h2>Inventory</h2>
                     <p>Manage your livestock inventory</p>
                 </div>
                 
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-lg-3 col-md-6">
                         <div class="stat-card-hover">
                             <div class="stat-icon">
@@ -1028,7 +962,7 @@
                     </div>
                 </div>
                 
-                <div class="row g-3 mt-3">
+                <div class="row g-4 mt-4">
                     <div class="col-md-12">
                         <div class="dashboard-card">
                             <h5><i class="fas fa-list me-2"></i>Recent Inventory Changes</h5>
@@ -1069,14 +1003,14 @@
                 </div>
             </section>
 
-            <!-- Sales Section -->
+            <!-- Enhanced Sales Section -->
             <section id="sales" class="content-section">
                 <div class="section-header">
                     <h2>Sales</h2>
                     <p>Track your sales and revenue</p>
                 </div>
                 
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-lg-3 col-md-6">
                         <div class="stat-card-hover">
                             <div class="stat-icon">
@@ -1098,7 +1032,7 @@
                             </div>
                             <div class="stat-content">
                                 <h3 class="stat-number">23</h3>
-                                <p class="stat-label">Transactions</p>
+                                <p class="stat-label">Sales This Month</p>
                                 <div class="stat-progress">
                                     <div class="progress-bar" style="width: 85%"></div>
                                 </div>
@@ -1111,10 +1045,10 @@
                                 <i class="fas fa-trending-up"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-number">12%</h3>
+                                <h3 class="stat-number">+15%</h3>
                                 <p class="stat-label">Growth Rate</p>
                                 <div class="stat-progress">
-                                    <div class="progress-bar" style="width: 12%"></div>
+                                    <div class="progress-bar" style="width: 65%"></div>
                                 </div>
                             </div>
                         </div>
@@ -1122,58 +1056,14 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="stat-card-hover">
                             <div class="stat-icon">
-                                <i class="fas fa-calendar"></i>
+                                <i class="fas fa-users"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="stat-number">8</h3>
-                                <p class="stat-label">This Month</p>
+                                <h3 class="stat-number">12</h3>
+                                <p class="stat-label">Active Buyers</p>
                                 <div class="stat-progress">
-                                    <div class="progress-bar" style="width: 67%"></div>
+                                    <div class="progress-bar" style="width: 90%"></div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row g-3 mt-3">
-                    <div class="col-md-12">
-                        <div class="dashboard-card">
-                            <h5><i class="fas fa-history me-2"></i>Recent Sales</h5>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Livestock</th>
-                                            <th>Type</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>2024-01-15</td>
-                                            <td>Angus Bull</td>
-                                            <td>Sale</td>
-                                            <td>$2,500</td>
-                                            <td><span class="badge bg-success">Completed</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2024-01-14</td>
-                                            <td>Holstein Cow</td>
-                                            <td>Sale</td>
-                                            <td>$1,800</td>
-                                            <td><span class="badge bg-success">Completed</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2024-01-13</td>
-                                            <td>Brahman Heifer</td>
-                                            <td>Sale</td>
-                                            <td>$1,200</td>
-                                            <td><span class="badge bg-warning">Pending</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
@@ -1182,41 +1072,40 @@
         </div>
     </main>
 
+    <!-- Scripts -->
+    <script src="components/header.js"></script>
+    <script src="components/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="js/dashboard.js"></script>
-    <script src="components/header-auth.js"></script>
     <script>
-        // Simple and working dashboard functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            const username = localStorage.getItem('username');
-            if (!username) {
-                window.location.href = 'login.html';
-                return;
-            }
+            // Initialize dashboard
+            initDashboard();
             
-            // Load header component
-            const headerContainer = document.getElementById('header-auth');
-            if (headerContainer && window.createAuthHeader) {
-                headerContainer.appendChild(window.createAuthHeader());
-            }
-            
-            // Simple navigation
-            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            // Enhanced sidebar functionality
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const navLinks = document.querySelectorAll('.sidebar-link[data-section]');
             const contentSections = document.querySelectorAll('.content-section');
 
-            // Add click handlers to sidebar links
-            sidebarLinks.forEach(link => {
+            // Sidebar toggle
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // Navigation functionality
+            navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Remove active from all
-                    sidebarLinks.forEach(l => l.classList.remove('active'));
-                    contentSections.forEach(s => s.classList.remove('active'));
+                    // Remove active class from all links and sections
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
                     
-                    // Add active to clicked link
+                    // Add active class to clicked link
                     this.classList.add('active');
                     
                     // Show corresponding section
@@ -1224,39 +1113,28 @@
                     const section = document.getElementById(targetSection);
                     if (section) {
                         section.classList.add('active');
+                        
+                        // Add animation
+                        section.style.animation = 'none';
+                        setTimeout(() => {
+                            section.style.animation = 'fadeInUp 0.6s ease-out';
+                        }, 10);
                     }
                 });
             });
 
-            // Sidebar toggle
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
-            
-            if (sidebarToggle && sidebar) {
-                sidebarToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('collapsed');
-                });
-            }
-
-            // Initialize production chart
-            const ctx = document.getElementById('productionChart');
-            if (ctx && typeof Chart !== 'undefined') {
-                new Chart(ctx, {
+            // Production Chart
+            const productionCtx = document.getElementById('productionChart');
+            if (productionCtx) {
+                new Chart(productionCtx, {
                     type: 'line',
                     data: {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                         datasets: [{
-                            label: 'Breeding Success Rate',
-                            data: [80, 85, 90, 88, 92, 95],
-                            borderColor: '#4CAF50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }, {
-                            label: 'Survival Rate',
-                            data: [85, 90, 92, 95, 98, 100],
-                            borderColor: '#2196F3',
-                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            label: 'Production Rate',
+                            data: [65, 72, 78, 85, 82, 88],
+                            borderColor: 'rgba(255, 255, 255, 0.8)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
                             tension: 0.4,
                             fill: true
                         }]
@@ -1266,29 +1144,25 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                labels: {
-                                    color: 'white'
-                                }
+                                display: false
                             }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                max: 100,
-                                ticks: {
-                                    stepSize: 20,
-                                    color: 'white'
-                                },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'white'
                                 }
                             },
                             x: {
-                                ticks: {
-                                    color: 'white'
-                                },
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'white'
                                 }
                             }
                         }
@@ -1296,7 +1170,7 @@
                 });
             }
 
-            // Simple calendar
+            // Enhanced Calendar
             const calendarGrid = document.querySelector('.calendar-grid');
             const monthYear = document.getElementById('monthYear');
             

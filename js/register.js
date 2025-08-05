@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Validar campos específicos del rancher si es necesario
-        if (role.value === 'seller') {
+        if (role.value === 'buyer') {
             const ranchName = document.getElementById('ranchName')?.value.trim();
             const location = document.getElementById('location')?.value.trim();
             const cattleCount = document.getElementById('cattleCount')?.value;
@@ -92,15 +92,36 @@ document.addEventListener('DOMContentLoaded', function() {
         // Obtener el rol seleccionado
         const selectedRole = role.value;
         
-        // Redirigir basado en el rol seleccionado
-        if (selectedRole === 'buyer') {  // Rancher
-            window.location.href = 'dashboard-rancher.html';
-        } else if (selectedRole === 'trader') {  // Trader
-            window.location.href = 'dashboard-trader.html';
-        } else {
-            // Redirección por defecto en caso de que no coincida ningún rol
-            window.location.href = 'dashboard.html';
+        // Guardar información del usuario en localStorage
+        localStorage.setItem('username', username);
+        localStorage.setItem('email', email);
+        localStorage.setItem('role', selectedRole);
+        
+        // Guardar información adicional del rancher si aplica
+        if (selectedRole === 'buyer') {
+            const ranchName = document.getElementById('ranchName')?.value.trim();
+            const location = document.getElementById('location')?.value.trim();
+            const cattleCount = document.getElementById('cattleCount')?.value;
+            
+            if (ranchName) localStorage.setItem('ranchName', ranchName);
+            if (location) localStorage.setItem('location', location);
+            if (cattleCount) localStorage.setItem('cattleCount', cattleCount);
         }
+        
+        // Mostrar mensaje de éxito
+        showNotification('¡Registro exitoso! Redirigiendo a tu dashboard...', 'success');
+        
+        // Redirigir basado en el rol seleccionado después de un breve delay
+        setTimeout(() => {
+            if (selectedRole === 'buyer') {  // Rancher
+                window.location.href = 'dashboard-rancher.html';
+            } else if (selectedRole === 'trader') {  // Trader
+                window.location.href = 'dashboard-trader.html';
+            } else {
+                // Redirección por defecto en caso de que no coincida ningún rol
+                window.location.href = 'dashboard.html';
+            }
+        }, 1500);
     });
     
     // Validación de RFC para vendedores

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Register Flow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+        .test-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+        .btn-test {
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-card">
+            <h1 class="text-center mb-4">Test Register Flow</h1>
+            
+            <div class="test-section">
+                <h3>1. Simular Registro de Rancher</h3>
+                <p>Este botón simula el registro de un rancher y guarda los datos en localStorage:</p>
+                <button class="btn btn-primary btn-test" onclick="simulateRancherRegister()">
+                    Simular Registro Rancher
+                </button>
+                <button class="btn btn-success btn-test" onclick="goToRancherDashboard()">
+                    Ir a Dashboard Rancher
+                </button>
+            </div>
+            
+            <div class="test-section">
+                <h3>2. Simular Registro de Trader</h3>
+                <p>Este botón simula el registro de un trader y guarda los datos en localStorage:</p>
+                <button class="btn btn-primary btn-test" onclick="simulateTraderRegister()">
+                    Simular Registro Trader
+                </button>
+                <button class="btn btn-success btn-test" onclick="goToTraderDashboard()">
+                    Ir a Dashboard Trader
+                </button>
+            </div>
+            
+            <div class="test-section">
+                <h3>3. Verificar localStorage</h3>
+                <p>Datos actuales en localStorage:</p>
+                <div id="localStorageData" class="bg-light p-3 rounded">
+                    <pre id="localStorageContent">No hay datos</pre>
+                </div>
+                <button class="btn btn-info btn-test" onclick="showLocalStorage()">
+                    Actualizar Datos
+                </button>
+                <button class="btn btn-warning btn-test" onclick="clearLocalStorage()">
+                    Limpiar localStorage
+                </button>
+            </div>
+            
+            <div class="test-section">
+                <h3>4. Navegación</h3>
+                <a href="register.html" class="btn btn-outline-primary btn-test">Ir a Register</a>
+                <a href="login.html" class="btn btn-outline-secondary btn-test">Ir a Login</a>
+                <a href="dashboard-rancher-simple.html" class="btn btn-outline-success btn-test">Dashboard Rancher</a>
+                <a href="dashboard-trader.html" class="btn btn-outline-info btn-test">Dashboard Trader</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function simulateRancherRegister() {
+            // Simular datos de registro de rancher
+            localStorage.setItem('username', 'juan_rancher');
+            localStorage.setItem('email', 'juan@ranch.com');
+            localStorage.setItem('role', 'buyer');
+            localStorage.setItem('ranchName', 'Rancho San Juan');
+            localStorage.setItem('location', 'Monterrey, NL');
+            localStorage.setItem('cattleCount', '150');
+            
+            showNotification('Registro de Rancher simulado exitosamente!', 'success');
+            showLocalStorage();
+        }
+        
+        function simulateTraderRegister() {
+            // Simular datos de registro de trader
+            localStorage.setItem('username', 'maria_trader');
+            localStorage.setItem('email', 'maria@trader.com');
+            localStorage.setItem('role', 'trader');
+            
+            showNotification('Registro de Trader simulado exitosamente!', 'success');
+            showLocalStorage();
+        }
+        
+        function goToRancherDashboard() {
+            if (!localStorage.getItem('username')) {
+                alert('Primero simula un registro de rancher');
+                return;
+            }
+            window.location.href = 'dashboard-rancher-simple.html';
+        }
+        
+        function goToTraderDashboard() {
+            if (!localStorage.getItem('username')) {
+                alert('Primero simula un registro de trader');
+                return;
+            }
+            window.location.href = 'dashboard-trader.html';
+        }
+        
+        function showLocalStorage() {
+            const data = {
+                username: localStorage.getItem('username'),
+                email: localStorage.getItem('email'),
+                role: localStorage.getItem('role'),
+                ranchName: localStorage.getItem('ranchName'),
+                location: localStorage.getItem('location'),
+                cattleCount: localStorage.getItem('cattleCount')
+            };
+            
+            document.getElementById('localStorageContent').textContent = JSON.stringify(data, null, 2);
+        }
+        
+        function clearLocalStorage() {
+            localStorage.clear();
+            showNotification('localStorage limpiado!', 'warning');
+            showLocalStorage();
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+        
+        // Mostrar datos al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            showLocalStorage();
+        });
+    </script>
+</body>
+</html> 
