@@ -16,108 +16,28 @@
             padding: 0;
         }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            padding: 1.5rem 2rem;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 80px;
-            border: none;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
 
-        /* Header Buttons */
-        .header-buttons {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .btn-marketplace {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-marketplace:hover {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.5);
-        }
-
-        .btn-logout {
-            background: linear-gradient(135deg, #e94560 0%, #f39c12 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
-        }
-
-        .btn-logout:hover {
-            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
-        }
 
         /* Sidebar */
         .sidebar {
             position: fixed;
             left: 0;
-            top: 80px;
-            height: calc(100vh - 80px);
+            top: 0;
+            height: 100vh;
             width: 250px;
             background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
             color: white;
-            z-index: 999;
+            z-index: 1000;
             overflow-y: auto;
             box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            border-top: none;
         }
 
         .sidebar-nav {
             padding: 1rem;
+            padding-top: 2rem;
         }
 
         .nav-item {
@@ -144,10 +64,11 @@
         /* Main Content */
         .main-content {
             margin-left: 250px;
-            margin-top: 80px;
+            margin-top: 0;
             padding: 2rem;
-            min-height: calc(100vh - 80px);
+            min-height: 100vh;
             overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .content-section {
@@ -161,9 +82,9 @@
         /* Cards */
         .card {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 25px;
+            border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
@@ -178,27 +99,27 @@
         .card-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem 2.5rem;
+            padding: 1.5rem 2rem;
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .card-body {
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         /* Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .stat-card {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 25px;
-            padding: 2.5rem;
+            border-radius: 20px;
+            padding: 1.5rem;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             text-align: center;
             border: 1px solid rgba(255,255,255,0.2);
@@ -212,7 +133,7 @@
         }
 
         .stat-number {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: bold;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -244,6 +165,7 @@
             .sidebar {
                 transform: translateX(-100%);
                 transition: transform 0.3s;
+                z-index: 1002;
             }
             
             .sidebar.show {
@@ -252,7 +174,8 @@
             
             .main-content {
                 margin-left: 0;
-                margin-top: 80px;
+                margin-top: 0;
+                padding: 1rem;
             }
             
             .stats-grid {
@@ -260,41 +183,42 @@
                 gap: 1.5rem;
             }
             
-            .header {
-                padding: 1rem 1.5rem;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .btn-marketplace, .btn-logout {
-                padding: 0.6rem 1rem;
-                font-size: 0.9rem;
+            .sidebar-header {
+                padding: 1rem !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">
-            <i class="fas fa-cow me-2"></i>
-            GenoStock - Rancher Dashboard
-        </div>
-        <div class="header-buttons">
-            <span id="user-name" style="margin-right: 2rem; font-size: 1.1rem; font-weight: 500;">Usuario</span>
-            <a href="marketplace.html" class="btn btn-marketplace">
-                <i class="fas fa-shopping-cart"></i> Marketplace
-            </a>
-            <button class="btn btn-logout" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
-    </div>
+
 
     <!-- Sidebar -->
     <div class="sidebar">
+        <div class="sidebar-header" style="padding: 1.5rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <i class="fas fa-cow" style="font-size: 1.5rem; color: #f39c12;"></i>
+                <span style="font-size: 1.2rem; font-weight: bold;">GenoStock</span>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <div style="width: 40px; height: 40px; background: #f39c12; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">
+                        <span id="user-initials">U</span>
+                    </div>
+                    <div>
+                        <div id="user-name-sidebar" style="font-weight: 600; font-size: 0.9rem;">Usuario</div>
+                        <div style="font-size: 0.8rem; color: #f39c12;">Rancher</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="marketplace.html" class="btn btn-sm" style="background: #f39c12; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 15px; font-size: 0.8rem; text-decoration: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+                <button class="btn btn-sm" onclick="logout()" style="background: #e94560; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
         <div class="sidebar-nav">
             <div class="nav-item active" data-section="overview">
                 <i class="fas fa-tachometer-alt"></i>
@@ -329,6 +253,11 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Mobile Menu Button -->
+        <button class="btn btn-primary d-md-none" id="mobileMenuBtn" style="position: fixed; top: 1rem; left: 1rem; z-index: 1003; background: #0f3460; border: none; padding: 0.5rem 1rem; border-radius: 25px;">
+            <i class="fas fa-bars"></i>
+        </button>
+        
         <!-- Overview Section -->
         <div id="overview" class="content-section active">
             <h2 class="mb-4">Dashboard Overview</h2>
@@ -878,7 +807,31 @@
 
             // Update user name
             const userName = localStorage.getItem('name') || username;
-            document.getElementById('user-name').textContent = userName;
+            const userInitials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            // Update sidebar user info
+            const userNameSidebar = document.getElementById('user-name-sidebar');
+            const userInitialsElement = document.getElementById('user-initials');
+            
+            if (userNameSidebar) userNameSidebar.textContent = userName;
+            if (userInitialsElement) userInitialsElement.textContent = userInitials;
+
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+                
+                // Close sidebar when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!sidebar.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
 
             // Navigation
             const navItems = document.querySelectorAll('.nav-item');
