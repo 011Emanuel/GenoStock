@@ -247,9 +247,50 @@ class DashboardTrader extends HTMLElement {
         }
         
         /* Responsive */
-        @media (max-width: 991px) {
+        @media (max-width: 1200px) {
+          .sidebar {
+            width: 240px;
+          }
+          
+          .main-content {
+            margin-left: 240px;
+          }
+          
+          .sidebar.collapsed {
+            width: 60px;
+          }
+          
+          .sidebar.collapsed ~ .main-content {
+            margin-left: 60px;
+          }
+        }
+        
+        @media (max-width: 992px) {
+          .sidebar {
+            width: 220px;
+          }
+          
+          .main-content {
+            margin-left: 220px;
+          }
+          
+          .sidebar.collapsed {
+            width: 50px;
+          }
+          
+          .sidebar.collapsed ~ .main-content {
+            margin-left: 50px;
+          }
+          
+          .content-area {
+            padding: 1.5rem;
+          }
+        }
+        
+        @media (max-width: 768px) {
           .sidebar {
             transform: translateX(-100%);
+            transition: transform var(--transition);
             width: 280px;
           }
           
@@ -266,7 +307,40 @@ class DashboardTrader extends HTMLElement {
           }
           
           .content-area {
-            padding: 1.5rem 1rem;
+            padding: 1rem;
+          }
+          
+          .main-header {
+            padding: 0 1rem;
+          }
+          
+          /* Mobile menu button */
+          .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 1rem;
+          }
+          
+          .mobile-menu-btn:hover {
+            background: var(--primary-dark);
+          }
+        }
+        
+        @media (max-width: 576px) {
+          .content-area {
+            padding: 0.75rem;
+          }
+          
+          .main-header {
+            padding: 0 0.75rem;
           }
         }
         
@@ -476,6 +550,46 @@ class DashboardTrader extends HTMLElement {
             position: relative !important;
             z-index: 1000 !important;
           }
+          
+          .mobile-menu-btn {
+            display: none !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 40px !important;
+            height: 40px !important;
+            background: var(--primary) !important;
+            color: var(--white) !important;
+            border: none !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            margin-right: 1rem !important;
+            transition: all 0.2s ease !important;
+          }
+          
+          .mobile-menu-btn:hover {
+            background: var(--primary-dark) !important;
+            transform: scale(1.05) !important;
+          }
+          
+          @media (max-width: 768px) {
+            .dashboard-header-new {
+              padding: 0 1rem !important;
+            }
+            
+            .mobile-menu-btn {
+              display: flex !important;
+            }
+            
+            .header-logo span {
+              display: none !important;
+            }
+          }
+          
+          @media (max-width: 576px) {
+            .dashboard-header-new {
+              padding: 0 0.75rem !important;
+            }
+          }
           .header-logo {
             display: flex !important;
             align-items: center !important;
@@ -603,6 +717,11 @@ class DashboardTrader extends HTMLElement {
           }
         </style>
         <div class="header-logo">
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </button>
           <img src="../../logo_small.png" alt="GenoStock">
           <span>GenoStock</span>
         </div>
@@ -622,28 +741,39 @@ class DashboardTrader extends HTMLElement {
         </div>
       `;
       
-      // Agregar funcionalidad de logout
+      // Agregar funcionalidad de logout (cerrar sesión y navegar a index.html)
       setTimeout(() => {
         const logoutBtn = header.querySelector('#dashboardLogout');
         if (logoutBtn) {
           logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            console.log('Dashboard logout clicked');
+            console.log('Dashboard logout clicked - performing full logout');
             localStorage.removeItem('username');
             localStorage.removeItem('name');
             localStorage.removeItem('role');
-            location.reload();
+            window.location.href = '../../index.html';
           });
         }
         
-        // Agregar funcionalidad de marketplace
+        // Agregar funcionalidad de marketplace (redirigir a marketplace.html con header auth)
         const marketplaceBtn = header.querySelector('#marketplaceBtn');
         if (marketplaceBtn) {
           marketplaceBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            console.log('Marketplace clicked');
+            console.log('Marketplace clicked - redirecting to marketplace.html');
             window.location.href = '../../marketplace.html';
           });
+        }
+        
+        // Agregar funcionalidad al logo (redirigir a marketplace.html con header auth)
+        const headerLogo = header.querySelector('.header-logo');
+        if (headerLogo) {
+          headerLogo.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Logo clicked - redirecting to marketplace.html');
+            window.location.href = '../../marketplace.html';
+          });
+          headerLogo.style.cursor = 'pointer';
         }
       }, 0);
       
@@ -755,50 +885,42 @@ class DashboardTrader extends HTMLElement {
   }
   
   setupMobileOverlay() {
-    // Agregar botón de menú para móvil
-    const mainHeader = this.shadowRoot.getElementById('mainHeader');
-    if (mainHeader) {
-      const mobileMenuBtn = document.createElement('button');
-      mobileMenuBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>
-        </svg>
-      `;
-      mobileMenuBtn.style.cssText = `
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: var(--primary);
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 4px;
-        display: none;
-      `;
-      
-      mobileMenuBtn.addEventListener('click', () => {
+    const sidebar = this.shadowRoot.getElementById('sidebar');
+    const overlay = this.shadowRoot.getElementById('sidebarOverlay');
+    
+    const showMobileMenu = () => {
+      sidebar.classList.add('mobile-open');
+      overlay.classList.add('active');
+    };
+    
+    const hideMobileMenu = () => {
+      sidebar.classList.remove('mobile-open');
+      overlay.classList.remove('active');
+    };
+    
+    // Setup mobile menu button from header
+    setTimeout(() => {
+      const mobileMenuBtn = this.shadowRoot.querySelector('#mobileMenuBtn');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', showMobileMenu);
+      }
+    }, 100);
+    
+    // Close menu when clicking overlay
+    overlay.addEventListener('click', hideMobileMenu);
+    
+    // Close menu when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
         const sidebar = this.shadowRoot.getElementById('sidebar');
         const overlay = this.shadowRoot.getElementById('sidebarOverlay');
-        sidebar.classList.add('mobile-open');
-        if (overlay) overlay.classList.add('active');
-      });
-      
-      mainHeader.appendChild(mobileMenuBtn);
-      
-      // Mostrar botón en móvil
-      const showMobileMenu = () => {
-        if (window.innerWidth <= 991) {
-          mobileMenuBtn.style.display = 'block';
-        } else {
-          mobileMenuBtn.style.display = 'none';
+        const mobileMenuBtn = this.shadowRoot.querySelector('#mobileMenuBtn');
+        
+        if (!sidebar.contains(e.target) && !mobileMenuBtn?.contains(e.target)) {
+          hideMobileMenu();
         }
-      };
-      
-      window.addEventListener('resize', showMobileMenu);
-      showMobileMenu();
-    }
+      }
+    });
   }
 }
 

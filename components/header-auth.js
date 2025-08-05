@@ -283,7 +283,7 @@
       </style>
       ${config.showLogo ? `
         <div class="header-col logo">
-          <a class="navbar-brand" href="index.html">
+          <a class="navbar-brand" href="${localStorage.getItem('role') === 'rancher' ? 'dashboard/rancher/rancher.html' : localStorage.getItem('role') === 'trader' ? 'dashboard/trader/trader.html' : 'marketplace.html'}">
             <img src="logo_small.png" alt="GenoStock" height="40">
             <span>GenoStock</span>
           </a>
@@ -318,7 +318,7 @@
               </svg>
               Marketplace
             </a>
-            <a href="dashboard/trader/trader.html" class="dropdown-item">
+            <a href="${localStorage.getItem('role') === 'rancher' ? 'dashboard/rancher/rancher.html' : 'dashboard/trader/trader.html'}" class="dropdown-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -469,6 +469,20 @@ function renderAuthHeaderIfLoggedIn() {
     if (oldHeader) oldHeader.remove();
     // Insertar el nuevo header completo
     document.body.insertBefore(createFullHeader(), document.body.firstChild);
+    
+    // Comentado: Redirección automática desde marketplace.html al dashboard
+    // Esta lógica se removió para permitir que los usuarios naveguen libremente a marketplace.html
+    // desde sus dashboards sin ser redirigidos automáticamente
+    /*
+    if (window.location.pathname.includes('marketplace.html')) {
+      const role = localStorage.getItem('role');
+      if (role === 'rancher') {
+        window.location.href = 'dashboard/rancher/rancher.html';
+      } else if (role === 'trader') {
+        window.location.href = 'dashboard/trader/trader.html';
+      }
+    }
+    */
   }
 }
 

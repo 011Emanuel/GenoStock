@@ -11,7 +11,7 @@
 </head>
 <body>
     <!-- Header Component -->
-    <geno-header></geno-header>
+    <geno-header id="main-header"></geno-header>
 
     <!-- Hero Banner -->
     <section class="marketplace-hero" style="background-image: url('https://static.vecteezy.com/system/resources/previews/024/940/349/non_2x/beef-cattle-breeder-american-brahman-red-on-the-ground-in-the-fram-big-male-brahman-cow-photo.jpg'); background-size: cover; background-position: center top; height: 350px; display: flex; align-items: center; position: relative;">
@@ -141,6 +141,13 @@
     <!-- Footer Component -->
     <geno-footer></geno-footer>
     <script src="components/header.js"></script>
+    <script src="components/header-auth.js"></script>
+    <script>
+      if (localStorage.getItem('username')) {
+        const oldHeader = document.getElementById('main-header');
+        if (oldHeader) oldHeader.remove();
+      }
+    </script>
     <script src="components/footer.js"></script>
 
     <!-- Contact Card Modal -->
