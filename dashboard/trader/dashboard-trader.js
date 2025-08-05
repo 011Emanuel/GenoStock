@@ -104,7 +104,7 @@ class DashboardTrader extends HTMLElement {
         }
         
         .sidebar.collapsed .sidebar-nav {
-          padding: 0.5rem 0.5rem 0 0.5rem;
+          padding: 1rem 0.5rem 0 0.5rem;
           align-items: center;
         }
         
@@ -204,12 +204,14 @@ class DashboardTrader extends HTMLElement {
           box-sizing: border-box !important;
         }
         
+
+        
         /* Área de contenido */
         .content-area {
           flex: 1;
           padding: 2rem 2.5rem;
           background: #f5f7fa;
-          min-height: calc(100vh - var(--header-height) - var(--footer-height));
+          min-height: calc(100vh - var(--footer-height));
           transition: all var(--transition);
         }
         
@@ -246,103 +248,113 @@ class DashboardTrader extends HTMLElement {
           transform: translateX(0);
         }
         
-        /* Responsive */
-        @media (max-width: 1200px) {
-          .sidebar {
-            width: 240px;
-          }
-          
-          .main-content {
-            margin-left: 240px;
-          }
-          
-          .sidebar.collapsed {
-            width: 60px;
-          }
-          
-          .sidebar.collapsed ~ .main-content {
-            margin-left: 60px;
-          }
-        }
-        
-        @media (max-width: 992px) {
-          .sidebar {
-            width: 220px;
-          }
-          
-          .main-content {
-            margin-left: 220px;
-          }
-          
-          .sidebar.collapsed {
-            width: 50px;
-          }
-          
-          .sidebar.collapsed ~ .main-content {
-            margin-left: 50px;
-          }
-          
-          .content-area {
-            padding: 1.5rem;
-          }
-        }
-        
-        @media (max-width: 768px) {
-          .sidebar {
-            transform: translateX(-100%);
-            transition: transform var(--transition);
-            width: 280px;
-          }
-          
-          .sidebar.mobile-open {
-            transform: translateX(0);
-          }
-          
-          .main-content {
-            margin-left: 0;
-          }
-          
-          .main-content.sidebar-collapsed {
-            margin-left: 0;
-          }
-          
-          .content-area {
-            padding: 1rem;
-          }
-          
-          .main-header {
-            padding: 0 1rem;
-          }
-          
-          /* Mobile menu button */
-          .mobile-menu-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-right: 1rem;
-          }
-          
-          .mobile-menu-btn:hover {
-            background: var(--primary-dark);
-          }
-        }
-        
-        @media (max-width: 576px) {
-          .content-area {
-            padding: 0.75rem;
-          }
-          
-          .main-header {
-            padding: 0 0.75rem;
-          }
-        }
+                 /* Responsive */
+         @media (max-width: 1200px) {
+           .sidebar {
+             width: 240px;
+           }
+           
+           .main-content {
+             margin-left: 240px;
+           }
+           
+           .sidebar.collapsed {
+             width: 60px;
+           }
+           
+           .sidebar.collapsed ~ .main-content {
+             margin-left: 60px;
+           }
+         }
+         
+         @media (max-width: 992px) {
+           .sidebar {
+             width: 220px;
+           }
+           
+           .main-content {
+             margin-left: 220px;
+           }
+           
+           .sidebar.collapsed {
+             width: 50px;
+           }
+           
+           .sidebar.collapsed ~ .main-content {
+             margin-left: 50px;
+           }
+           
+           .content-area {
+             padding: 1.5rem;
+           }
+         }
+         
+         @media (max-width: 768px) {
+           .sidebar {
+             transform: translateX(-100%);
+             transition: transform var(--transition);
+             width: 280px;
+           }
+           
+           .sidebar.mobile-open {
+             transform: translateX(0);
+           }
+           
+           .main-content {
+             margin-left: 0;
+           }
+           
+           .main-content.sidebar-collapsed {
+             margin-left: 0;
+           }
+           
+           .content-area {
+             padding: 1rem;
+           }
+           
+           .main-header {
+             padding: 0 1rem;
+           }
+           
+           /* Mobile menu button */
+           .mobile-menu-btn {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             width: 40px;
+             height: 40px;
+             background: var(--primary);
+             color: var(--white);
+             border: none;
+             border-radius: 8px;
+             cursor: pointer;
+             margin-right: 1rem;
+           }
+           
+           .mobile-menu-btn:hover {
+             background: var(--primary-dark);
+           }
+         }
+         
+         @media (max-width: 576px) {
+           .content-area {
+             padding: 0.75rem;
+           }
+           
+           .main-header {
+             padding: 0 0.75rem;
+           }
+         }
+         
+         @media (max-width: 480px) {
+           .content-area {
+             padding: 0.5rem;
+           }
+           
+           .main-header {
+             padding: 0 0.5rem;
+           }
+         }
         
         /* Overlay para móvil */
         .sidebar-overlay {
@@ -367,18 +379,18 @@ class DashboardTrader extends HTMLElement {
         <!-- Overlay para móvil -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         
-        <!-- Sidebar -->
-          <nav class="sidebar" id="sidebar">
-          <div class="sidebar-header">
-            <button class="sidebar-toggle" id="sidebarToggle" title="Expand/collapse sidebar">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="sidebar-header-content" id="sidebarHeader"></div>
-          </div>
-          
-            <div class="sidebar-nav">
+                 <!-- Sidebar -->
+           <nav class="sidebar" id="sidebar">
+           <div class="sidebar-header">
+             <button class="sidebar-toggle" id="sidebarToggle" title="Expand/collapse sidebar">
+               <svg viewBox="0 0 24 24" width="20" height="20">
+                 <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+               </svg>
+             </button>
+             <div class="sidebar-header-content" id="sidebarHeader"></div>
+           </div>
+           
+             <div class="sidebar-nav">
               <a class="sidebar-link active" data-section="overview">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
@@ -422,14 +434,14 @@ class DashboardTrader extends HTMLElement {
             </div>
           </nav>
         
-        <!-- Contenido principal -->
-        <div class="main-content" id="mainContent">
-          <div class="main-header" id="mainHeader"></div>
-          <div class="content-area">
-            <slot></slot>
-          </div>
-          <div class="main-footer" id="mainFooter"></div>
-        </div>
+                 <!-- Contenido principal -->
+         <div class="main-content" id="mainContent">
+           <div class="main-header" id="mainHeader"></div>
+           <div class="content-area">
+             <slot></slot>
+           </div>
+           <div class="main-footer" id="mainFooter"></div>
+         </div>
       </div>
     `;
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
