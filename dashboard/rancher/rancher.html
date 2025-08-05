@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rancher Dashboard - GenoStock</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  
+  <!-- Cargar componentes primero -->
+  <script src="../../components/header-auth.js"></script>
+  <script src="../../components/footer-auth.js"></script>
+  
+  <!-- Cargar scripts del dashboard -->
+  <script src="dashboard-rancher.js" defer></script>
+  <script src="rancher-overview.js" defer></script>
+  <script src="rancher-profile.js" defer></script>
+  <script src="rancher-livestock.js" defer></script>
+  <script src="rancher-health.js" defer></script>
+  <script src="rancher-settings.js" defer></script>
+</head>
+<body>
+  <dashboard-rancher>
+    <rancher-overview id="overview" class="active"></rancher-overview>
+    <rancher-profile id="profile" style="display:none"></rancher-profile>
+    <rancher-livestock id="livestock" style="display:none"></rancher-livestock>
+    <rancher-health id="health" style="display:none"></rancher-health>
+    <rancher-settings id="settings" style="display:none"></rancher-settings>
+  </dashboard-rancher>
+</body>
+</html> 

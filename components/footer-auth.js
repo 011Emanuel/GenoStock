@@ -10,7 +10,7 @@ function createAuthFooter() {
       .auth-footer {
         background: linear-gradient(135deg, #232e23 0%, #1b3a1d 100%);
         color: #fff;
-        padding: 1rem 2rem;
+        padding: 1rem 4rem;
         border-top: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 -2px 8px rgba(44,85,48,0.1);
         font-size: 0.95rem;
@@ -29,12 +29,13 @@ function createAuthFooter() {
       .footer-copyright {
         color: #e0e0e0;
         font-weight: 400;
+        font-size: 0.9rem;
       }
       
       .footer-links {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1.5rem;
       }
       
       .footer-link {
@@ -43,11 +44,13 @@ function createAuthFooter() {
         font-weight: 500;
         transition: color 0.2s ease;
         font-size: 0.9rem;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
       }
       
       .footer-link:hover {
         color: #fff;
-        text-decoration: underline;
+        border-bottom: 1px solid #ffa726;
       }
       
       .footer-separator {
@@ -57,19 +60,19 @@ function createAuthFooter() {
       
       @media (max-width: 768px) {
         .auth-footer {
-          padding: 0.8rem 1rem;
+          padding: 1rem 2rem;
         }
         
         .footer-content {
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0.8rem;
           text-align: center;
         }
         
         .footer-links {
           flex-wrap: wrap;
           justify-content: center;
-          gap: 0.3rem;
+          gap: 1rem;
         }
       }
     </style>
@@ -79,11 +82,11 @@ function createAuthFooter() {
         &copy; ${currentYear} GenoStock. Todos los derechos reservados.
       </div>
       <div class="footer-links">
-        <a href="#" class="footer-link">Políticas de Privacidad</a>
+        <a href="#" class="footer-link">Privacy Policy</a>
         <span class="footer-separator">|</span>
-        <a href="#" class="footer-link">Términos de Servicio</a>
+        <a href="#" class="footer-link">Terms of Service</a>
         <span class="footer-separator">|</span>
-        <a href="#" class="footer-link">Contacto</a>
+        <a href="#" class="footer-link">Data Protection</a>
       </div>
     </div>
   `;

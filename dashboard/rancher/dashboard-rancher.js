@@ -1,4 +1,4 @@
-class DashboardTrader extends HTMLElement {
+class DashboardRancher extends HTMLElement {
   constructor() {
     super();
     const template = document.createElement('template');
@@ -149,12 +149,7 @@ class DashboardTrader extends HTMLElement {
           transition: all var(--transition);
         }
         
-        .sidebar.collapsed .sidebar-icon {
-          width: 20px;
-          height: 20px;
-        }
-        
-        /* Contenido principal */
+        /* Main Content */
         .main-content {
           flex: 1;
           margin-left: var(--sidebar-width);
@@ -162,98 +157,73 @@ class DashboardTrader extends HTMLElement {
           display: flex;
           flex-direction: column;
           min-height: 100vh;
-          width: calc(100vw - var(--sidebar-width));
-          box-sizing: border-box;
         }
         
-        .main-content.sidebar-collapsed {
+        .sidebar.collapsed ~ .main-content {
           margin-left: var(--sidebar-collapsed-width);
-          width: calc(100vw - var(--sidebar-collapsed-width));
         }
         
-        /* Header principal */
+        /* Header */
         .main-header {
           height: var(--header-height);
           background: var(--white);
-          box-shadow: 0 2px 12px rgba(44,85,48,0.07);
-          position: relative;
-          z-index: 100;
-          transition: all var(--transition);
           border-bottom: 1px solid var(--border);
-          width: 100%;
-          margin-left: 0;
-          overflow: hidden;
           display: flex;
           align-items: center;
-          box-sizing: border-box;
+          padding: 0 2rem;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+          position: sticky;
+          top: 0;
+          z-index: 100;
         }
         
-        .main-header .header-bar {
-          position: relative !important;
-          width: 100% !important;
-          height: 100% !important;
-          margin-left: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          transition: all var(--transition) !important;
-          overflow: hidden;
-          display: grid !important;
-          grid-template-columns: 1fr 300px !important;
-          gap: 1.5rem !important;
-          padding: 0 2rem !important;
-          box-sizing: border-box !important;
-        }
-        
-        /* Área de contenido */
+        /* Content Area */
         .content-area {
           flex: 1;
-          padding: 2rem 2.5rem;
-          background: #f5f7fa;
-          min-height: calc(100vh - var(--header-height) - var(--footer-height));
-          transition: all var(--transition);
+          padding: 2rem;
+          overflow-y: auto;
         }
         
-        /* Footer principal */
+        /* Footer */
         .main-footer {
           height: var(--footer-height);
           background: var(--white);
           border-top: 1px solid var(--border);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 2rem;
+          font-size: 0.9rem;
+          color: var(--gray);
+        }
+        
+        /* Mobile Overlay */
+        .sidebar-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);
+          z-index: 999;
+          opacity: 0;
+          visibility: hidden;
           transition: all var(--transition);
         }
         
-        /* Slots para componentes */
-        ::slotted(section),
-        ::slotted(trader-overview),
-        ::slotted(trader-profile),
-        ::slotted(trader-sales),
-        ::slotted(trader-livestock),
-        ::slotted(trader-settings) {
-          background: var(--white);
-          border-radius: var(--card-radius);
-          box-shadow: var(--card-shadow);
-          padding: 2rem;
-          margin-bottom: 1.5rem;
-          border: 1px solid var(--border);
-          opacity: 0;
-          transform: translateX(-20px);
-          transition: opacity 0.4s var(--transition), transform 0.4s var(--transition);
-          display: none;
-        }
-        
-        ::slotted(.active) {
-          display: block !important;
+        .sidebar-overlay.active {
           opacity: 1;
-          transform: translateX(0);
+          visibility: visible;
         }
         
         /* Responsive */
-        @media (max-width: 991px) {
+        @media (max-width: 768px) {
           .sidebar {
             transform: translateX(-100%);
-            width: 280px;
+            transition: transform var(--transition);
           }
           
-          .sidebar.mobile-open {
+          .sidebar.active {
             transform: translateX(0);
           }
           
@@ -261,101 +231,91 @@ class DashboardTrader extends HTMLElement {
             margin-left: 0;
           }
           
-          .main-content.sidebar-collapsed {
-            margin-left: 0;
-          }
-          
           .content-area {
-            padding: 1.5rem 1rem;
-          }
-        }
-        
-        /* Overlay para móvil */
-        .sidebar-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.5);
-          z-index: 999;
-        }
-        
-        @media (max-width: 991px) {
-          .sidebar-overlay.active {
-            display: block;
+            padding: 1rem;
           }
         }
       </style>
       
       <div class="dashboard-layout">
-        <!-- Overlay para móvil -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        
         <!-- Sidebar -->
-          <nav class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar">
           <div class="sidebar-header">
-            <button class="sidebar-toggle" id="sidebarToggle" title="Expand/collapse sidebar">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <button class="sidebar-toggle" id="sidebarToggle">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
               </svg>
             </button>
-            <div class="sidebar-header-content" id="sidebarHeader"></div>
           </div>
           
-            <div class="sidebar-nav">
-              <a class="sidebar-link active" data-section="overview">
-              <span class="sidebar-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
+          <nav class="sidebar-nav">
+            <a href="#overview" class="sidebar-link active" data-section="overview">
+              <div class="sidebar-icon">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                 </svg>
-              </span>
-                <span class="sidebar-label">Overview</span>
-              </a>
-              <a class="sidebar-link" data-section="profile">
-              <span class="sidebar-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+              </div>
+              <span class="sidebar-label">Overview</span>
+            </a>
+            
+            <a href="#profile" class="sidebar-link" data-section="profile">
+              <div class="sidebar-icon">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
-              </span>
-                <span class="sidebar-label">Profile</span>
-              </a>
-              <a class="sidebar-link" data-section="sales">
-              <span class="sidebar-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+              </div>
+              <span class="sidebar-label">Profile</span>
+            </a>
+            
+            <a href="#livestock" class="sidebar-link" data-section="livestock">
+              <div class="sidebar-icon">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21c4.97-4.97 8-8.13 8-11.5A5.5 5.5 0 0 0 12 4.5 5.5 5.5 0 0 0 4 9.5C4 12.87 7.03 16.03 12 21Z"/>
                 </svg>
-              </span>
-                <span class="sidebar-label">Sales</span>
-              </a>
-              <a class="sidebar-link" data-section="livestock">
-              <span class="sidebar-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
+              </div>
+              <span class="sidebar-label">Livestock</span>
+            </a>
+            
+            <a href="#health" class="sidebar-link" data-section="health">
+              <div class="sidebar-icon">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z"/>
                 </svg>
-              </span>
-                <span class="sidebar-label">My Livestock</span>
-              </a>
-              <a class="sidebar-link" data-section="settings">
-              <span class="sidebar-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" fill="currentColor"/>
+              </div>
+              <span class="sidebar-label">Health</span>
+            </a>
+            
+            <a href="#settings" class="sidebar-link" data-section="settings">
+              <div class="sidebar-icon">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
                 </svg>
-              </span>
-                <span class="sidebar-label">Settings</span>
-              </a>
-            </div>
+              </div>
+              <span class="sidebar-label">Settings</span>
+            </a>
           </nav>
+        </aside>
         
-        <!-- Contenido principal -->
-        <div class="main-content" id="mainContent">
-          <div class="main-header" id="mainHeader"></div>
+        <!-- Mobile Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+          <!-- Header -->
+          <header class="main-header" id="mainHeader">
+            <!-- Header content will be loaded here -->
+          </header>
+          
+          <!-- Content Area -->
           <div class="content-area">
             <slot></slot>
           </div>
-          <div class="main-footer" id="mainFooter"></div>
-        </div>
+          
+          <!-- Footer -->
+          <footer class="main-footer" id="mainFooter">
+            <!-- Footer content will be loaded here -->
+          </footer>
+        </main>
       </div>
     `;
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
@@ -363,91 +323,30 @@ class DashboardTrader extends HTMLElement {
   
   connectedCallback() {
     this.loadComponents();
+  }
+  
+  async loadComponents() {
+    await this.loadHeaderAuth();
+    await this.loadMainHeader();
+    await this.loadMainFooter();
     this.setupSidebarToggle();
     this.setupNavigation();
     this.setupMobileOverlay();
   }
   
-  async loadComponents() {
-    // Cargar header-auth en el sidebar
-    await this.loadHeaderAuth();
-    
-    // Cargar header-auth en el contenido principal
-    await this.loadMainHeader();
-    
-    // Cargar footer-auth en el contenido principal
-    await this.loadMainFooter();
-  }
-  
   async loadHeaderAuth() {
-    const headerContainer = this.shadowRoot.getElementById('sidebarHeader');
+    const headerContainer = this.shadowRoot.getElementById('mainHeader');
     if (!headerContainer) return;
     
     try {
-      // Crear un header simple para el sidebar con avatar, nombre y rol
-      const header = document.createElement('div');
-      header.className = 'sidebar-header-simple';
-      header.innerHTML = `
-        <style>
-          .sidebar-header-simple {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem 0;
-          }
-          .sidebar-avatar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .sidebar-avatar img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-          }
-          .sidebar-user-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.3rem;
-            text-align: center;
-          }
-          .sidebar-username {
-            color: var(--sidebar-text);
-            font-weight: 600;
-            font-size: 1rem;
-            line-height: 1.2;
-          }
-          .sidebar-user-role {
-            font-size: 0.8em;
-            color: var(--accent);
-            background: rgba(255,255,255,0.08);
-            border-radius: 4px;
-            padding: 2px 8px;
-            font-weight: 500;
-            line-height: 1.2;
-          }
-          .sidebar.collapsed .sidebar-user-info {
-            display: none;
-          }
-          .sidebar.collapsed .sidebar-avatar img {
-            width: 40px;
-            height: 40px;
-          }
-        </style>
-        <div class="sidebar-avatar">
-          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(localStorage.getItem('name') || localStorage.getItem('username') || 'U')}" alt="Avatar">
-        </div>
-        <div class="sidebar-user-info">
-          <div class="sidebar-username">${localStorage.getItem('name') || localStorage.getItem('username') || 'Usuario'}</div>
-          <div class="sidebar-user-role">${localStorage.getItem('role') ? (localStorage.getItem('role').charAt(0).toUpperCase() + localStorage.getItem('role').slice(1)) : ''}</div>
-        </div>
-      `;
+      if (!window.createAuthHeader) {
+        await this.loadScript('../../components/header-auth.js');
+      }
       
-      headerContainer.appendChild(header);
+      if (window.createAuthHeader) {
+        const header = window.createAuthHeader();
+        headerContainer.appendChild(header);
+      }
     } catch (error) {
       console.error('Error loading sidebar header:', error);
     }
@@ -662,7 +561,7 @@ class DashboardTrader extends HTMLElement {
         await this.loadScript('../../components/footer-auth.js');
       }
       
-          if (window.createAuthFooter) {
+      if (window.createAuthFooter) {
         const footer = window.createAuthFooter();
         footerContainer.appendChild(footer);
       }
@@ -689,117 +588,105 @@ class DashboardTrader extends HTMLElement {
     
     toggle.addEventListener('click', () => {
       sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('sidebar-collapsed');
-      
-      // Cambiar el icono del botón
-      const icon = toggle.querySelector('svg');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
-      } else {
-        icon.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
-      }
     });
     
-    // Cerrar sidebar en móvil al hacer clic en overlay
-    if (overlay) {
-      overlay.addEventListener('click', () => {
-        sidebar.classList.remove('mobile-open');
-        overlay.classList.remove('active');
-      });
-    }
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
   }
   
   setupNavigation() {
     const links = this.shadowRoot.querySelectorAll('.sidebar-link');
-    const slot = this.shadowRoot.querySelector('slot');
-    let assignedSections = [];
+    const sections = this.querySelectorAll('[id]');
     
     const updateSections = (sectionName) => {
-      assignedSections.forEach(sec => {
-        if (sec.id === sectionName) {
-          sec.classList.add('active');
-          sec.style.display = '';
-          void sec.offsetWidth; // Forzar reflow
-          sec.classList.add('active');
-        } else {
-          sec.classList.remove('active');
-          sec.style.display = 'none';
-        }
+      // Hide all sections
+      sections.forEach(section => {
+        section.style.display = 'none';
+        section.classList.remove('active');
       });
+      
+      // Show selected section
+      const selectedSection = this.querySelector(`#${sectionName}`);
+      if (selectedSection) {
+        selectedSection.style.display = 'block';
+        selectedSection.classList.add('active');
+      }
+      
+      // Update active link
+      links.forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      const activeLink = this.shadowRoot.querySelector(`[data-section="${sectionName}"]`);
+      if (activeLink) {
+        activeLink.classList.add('active');
+      }
     };
-    
-    slot.addEventListener('slotchange', () => {
-      assignedSections = slot.assignedElements();
-      assignedSections.forEach(sec => {
-        if (!sec.classList.contains('active')) sec.style.display = 'none';
-        else sec.style.display = '';
-      });
-    });
     
     links.forEach(link => {
       link.addEventListener('click', (e) => {
-        links.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        const sectionName = link.getAttribute('data-section');
-        updateSections(sectionName);
+        e.preventDefault();
+        const section = link.getAttribute('data-section');
+        updateSections(section);
         
-        // En móvil, cerrar el sidebar después de la navegación
+        // Close mobile sidebar
         const sidebar = this.shadowRoot.getElementById('sidebar');
         const overlay = this.shadowRoot.getElementById('sidebarOverlay');
-        if (window.innerWidth <= 991) {
-          sidebar.classList.remove('mobile-open');
-          if (overlay) overlay.classList.remove('active');
-        }
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
       });
     });
   }
   
   setupMobileOverlay() {
-    // Agregar botón de menú para móvil
-    const mainHeader = this.shadowRoot.getElementById('mainHeader');
-    if (mainHeader) {
-      const mobileMenuBtn = document.createElement('button');
-      mobileMenuBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>
-        </svg>
-      `;
-      mobileMenuBtn.style.cssText = `
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: var(--primary);
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 4px;
-        display: none;
-      `;
-      
-      mobileMenuBtn.addEventListener('click', () => {
-        const sidebar = this.shadowRoot.getElementById('sidebar');
-        const overlay = this.shadowRoot.getElementById('sidebarOverlay');
-        sidebar.classList.add('mobile-open');
-        if (overlay) overlay.classList.add('active');
-      });
-      
-      mainHeader.appendChild(mobileMenuBtn);
-      
-      // Mostrar botón en móvil
-      const showMobileMenu = () => {
-        if (window.innerWidth <= 991) {
-          mobileMenuBtn.style.display = 'block';
-        } else {
-          mobileMenuBtn.style.display = 'none';
-        }
-      };
-      
-      window.addEventListener('resize', showMobileMenu);
-      showMobileMenu();
+    const sidebar = this.shadowRoot.getElementById('sidebar');
+    const overlay = this.shadowRoot.getElementById('sidebarOverlay');
+    
+    const showMobileMenu = () => {
+      sidebar.classList.add('active');
+      overlay.classList.add('active');
+    };
+    
+    // Add mobile menu button if needed
+    const mobileMenuBtn = document.createElement('button');
+    mobileMenuBtn.innerHTML = `
+      <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      </svg>
+    `;
+    mobileMenuBtn.style.cssText = `
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1001;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem;
+      cursor: pointer;
+      display: none;
+    `;
+    
+    if (window.innerWidth <= 768) {
+      document.body.appendChild(mobileMenuBtn);
+      mobileMenuBtn.addEventListener('click', showMobileMenu);
     }
+    
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768) {
+        if (!document.body.contains(mobileMenuBtn)) {
+          document.body.appendChild(mobileMenuBtn);
+        }
+      } else {
+        if (document.body.contains(mobileMenuBtn)) {
+          document.body.removeChild(mobileMenuBtn);
+        }
+      }
+    });
   }
 }
 
-customElements.define('dashboard-trader', DashboardTrader); 
+customElements.define('dashboard-rancher', DashboardRancher); 
