@@ -203,6 +203,11 @@ class DashboardTrader extends HTMLElement {
           padding: 0 2rem !important;
           box-sizing: border-box !important;
         }
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
         
         /* Área de contenido */
         .content-area {
@@ -246,29 +251,113 @@ class DashboardTrader extends HTMLElement {
           transform: translateX(0);
         }
         
-        /* Responsive */
-        @media (max-width: 991px) {
-          .sidebar {
-            transform: translateX(-100%);
-            width: 280px;
-          }
-          
-          .sidebar.mobile-open {
-            transform: translateX(0);
-          }
-          
-          .main-content {
-            margin-left: 0;
-          }
-          
-          .main-content.sidebar-collapsed {
-            margin-left: 0;
-          }
-          
-          .content-area {
-            padding: 1.5rem 1rem;
-          }
-        }
+                 /* Responsive */
+         @media (max-width: 1200px) {
+           .sidebar {
+             width: 240px;
+           }
+           
+           .main-content {
+             margin-left: 240px;
+           }
+           
+           .sidebar.collapsed {
+             width: 60px;
+           }
+           
+           .sidebar.collapsed ~ .main-content {
+             margin-left: 60px;
+           }
+         }
+         
+         @media (max-width: 992px) {
+           .sidebar {
+             width: 220px;
+           }
+           
+           .main-content {
+             margin-left: 220px;
+           }
+           
+           .sidebar.collapsed {
+             width: 50px;
+           }
+           
+           .sidebar.collapsed ~ .main-content {
+             margin-left: 50px;
+           }
+           
+           .content-area {
+             padding: 1.5rem;
+           }
+         }
+         
+         @media (max-width: 768px) {
+           .sidebar {
+             transform: translateX(-100%);
+             transition: transform var(--transition);
+             width: 280px;
+           }
+           
+           .sidebar.mobile-open {
+             transform: translateX(0);
+           }
+           
+           .main-content {
+             margin-left: 0;
+           }
+           
+           .main-content.sidebar-collapsed {
+             margin-left: 0;
+           }
+           
+           .content-area {
+             padding: 1rem;
+           }
+           
+           .main-header {
+             padding: 0 1rem;
+           }
+           
+           /* Mobile menu button */
+           .mobile-menu-btn {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             width: 40px;
+             height: 40px;
+             background: var(--primary);
+             color: var(--white);
+             border: none;
+             border-radius: 8px;
+             cursor: pointer;
+             margin-right: 1rem;
+           }
+           
+           .mobile-menu-btn:hover {
+             background: var(--primary-dark);
+           }
+         }
+         
+         @media (max-width: 576px) {
+           .content-area {
+             padding: 0.75rem;
+           }
+           
+           .main-header {
+             padding: 0 0.75rem;
+           }
+         }
+         
+         @media (max-width: 480px) {
+           .content-area {
+             padding: 0.5rem;
+           }
+           
+           .main-header {
+             padding: 0 0.5rem;
+           }
+         }
         
         /* Overlay para móvil */
         .sidebar-overlay {
@@ -293,6 +382,7 @@ class DashboardTrader extends HTMLElement {
         <!-- Overlay para móvil -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         
+<<<<<<< HEAD
         <!-- Sidebar -->
           <nav class="sidebar" id="sidebar">
           <div class="sidebar-header">
@@ -305,6 +395,20 @@ class DashboardTrader extends HTMLElement {
           </div>
           
             <div class="sidebar-nav">
+=======
+                 <!-- Sidebar -->
+           <nav class="sidebar" id="sidebar">
+           <div class="sidebar-header">
+             <button class="sidebar-toggle" id="sidebarToggle" title="Expand/collapse sidebar">
+               <svg viewBox="0 0 24 24" width="20" height="20">
+                 <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+               </svg>
+             </button>
+             <div class="sidebar-header-content" id="sidebarHeader"></div>
+           </div>
+           
+             <div class="sidebar-nav">
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
               <a class="sidebar-link active" data-section="overview">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
@@ -348,6 +452,7 @@ class DashboardTrader extends HTMLElement {
             </div>
           </nav>
         
+<<<<<<< HEAD
         <!-- Contenido principal -->
         <div class="main-content" id="mainContent">
           <div class="main-header" id="mainHeader"></div>
@@ -356,6 +461,16 @@ class DashboardTrader extends HTMLElement {
           </div>
           <div class="main-footer" id="mainFooter"></div>
         </div>
+=======
+                 <!-- Contenido principal -->
+         <div class="main-content" id="mainContent">
+           <div class="main-header" id="mainHeader"></div>
+           <div class="content-area">
+             <slot></slot>
+           </div>
+           <div class="main-footer" id="mainFooter"></div>
+         </div>
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
       </div>
     `;
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
@@ -483,6 +598,49 @@ class DashboardTrader extends HTMLElement {
             position: relative !important;
             z-index: 1000 !important;
           }
+<<<<<<< HEAD
+=======
+          
+          .mobile-menu-btn {
+            display: none !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 40px !important;
+            height: 40px !important;
+            background: var(--primary) !important;
+            color: var(--white) !important;
+            border: none !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            margin-right: 1rem !important;
+            transition: all 0.2s ease !important;
+          }
+          
+          .mobile-menu-btn:hover {
+            background: var(--primary-dark) !important;
+            transform: scale(1.05) !important;
+          }
+          
+          @media (max-width: 768px) {
+            .dashboard-header-new {
+              padding: 0 1rem !important;
+            }
+            
+            .mobile-menu-btn {
+              display: flex !important;
+            }
+            
+            .header-logo span {
+              display: none !important;
+            }
+          }
+          
+          @media (max-width: 576px) {
+            .dashboard-header-new {
+              padding: 0 0.75rem !important;
+            }
+          }
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
           .header-logo {
             display: flex !important;
             align-items: center !important;
@@ -610,6 +768,14 @@ class DashboardTrader extends HTMLElement {
           }
         </style>
         <div class="header-logo">
+<<<<<<< HEAD
+=======
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </button>
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
           <img src="../../logo_small.png" alt="GenoStock">
           <span>GenoStock</span>
         </div>
@@ -629,12 +795,17 @@ class DashboardTrader extends HTMLElement {
         </div>
       `;
       
+<<<<<<< HEAD
       // Agregar funcionalidad de logout
+=======
+      // Agregar funcionalidad de logout (cerrar sesión y navegar a index.html)
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
       setTimeout(() => {
         const logoutBtn = header.querySelector('#dashboardLogout');
         if (logoutBtn) {
           logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
+<<<<<<< HEAD
             console.log('Dashboard logout clicked');
             localStorage.removeItem('username');
             localStorage.removeItem('name');
@@ -644,14 +815,43 @@ class DashboardTrader extends HTMLElement {
         }
         
         // Agregar funcionalidad de marketplace
+=======
+            console.log('Dashboard logout clicked - performing full logout');
+            localStorage.removeItem('username');
+            localStorage.removeItem('name');
+            localStorage.removeItem('role');
+            window.location.href = '../../index.html';
+          });
+        }
+        
+        // Agregar funcionalidad de marketplace (redirigir a marketplace.html con header auth)
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
         const marketplaceBtn = header.querySelector('#marketplaceBtn');
         if (marketplaceBtn) {
           marketplaceBtn.addEventListener('click', function(e) {
             e.preventDefault();
+<<<<<<< HEAD
             console.log('Marketplace clicked');
             window.location.href = '../../marketplace.html';
           });
         }
+=======
+            console.log('Marketplace clicked - redirecting to marketplace.html');
+            window.location.href = '../../marketplace.html';
+          });
+        }
+        
+        // Agregar funcionalidad al logo (redirigir a marketplace.html con header auth)
+        const headerLogo = header.querySelector('.header-logo');
+        if (headerLogo) {
+          headerLogo.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Logo clicked - redirecting to marketplace.html');
+            window.location.href = '../../marketplace.html';
+          });
+          headerLogo.style.cursor = 'pointer';
+        }
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
       }, 0);
       
       headerContainer.appendChild(header);
@@ -701,7 +901,11 @@ class DashboardTrader extends HTMLElement {
       // Cambiar el icono del botón
       const icon = toggle.querySelector('svg');
       if (sidebar.classList.contains('collapsed')) {
+<<<<<<< HEAD
         icon.innerHTML = '<path d="M9 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+=======
+        icon.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
       } else {
         icon.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
       }
@@ -762,6 +966,7 @@ class DashboardTrader extends HTMLElement {
   }
   
   setupMobileOverlay() {
+<<<<<<< HEAD
     // Agregar botón de menú para móvil
     const mainHeader = this.shadowRoot.getElementById('mainHeader');
     if (mainHeader) {
@@ -806,6 +1011,44 @@ class DashboardTrader extends HTMLElement {
       window.addEventListener('resize', showMobileMenu);
       showMobileMenu();
     }
+=======
+    const sidebar = this.shadowRoot.getElementById('sidebar');
+    const overlay = this.shadowRoot.getElementById('sidebarOverlay');
+    
+    const showMobileMenu = () => {
+      sidebar.classList.add('mobile-open');
+      overlay.classList.add('active');
+    };
+    
+    const hideMobileMenu = () => {
+      sidebar.classList.remove('mobile-open');
+      overlay.classList.remove('active');
+    };
+    
+    // Setup mobile menu button from header
+    setTimeout(() => {
+      const mobileMenuBtn = this.shadowRoot.querySelector('#mobileMenuBtn');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', showMobileMenu);
+      }
+    }, 100);
+    
+    // Close menu when clicking overlay
+    overlay.addEventListener('click', hideMobileMenu);
+    
+    // Close menu when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        const sidebar = this.shadowRoot.getElementById('sidebar');
+        const overlay = this.shadowRoot.getElementById('sidebarOverlay');
+        const mobileMenuBtn = this.shadowRoot.querySelector('#mobileMenuBtn');
+        
+        if (!sidebar.contains(e.target) && !mobileMenuBtn?.contains(e.target)) {
+          hideMobileMenu();
+        }
+      }
+    });
+>>>>>>> 2f3bd75aaf5b09b45fb63fa930b1938c40debc3f
   }
 }
 

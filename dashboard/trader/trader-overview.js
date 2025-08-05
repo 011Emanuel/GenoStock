@@ -56,10 +56,10 @@ class TraderOverview extends HTMLElement {
           margin: 0;
         }
         
-        /* Stats Grid - 4 cards in a row */
+        /* Stats Grid - Responsive cards */
         .stats-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 1.5rem;
           margin-bottom: 2.5rem;
         }
@@ -341,6 +341,12 @@ class TraderOverview extends HTMLElement {
         }
 
         /* Responsive Design */
+        @media (max-width: 1400px) {
+          .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          }
+        }
+        
         @media (max-width: 1200px) {
           .stats-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -348,6 +354,31 @@ class TraderOverview extends HTMLElement {
           
           .main-content-grid {
             grid-template-columns: 1fr;
+          }
+          
+          .section-header h2 {
+            font-size: 2.2rem;
+          }
+        }
+        
+        @media (max-width: 992px) {
+          .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+          }
+          
+          .stat-card {
+            padding: 1.3rem;
+          }
+          
+          .stat-icon {
+            width: 55px;
+            height: 55px;
+            font-size: 1.6rem;
+          }
+          
+          .stat-content h3 {
+            font-size: 2rem;
           }
         }
         
@@ -365,6 +396,10 @@ class TraderOverview extends HTMLElement {
             font-size: 2rem;
           }
           
+          .section-header p {
+            font-size: 1rem;
+          }
+          
           .stat-card {
             padding: 1.2rem;
           }
@@ -377,6 +412,105 @@ class TraderOverview extends HTMLElement {
           
           .stat-content h3 {
             font-size: 1.8rem;
+          }
+          
+          .main-content-grid {
+            gap: 1.5rem;
+          }
+          
+          .activity-card,
+          .quick-actions-card {
+            margin-bottom: 1.5rem;
+          }
+        }
+        
+        @media (max-width: 576px) {
+          :host {
+            padding: 0.75rem;
+          }
+          
+          .section-header h2 {
+            font-size: 1.8rem;
+          }
+          
+          .section-header p {
+            font-size: 0.95rem;
+          }
+          
+          .stat-card {
+            padding: 1rem;
+            gap: 1rem;
+          }
+          
+          .stat-icon {
+            width: 45px;
+            height: 45px;
+            font-size: 1.3rem;
+          }
+          
+          .stat-content h3 {
+            font-size: 1.6rem;
+          }
+          
+          .stat-content p {
+            font-size: 0.9rem;
+          }
+          
+          .activity-header,
+          .quick-actions-header {
+            padding: 1.2rem;
+          }
+          
+          .activity-body,
+          .quick-actions-body {
+            padding: 1.2rem;
+          }
+          
+          .activity-item {
+            padding: 0.8rem;
+            gap: 1rem;
+          }
+          
+          .activity-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+          }
+          
+          .quick-action-btn {
+            padding: 1rem;
+            gap: 0.8rem;
+          }
+          
+          .quick-action-icon {
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .stats-grid {
+            gap: 0.8rem;
+          }
+          
+          .stat-card {
+            padding: 0.8rem;
+            gap: 0.8rem;
+          }
+          
+          .stat-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+          }
+          
+          .stat-content h3 {
+            font-size: 1.4rem;
+          }
+          
+          .stat-content p {
+            font-size: 0.85rem;
           }
         }
 

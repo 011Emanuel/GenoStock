@@ -338,7 +338,7 @@ class GenoFooter extends HTMLElement {
         </div>
         <div class="footer-bottom">
           <div class="footer-bottom-left">
-            <span>&copy; 2024 GenoStock. All rights reserved.</span>
+            <span>&copy; <script>document.write(new Date().getFullYear())</script> GenoStock. All rights reserved.</span>
           </div>
           <div class="footer-bottom-right">
             <a href="#" class="footer-bottom-link">Privacy Policy</a>
