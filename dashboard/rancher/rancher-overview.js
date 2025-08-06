@@ -1,4 +1,4 @@
-class TraderOverview extends HTMLElement {
+class RancherOverview extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'}).innerHTML = `
@@ -538,8 +538,8 @@ class TraderOverview extends HTMLElement {
       
       <div class="overview-container">
         <div class="section-header">
-          <h2>Overview</h2>
-          <p>Your livestock business at a glance</p>
+          <h2>Rancher Overview</h2>
+          <p>Your livestock management at a glance</p>
         </div>
         
         <!-- Stats Grid - 4 cards in a row -->
@@ -549,28 +549,28 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 21c4.97-4.97 8-8.13 8-11.5A5.5 5.5 0 0 0 12 4.5 5.5 5.5 0 0 0 4 9.5C4 12.87 7.03 16.03 12 21Z" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>156</h3>
-              <p>Total Livestock</p>
+              <h3>234</h3>
+              <p>Total Cattle</p>
             </div>
           </div>
           
           <div class="stat-card">
             <div class="stat-icon bg-success">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 21V3M6 8l6-5 6 5" stroke="#fff" stroke-width="2"/></svg>
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>$45,230</h3>
-              <p>Total Sales</p>
+              <h3>98%</h3>
+              <p>Health Rate</p>
             </div>
           </div>
           
           <div class="stat-card">
             <div class="stat-icon bg-warning">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M3 12h18M12 3v18" stroke="#fff" stroke-width="2"/></svg>
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>23</h3>
-              <p>This Month</p>
+              <h3>15</h3>
+              <p>Pregnant Cows</p>
             </div>
           </div>
           
@@ -579,8 +579,8 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/><path d="M12 8v4l3 3" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>98%</h3>
-              <p>Health Rate</p>
+              <h3>45</h3>
+              <p>Calves This Year</p>
             </div>
           </div>
         </div>
@@ -593,26 +593,26 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
-              <h5>Recent Activity</h5>
+              <h5>Recent Activities</h5>
             </div>
             <div class="activity-body">
               <div class="activity-item">
                 <div class="activity-icon bg-success">
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2"/></svg>
+                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" stroke="#fff" stroke-width="2"/></svg>
                 </div>
                 <div class="activity-content">
-                  <h6>New livestock added</h6>
-                  <p>Added 5 Brahman cattle to your inventory</p>
+                  <h6>Health check completed</h6>
+                  <p>Vaccination completed for Brahman cattle group</p>
                   <small>2 hours ago</small>
                 </div>
               </div>
               <div class="activity-item">
                 <div class="activity-icon bg-primary">
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 21V3M6 8l6-5 6 5" stroke="#fff" stroke-width="2"/></svg>
+                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 21c4.97-4.97 8-8.13 8-11.5A5.5 5.5 0 0 0 12 4.5 5.5 5.5 0 0 0 4 9.5C4 12.87 7.03 16.03 12 21Z" stroke="#fff" stroke-width="2"/></svg>
                 </div>
                 <div class="activity-content">
-                  <h6>Sale completed</h6>
-                  <p>Sold 3 Gyr cattle for $2,400</p>
+                  <h6>New calf born</h6>
+                  <p>Healthy Brahman calf born to cow #B-156</p>
                   <small>1 day ago</small>
                 </div>
               </div>
@@ -621,8 +621,8 @@ class TraderOverview extends HTMLElement {
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2"/></svg>
                 </div>
                 <div class="activity-content">
-                  <h6>Health check required</h6>
-                  <p>Schedule vaccination for Nelore cattle</p>
+                  <h6>Breeding scheduled</h6>
+                  <p>Artificial insemination scheduled for Nelore group</p>
                   <small>3 days ago</small>
                 </div>
               </div>
@@ -649,20 +649,20 @@ class TraderOverview extends HTMLElement {
                     </svg>
                   </div>
                   <div class="quick-action-content">
-                    <div class="quick-action-text">Add Livestock</div>
-                    <div class="quick-action-description">New registration</div>
+                    <div class="quick-action-text">Add Cattle</div>
+                    <div class="quick-action-description">Register new livestock</div>
                   </div>
                 </button>
                 
                 <button class="quick-action-btn">
                   <div class="quick-action-icon success">
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
+                      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z"/>
                     </svg>
                   </div>
                   <div class="quick-action-content">
-                    <div class="quick-action-text">View Reports</div>
-                    <div class="quick-action-description">Detailed analysis</div>
+                    <div class="quick-action-text">Health Check</div>
+                    <div class="quick-action-description">Schedule checkup</div>
                   </div>
                 </button>
                 
@@ -673,8 +673,8 @@ class TraderOverview extends HTMLElement {
                     </svg>
                   </div>
                   <div class="quick-action-content">
-                    <div class="quick-action-text">Schedule Check</div>
-                    <div class="quick-action-description">Health checkup</div>
+                    <div class="quick-action-text">Breeding</div>
+                    <div class="quick-action-description">Manage breeding</div>
                   </div>
                 </button>
                 
@@ -697,4 +697,4 @@ class TraderOverview extends HTMLElement {
     `;
   }
 }
-customElements.define('trader-overview', TraderOverview); 
+customElements.define('rancher-overview', RancherOverview); 

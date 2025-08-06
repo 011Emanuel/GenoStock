@@ -44,7 +44,7 @@ body {
     text-align: center;
     position: relative;
     padding-top: 120px;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 .Marketplace-hero {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg');

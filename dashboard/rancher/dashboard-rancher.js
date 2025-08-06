@@ -1,4 +1,4 @@
-class DashboardTrader extends HTMLElement {
+class DashboardRancher extends HTMLElement {
   constructor() {
     super();
     const template = document.createElement('template');
@@ -98,35 +98,18 @@ class DashboardTrader extends HTMLElement {
           flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
-          padding: 1rem 1rem 0 1rem;
-          overflow-y: auto;
-        }
-        
-        .sidebar.collapsed .sidebar-nav {
-          padding: 0.5rem 0.5rem 0 0.5rem;
-          align-items: center;
+          padding: 1rem 0;
         }
         
         .sidebar-link {
           display: flex;
           align-items: center;
-          gap: 1rem;
-          padding: 1rem 1.2rem;
+          padding: 0.8rem 1.5rem;
           color: var(--sidebar-text);
           text-decoration: none;
-          font-size: 1rem;
-          border-radius: 12px;
-          transition: all var(--transition);
-          cursor: pointer;
-          white-space: nowrap;
-          font-weight: 500;
+          transition: all 0.2s ease;
           position: relative;
-        }
-        
-        .sidebar.collapsed .sidebar-link {
-          justify-content: center;
-          padding: 0.8rem 0.5rem;
+          gap: 1rem;
         }
         
         .sidebar-link:hover {
@@ -216,11 +199,11 @@ class DashboardTrader extends HTMLElement {
         
         /* Slots para componentes */
         ::slotted(section),
-        ::slotted(trader-overview),
-        ::slotted(trader-profile),
-        ::slotted(trader-sales),
-        ::slotted(trader-livestock),
-        ::slotted(trader-settings) {
+        ::slotted(rancher-overview),
+        ::slotted(rancher-profile),
+        ::slotted(rancher-livestock),
+        ::slotted(rancher-health),
+        ::slotted(rancher-settings) {
           background: var(--white);
           border-radius: var(--card-radius);
           box-shadow: var(--card-shadow);
@@ -355,21 +338,21 @@ class DashboardTrader extends HTMLElement {
               </span>
               <span class="sidebar-label">Profile</span>
             </a>
-            <a class="sidebar-link" data-section="sales">
-              <span class="sidebar-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
-                </svg>
-              </span>
-              <span class="sidebar-label">Sales</span>
-            </a>
             <a class="sidebar-link" data-section="livestock">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
                 </svg>
               </span>
-              <span class="sidebar-label">My Livestock</span>
+              <span class="sidebar-label">Livestock</span>
+            </a>
+            <a class="sidebar-link" data-section="health">
+              <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="sidebar-label">Health</span>
             </a>
             <a class="sidebar-link" data-section="settings">
               <span class="sidebar-icon">
@@ -396,13 +379,6 @@ class DashboardTrader extends HTMLElement {
   }
   
   connectedCallback() {
-    // Check authentication
-    const username = localStorage.getItem('username');
-    if (!username) {
-      window.location.href = '../login.html';
-      return;
-    }
-    
     this.loadComponents();
     this.setupSidebarToggle();
     this.setupNavigation();
@@ -666,7 +642,7 @@ class DashboardTrader extends HTMLElement {
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
             </svg>
           </button>
-          <img src="../logo_small.png" alt="GenoStock">
+          <img src="../../logo_small.png" alt="GenoStock">
           <span>GenoStock</span>
         </div>
         
@@ -697,7 +673,7 @@ class DashboardTrader extends HTMLElement {
             localStorage.removeItem('username');
             localStorage.removeItem('name');
             localStorage.removeItem('role');
-            window.location.href = '../index.html';
+            window.location.href = '../../index.html';
           });
         }
         
@@ -707,7 +683,7 @@ class DashboardTrader extends HTMLElement {
           marketplaceBtn.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Marketplace clicked - redirecting to marketplace.html');
-            window.location.href = '../marketplace.html';
+            window.location.href = '../../marketplace.html';
           });
         }
         
@@ -717,7 +693,7 @@ class DashboardTrader extends HTMLElement {
           headerLogo.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Logo clicked - redirecting to marketplace.html');
-            window.location.href = '../marketplace.html';
+            window.location.href = '../../marketplace.html';
           });
           headerLogo.style.cursor = 'pointer';
         }
@@ -735,7 +711,7 @@ class DashboardTrader extends HTMLElement {
     
     try {
       if (!window.createAuthFooter) {
-        await this.loadScript('../components/footer-auth.js');
+        await this.loadScript('../../components/footer-auth.js');
       }
       
       if (window.createAuthFooter) {
@@ -864,4 +840,4 @@ class DashboardTrader extends HTMLElement {
   }
 }
 
-customElements.define('dashboard-trader', DashboardTrader); 
+customElements.define('dashboard-rancher', DashboardRancher); 

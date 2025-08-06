@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trader Dashboard - GenoStock</title>
+    <title>Test Trader Dashboard - GenoStock</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <script src="dashboard/trader/dashboard-trader.js" defer></script>
     <script src="dashboard/trader/trader-overview.js" defer></script>
     <script src="dashboard/trader/trader-profile.js" defer></script>
     <script src="dashboard/trader/trader-sales.js" defer></script>
     <script src="dashboard/trader/trader-livestock.js" defer></script>
     <script src="dashboard/trader/trader-settings.js" defer></script>
-  
-    <!-- Removed dashboard.js to avoid conflicts with web components -->
 </head>
 <body>
+    <!-- Simular datos de usuario para testing -->
+    <script>
+        // Simular datos de usuario para testing
+        localStorage.setItem('username', 'testuser');
+        localStorage.setItem('name', 'Test User');
+        localStorage.setItem('role', 'trader');
+    </script>
+    
     <dashboard-trader>
       <trader-overview id="overview" class="active"></trader-overview>
       <trader-profile id="profile" style="display:none"></trader-profile>
@@ -25,12 +30,14 @@
       <trader-livestock id="livestock" style="display:none"></trader-livestock>
       <trader-settings id="settings" style="display:none"></trader-settings>
     </dashboard-trader>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    
     <script>
-      AOS.init({
-        duration: 800,
-        once: true
-      });
+        // Debug script
+        window.addEventListener('load', function() {
+            console.log('Dashboard loaded');
+            console.log('User:', localStorage.getItem('username'));
+            console.log('Role:', localStorage.getItem('role'));
+        });
     </script>
 </body>
 </html> 

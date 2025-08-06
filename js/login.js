@@ -20,9 +20,9 @@ function loginUser(event) {
     localStorage.setItem('role', user.role);
     // Redirigir según el rol
     if (user.role === 'rancher') {
-      window.location.href = 'dashboard-rancher.html';
+      window.location.href = 'dashboard/rancher/rancher.html';
     } else {
-      window.location.href = 'dashboard-trader.html';
+      window.location.href = 'dashboard/trader/trader.html';
     }
   } else {
     alert('Usuario o contraseña incorrectos');
