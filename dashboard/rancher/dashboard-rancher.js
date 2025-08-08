@@ -24,12 +24,14 @@ class DashboardRancher extends HTMLElement {
           display: block;
           min-height: 100vh;
           background: #f5f7fa;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .dashboard-layout {
           display: flex;
           min-height: 100vh;
           position: relative;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         /* Sidebar */
@@ -110,6 +112,7 @@ class DashboardRancher extends HTMLElement {
           transition: all 0.2s ease;
           position: relative;
           gap: 1rem;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar-link:hover {
@@ -146,6 +149,7 @@ class DashboardRancher extends HTMLElement {
           font-size: 0.95rem;
           white-space: nowrap;
           transition: opacity var(--transition);
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar.collapsed .sidebar-label {
@@ -187,6 +191,7 @@ class DashboardRancher extends HTMLElement {
           background: #f5f7fa;
           min-height: calc(100vh - var(--header-height) - var(--footer-height));
           transition: all var(--transition);
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         /* Footer principal */
