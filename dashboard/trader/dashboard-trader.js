@@ -24,12 +24,14 @@ class DashboardTrader extends HTMLElement {
           display: block;
           min-height: 100vh;
           background: #f5f7fa;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .dashboard-layout {
           display: flex;
           min-height: 100vh;
           position: relative;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         /* Sidebar */
@@ -122,6 +124,7 @@ class DashboardTrader extends HTMLElement {
           white-space: nowrap;
           font-weight: 500;
           position: relative;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar.collapsed .sidebar-link {
@@ -163,6 +166,7 @@ class DashboardTrader extends HTMLElement {
           font-size: 0.95rem;
           white-space: nowrap;
           transition: opacity var(--transition);
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar.collapsed .sidebar-label {
@@ -195,6 +199,7 @@ class DashboardTrader extends HTMLElement {
           top: 0;
           z-index: 100;
           box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         /* Área de contenido */
@@ -204,6 +209,7 @@ class DashboardTrader extends HTMLElement {
           background: #f5f7fa;
           min-height: calc(100vh - var(--header-height) - var(--footer-height));
           transition: all var(--transition);
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         /* Footer principal */
@@ -436,6 +442,7 @@ class DashboardTrader extends HTMLElement {
             align-items: center;
             gap: 0.8rem;
             padding: 1rem 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           }
           .sidebar-avatar {
             display: flex;
@@ -461,6 +468,7 @@ class DashboardTrader extends HTMLElement {
             font-weight: 600;
             font-size: 1rem;
             line-height: 1.2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           }
           .sidebar-user-role {
             font-size: 0.8em;
@@ -470,6 +478,7 @@ class DashboardTrader extends HTMLElement {
             padding: 2px 8px;
             font-weight: 500;
             line-height: 1.2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           }
           .sidebar.collapsed .sidebar-user-info {
             display: none;
@@ -516,6 +525,7 @@ class DashboardTrader extends HTMLElement {
             width: 100% !important;
             position: relative !important;
             z-index: 1000 !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
           }
           
           .mobile-menu-btn {
@@ -577,6 +587,7 @@ class DashboardTrader extends HTMLElement {
             letter-spacing: 0.01em !important;
             margin: 0 !important;
             padding: 0 !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
           }
           .header-right {
             display: flex !important;
@@ -600,6 +611,7 @@ class DashboardTrader extends HTMLElement {
             text-decoration: none !important;
             transition: all 0.2s ease !important;
             cursor: pointer !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
           }
           
           .marketplace-btn:hover {
@@ -622,6 +634,7 @@ class DashboardTrader extends HTMLElement {
             text-decoration: none !important;
             transition: all 0.2s ease !important;
             cursor: pointer !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
           }
           
           .logout-btn:hover {
