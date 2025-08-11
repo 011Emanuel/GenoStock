@@ -1,7 +1,7 @@
-// Header unificado para usuarios autenticados
-// Funciona tanto fuera como dentro del dashboard
+// Unified header for authenticated users
+// Works both outside and inside the dashboard
 (function() {
-  if (window.createAuthHeader) return; // Evita redefinir
+  if (window.createAuthHeader) return; // Avoid redefinition
   
   function createAuthHeader(options = {}) {
     // Opciones por defecto
@@ -12,7 +12,7 @@
       ...options
     };
     
-    // Crear elementos principales
+    // Create main elements
     const header = document.createElement('header');
     header.className = 'header-bar';
     
@@ -295,7 +295,7 @@
             <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20">
               <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <input type="text" class="search-input" placeholder="Buscar en GenoStock..." id="searchInput">
+                                        <input type="text" class="search-input" placeholder="Search in GenoStock..." id="searchInput">
           </div>
         </div>
       ` : ''}
@@ -305,7 +305,7 @@
             <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(localStorage.getItem('name') || localStorage.getItem('username') || 'U')}" alt="Avatar">
           </div>
           <div class="user-info">
-            <span class="username">${localStorage.getItem('name') || localStorage.getItem('username') || 'Usuario'}</span>
+                                        <span class="username">${localStorage.getItem('name') || localStorage.getItem('username') || 'User'}</span>
             <span class="user-role">${localStorage.getItem('role') ? (localStorage.getItem('role').charAt(0).toUpperCase() + localStorage.getItem('role').slice(1)) : ''}</span>
           </div>
         </div>
@@ -437,7 +437,7 @@
     return header;
   }
   
-  // Función para crear header del dashboard (sin search, sin logo)
+  // Function to create dashboard header (without search, without logo)
   function createDashboardHeader() {
     return createAuthHeader({
       showSearch: false,
@@ -446,7 +446,7 @@
     });
   }
   
-  // Función para crear header completo (con search, con logo)
+  // Function to create complete header (with search, with logo)
   function createFullHeader() {
     return createAuthHeader({
       showSearch: true,
@@ -460,7 +460,7 @@
   window.createFullHeader = createFullHeader;
 })();
 
-// Función para renderizar el header auth si el usuario está logueado
+// Function to render auth header if user is logged in
 function renderAuthHeaderIfLoggedIn() {
   const username = localStorage.getItem('username');
   if (username) {
@@ -470,9 +470,9 @@ function renderAuthHeaderIfLoggedIn() {
     // Insertar el nuevo header completo
     document.body.insertBefore(createFullHeader(), document.body.firstChild);
     
-    // Comentado: Redirección automática desde marketplace.html al dashboard
-    // Esta lógica se removió para permitir que los usuarios naveguen libremente a marketplace.html
-    // desde sus dashboards sin ser redirigidos automáticamente
+    // Commented: Automatic redirect from marketplace.html to dashboard
+// This logic was removed to allow users to navigate freely to marketplace.html
+// from their dashboards without being automatically redirected
     /*
     if (window.location.pathname.includes('marketplace.html')) {
       const role = localStorage.getItem('role');
@@ -486,5 +486,5 @@ function renderAuthHeaderIfLoggedIn() {
   }
 }
 
-// Llamar a la función al cargar la página
+// Call function when loading page
 window.addEventListener('DOMContentLoaded', renderAuthHeaderIfLoggedIn); 

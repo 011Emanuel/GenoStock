@@ -55,7 +55,7 @@ class DashboardTrader extends HTMLElement {
           width: var(--sidebar-collapsed-width);
         }
         
-        /* Header dentro del sidebar */
+        /* Header inside sidebar */
         .sidebar-header {
           padding: 1.5rem 1.5rem 1rem 1.5rem;
           border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -95,7 +95,7 @@ class DashboardTrader extends HTMLElement {
           margin-bottom: 0.5rem;
         }
         
-        /* Navegación del sidebar */
+        /* Sidebar navigation */
         .sidebar-nav {
           flex: 1;
           display: flex;
@@ -173,7 +173,7 @@ class DashboardTrader extends HTMLElement {
           opacity: 0;
         }
         
-        /* Contenido principal */
+        /* Main content */
         .main-content {
           flex: 1;
           margin-left: var(--sidebar-width);
@@ -187,7 +187,7 @@ class DashboardTrader extends HTMLElement {
           margin-left: var(--sidebar-collapsed-width);
         }
         
-        /* Header principal */
+        /* Main header */
         .main-header {
           height: var(--header-height);
           background: var(--white);
@@ -202,7 +202,7 @@ class DashboardTrader extends HTMLElement {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        /* Área de contenido */
+        /* Content area */
         .content-area {
           flex: 1;
           padding: 2rem 2.5rem;
@@ -310,7 +310,7 @@ class DashboardTrader extends HTMLElement {
           }
         }
         
-        /* Overlay para móvil */
+        /* Mobile overlay */
         .sidebar-overlay {
           display: none;
           position: fixed;
@@ -330,7 +330,7 @@ class DashboardTrader extends HTMLElement {
       </style>
       
       <div class="dashboard-layout">
-        <!-- Overlay para móvil -->
+        <!-- Mobile overlay -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         
         <!-- Sidebar -->
@@ -700,7 +700,7 @@ class DashboardTrader extends HTMLElement {
         </div>
       `;
       
-      // Agregar funcionalidad de logout (cerrar sesión y navegar a index.html)
+      // Add logout functionality (sign out and navigate to index.html)
       setTimeout(() => {
         const logoutBtn = header.querySelector('#dashboardLogout');
         if (logoutBtn) {
@@ -780,7 +780,7 @@ class DashboardTrader extends HTMLElement {
       sidebar.classList.toggle('collapsed');
       mainContent.classList.toggle('sidebar-collapsed');
       
-      // Cambiar el icono del botón
+      // Change button icon
       const icon = toggle.querySelector('svg');
       if (sidebar.classList.contains('collapsed')) {
         icon.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
@@ -789,7 +789,7 @@ class DashboardTrader extends HTMLElement {
       }
     });
     
-    // Cerrar sidebar en móvil al hacer clic en overlay
+    // Close sidebar on mobile when clicking overlay
     if (overlay) {
       overlay.addEventListener('click', () => {
         sidebar.classList.remove('mobile-open');
@@ -832,7 +832,7 @@ class DashboardTrader extends HTMLElement {
         const sectionName = link.getAttribute('data-section');
         updateSections(sectionName);
         
-        // En móvil, cerrar el sidebar después de la navegación
+        // On mobile, close sidebar after navigation
         const sidebar = this.shadowRoot.getElementById('sidebar');
         const overlay = this.shadowRoot.getElementById('sidebarOverlay');
         if (window.innerWidth <= 991) {
@@ -857,7 +857,7 @@ class DashboardTrader extends HTMLElement {
       overlay.classList.remove('active');
     };
     
-    // Agregar event listener al botón de menú móvil
+    // Add event listener to mobile menu button
     const mobileMenuBtn = this.shadowRoot.querySelector('#mobileMenuBtn');
     if (mobileMenuBtn) {
       mobileMenuBtn.addEventListener('click', showMobileMenu);

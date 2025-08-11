@@ -432,7 +432,7 @@ class TraderLivestock extends HTMLElement {
           <p>Manage your cattle inventory efficiently</p>
         </div>
 
-        <!-- Estadísticas del ganado -->
+        <!-- Livestock statistics -->
         <div class="livestock-stats-overview">
           <div class="stat-item">
             <div class="stat-number">156</div>

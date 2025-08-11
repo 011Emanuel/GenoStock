@@ -86,7 +86,7 @@ class GenoFooter extends HTMLElement {
           margin-top: 0.4rem;
         }
         
-        /* Alinear el título Quick Links con los menús */
+        /* Align Quick Links title with menus */
         .footer-col:nth-child(2) h5 {
           padding-left: 20px;
         }

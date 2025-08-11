@@ -94,7 +94,7 @@ function createAuthFooter() {
   return footer;
 }
 
-// Exportar la función para uso global
+// Export function for global use
 if (typeof window !== 'undefined') {
   window.createAuthFooter = createAuthFooter;
 } 

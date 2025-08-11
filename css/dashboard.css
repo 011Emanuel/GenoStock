@@ -1,4 +1,4 @@
-/* Estilos generales del dashboard */
+/* General dashboard styles */
 body {
     margin: 0;
     padding: 0;
@@ -48,7 +48,7 @@ body {
   box-shadow: 0 8px 32px rgba(44,85,48,0.15);
 }
 
-/* Estilos para botones */
+/* Button styles */
 .btn-primary {
   background: var(--primary);
   border-color: var(--primary);
@@ -83,7 +83,7 @@ body {
   box-shadow: 0 4px 12px rgba(255,167,38,0.3);
 }
 
-/* Estilos para formularios */
+/* Form styles */
 .form-control {
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -96,7 +96,7 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(44,85,48,0.25);
 }
 
-/* Estilos para tablas */
+/* Table styles */
 .table {
   border-radius: var(--card-radius);
   overflow: hidden;
@@ -121,7 +121,7 @@ body {
   background: rgba(44,85,48,0.05);
 }
 
-/* Estilos para badges */
+/* Badge styles */
 .badge-primary {
   background: var(--primary);
   color: var(--white);
@@ -140,7 +140,7 @@ body {
   font-weight: 500;
 }
 
-/* Estilos para alertas */
+/* Alert styles */
 .alert {
   border-radius: var(--card-radius);
   border: none;
@@ -172,7 +172,7 @@ body {
   border-left: 4px solid #dc3545;
 }
 
-/* Estilos para modales */
+/* Modal styles */
 .modal-content {
   border-radius: var(--card-radius);
   border: none;
@@ -190,7 +190,7 @@ body {
   font-weight: 600;
 }
 
-/* Estilos para tooltips */
+/* Tooltip styles */
 .tooltip {
   font-size: 0.875rem;
 }
@@ -201,7 +201,7 @@ body {
   padding: 0.5rem 0.75rem;
 }
 
-/* Estilos para scrollbars personalizados */
+/* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -220,7 +220,7 @@ body {
   background: var(--primary-dark);
 }
 
-/* Estilos para animaciones */
+/* Animation styles */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -236,7 +236,7 @@ body {
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Estilos para responsive */
+/* Responsive styles */
 @media (max-width: 991px) {
   .dashboard-content {
     padding: 1.5rem;
@@ -268,7 +268,7 @@ body {
   }
 }
 
-/* Estilos para estados de carga */
+/* Loading state styles */
 .loading {
   position: relative;
   overflow: hidden;
@@ -294,7 +294,7 @@ body {
   }
 }
 
-/* Estilos para estados vacíos */
+/* Empty state styles */
 .empty-state {
   text-align: center;
   padding: 3rem 1rem;
@@ -318,7 +318,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* Estilos para estadísticas */
+/* Statistics styles */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -371,7 +371,7 @@ body {
   color: #dc3545;
 }
 
-/* Estilos para gráficos */
+/* Chart styles */
 .chart-container {
   background: var(--white);
   border-radius: var(--card-radius);
@@ -388,7 +388,7 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Estilos para filtros */
+/* Filter styles */
 .filter-bar {
   background: var(--white);
   border-radius: var(--card-radius);
@@ -414,7 +414,7 @@ body {
   font-size: 0.875rem;
 }
 
-/* Estilos para paginación */
+/* Pagination styles */
 .pagination {
   justify-content: center;
   margin-top: 2rem;
@@ -439,7 +439,7 @@ body {
   border-color: var(--primary);
 }
 
-/* Estilos para notificaciones */
+/* Notification styles */
 .notification {
   position: fixed;
   top: 20px;

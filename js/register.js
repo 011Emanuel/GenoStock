@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Obtener el rol seleccionado
         const selectedRole = role.value;
         
-        // Guardar información del usuario en localStorage
+        // Save user information in localStorage
         localStorage.setItem('username', username);
         localStorage.setItem('email', email);
         localStorage.setItem('role', selectedRole);
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Mostrar mensaje de éxito
-        showNotification('¡Registro exitoso! Redirigiendo a tu dashboard...', 'success');
+        showNotification('Registration successful! Redirecting to your dashboard...', 'success');
         
         // Redirigir basado en el rol seleccionado después de un breve delay
         setTimeout(() => {
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (selectedRole === 'trader') {  // Trader
                 window.location.href = 'dashboard-trader.html';
             } else {
-                // Redirección por defecto en caso de que no coincida ningún rol
+                // Default redirect in case no role matches
                 window.location.href = 'dashboard.html';
             }
         }, 1500);

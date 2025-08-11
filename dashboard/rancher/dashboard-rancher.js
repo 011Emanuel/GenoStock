@@ -95,7 +95,7 @@ class DashboardRancher extends HTMLElement {
           margin-bottom: 0.5rem;
         }
         
-        /* Navegación del sidebar */
+        /* Sidebar navigation */
         .sidebar-nav {
           flex: 1;
           display: flex;
@@ -184,7 +184,7 @@ class DashboardRancher extends HTMLElement {
           box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
-        /* Área de contenido */
+        /* Content area */
         .content-area {
           flex: 1;
           padding: 2rem 2.5rem;
@@ -292,7 +292,7 @@ class DashboardRancher extends HTMLElement {
           }
         }
         
-        /* Overlay para móvil */
+        /* Mobile overlay */
         .sidebar-overlay {
           display: none;
           position: fixed;
@@ -312,7 +312,7 @@ class DashboardRancher extends HTMLElement {
       </style>
       
       <div class="dashboard-layout">
-        <!-- Overlay para móvil -->
+        <!-- Mobile overlay -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         
         <!-- Sidebar -->
@@ -668,7 +668,7 @@ class DashboardRancher extends HTMLElement {
         </div>
       `;
       
-      // Agregar funcionalidad de logout (cerrar sesión y navegar a index.html)
+      // Add logout functionality (sign out and navigate to index.html)
       setTimeout(() => {
         const logoutBtn = header.querySelector('#dashboardLogout');
         if (logoutBtn) {
@@ -748,7 +748,7 @@ class DashboardRancher extends HTMLElement {
       sidebar.classList.toggle('collapsed');
       mainContent.classList.toggle('sidebar-collapsed');
       
-      // Cambiar el icono del botón
+      // Change button icon
       const icon = toggle.querySelector('svg');
       if (sidebar.classList.contains('collapsed')) {
         icon.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
@@ -757,7 +757,7 @@ class DashboardRancher extends HTMLElement {
       }
     });
     
-    // Cerrar sidebar en móvil al hacer clic en overlay
+    // Close sidebar on mobile when clicking overlay
     if (overlay) {
       overlay.addEventListener('click', () => {
         sidebar.classList.remove('mobile-open');
@@ -800,7 +800,7 @@ class DashboardRancher extends HTMLElement {
         const sectionName = link.getAttribute('data-section');
         updateSections(sectionName);
         
-        // En móvil, cerrar el sidebar después de la navegación
+        // On mobile, close sidebar after navigation
         const sidebar = this.shadowRoot.getElementById('sidebar');
         const overlay = this.shadowRoot.getElementById('sidebarOverlay');
         if (window.innerWidth <= 991) {
@@ -825,7 +825,7 @@ class DashboardRancher extends HTMLElement {
       overlay.classList.remove('active');
     };
     
-    // Agregar event listener al botón de menú móvil
+    // Add event listener to mobile menu button
     const mobileMenuBtn = this.shadowRoot.querySelector('#mobileMenuBtn');
     if (mobileMenuBtn) {
       mobileMenuBtn.addEventListener('click', showMobileMenu);

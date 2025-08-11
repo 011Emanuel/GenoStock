@@ -1,8 +1,8 @@
-/* Estilos específicos para la página de Contactos */
+/* Specific styles for the Contact page */
 
 /* Hero section now uses the same style as about us */
 
-/* Segunda sección - Contenedor principal dividido */
+/* Second section - Main container divided */
 .contact-container {
     display: flex;
     min-height: 500px;
@@ -10,7 +10,7 @@
     padding: 40px 0;
 }
 
-/* Segunda parte - Contact Us (2/3 del ancho) */
+/* Second part - Contact Us (2/3 of width) */
 .contact-section:first-of-type {
     flex: 2;
     background-color: #ffffff;

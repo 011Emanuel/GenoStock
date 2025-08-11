@@ -514,7 +514,7 @@ class GenoHeader extends HTMLElement {
     });
     floatingForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Aquí puedes manejar la búsqueda
+      // Here you can handle the search
       floatingInput.blur();
       searchActive = false;
       floatingSearch.classList.remove('active');
@@ -550,7 +550,7 @@ class GenoHeader extends HTMLElement {
       }
     });
 
-    // Marcar nav-link activa según la URL
+    // Mark active nav-link according to URL
     const links = shadow.querySelectorAll('.nav-link');
     const current = window.location.pathname.split('/').pop();
     links.forEach(link => {
