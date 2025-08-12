@@ -370,7 +370,7 @@ class DashboardRancher extends HTMLElement {
           </div>
         </nav>
         
-        <!-- Contenido principal -->
+        <!-- Main content -->
         <div class="main-content" id="mainContent">
           <div class="main-header" id="mainHeader"></div>
           <div class="content-area">
@@ -391,13 +391,13 @@ class DashboardRancher extends HTMLElement {
   }
   
   async loadComponents() {
-    // Cargar header-auth en el sidebar
+    // Load header-auth in sidebar
     await this.loadHeaderAuth();
     
-    // Cargar header-auth en el contenido principal
+    // Load header-auth in main content
     await this.loadMainHeader();
     
-    // Cargar footer-auth
+    // Load footer-auth
     await this.loadMainFooter();
   }
   
@@ -406,7 +406,7 @@ class DashboardRancher extends HTMLElement {
     if (!headerContainer) return;
     
     try {
-      // Crear un header simple para el sidebar con avatar, nombre y rol
+      // Create a simple header for sidebar with avatar, name and role
       const header = document.createElement('div');
       header.className = 'sidebar-header-simple';
       header.innerHTML = `
@@ -776,7 +776,7 @@ class DashboardRancher extends HTMLElement {
         if (sec.id === sectionName) {
           sec.classList.add('active');
           sec.style.display = '';
-          void sec.offsetWidth; // Forzar reflow
+          void sec.offsetWidth; // Force reflow
           sec.classList.add('active');
         } else {
           sec.classList.remove('active');
@@ -831,12 +831,12 @@ class DashboardRancher extends HTMLElement {
       mobileMenuBtn.addEventListener('click', showMobileMenu);
     }
     
-    // Cerrar al hacer clic en overlay
+    // Close when clicking on overlay
     if (overlay) {
       overlay.addEventListener('click', hideMobileMenu);
     }
     
-    // Cerrar con Escape
+    // Close with Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         hideMobileMenu();

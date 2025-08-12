@@ -363,8 +363,8 @@ class TraderSettings extends HTMLElement {
       
       <section>
         <div class="section-header">
-          <h2>Configuración</h2>
-          <p>Personaliza tu experiencia y gestiona la seguridad de tu cuenta</p>
+          <h2>Settings</h2>
+          <p>Customize your experience and manage your account security</p>
         </div>
 
         <div class="settings-container">

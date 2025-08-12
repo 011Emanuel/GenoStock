@@ -388,7 +388,7 @@ class DashboardTrader extends HTMLElement {
           </div>
         </nav>
         
-        <!-- Contenido principal -->
+        <!-- Main content -->
         <div class="main-content" id="mainContent">
           <div class="main-header" id="mainHeader"></div>
           <div class="content-area">
@@ -416,13 +416,13 @@ class DashboardTrader extends HTMLElement {
   }
   
   async loadComponents() {
-    // Cargar header-auth en el sidebar
+    // Load header-auth in sidebar
     await this.loadHeaderAuth();
     
-    // Cargar header-auth en el contenido principal
+    // Load header-auth in main content
     await this.loadMainHeader();
     
-    // Cargar footer-auth
+    // Load footer-auth
     await this.loadMainFooter();
   }
   
@@ -431,7 +431,7 @@ class DashboardTrader extends HTMLElement {
     if (!headerContainer) return;
     
     try {
-      // Crear un header simple para el sidebar con avatar, nombre y rol
+      // Create a simple header for sidebar with avatar, name and role
       const header = document.createElement('div');
       header.className = 'sidebar-header-simple';
       header.innerHTML = `
@@ -508,7 +508,7 @@ class DashboardTrader extends HTMLElement {
     if (!headerContainer) return;
     
     try {
-      // Crear header con logo a la izquierda y marketplace/store + logout a la derecha
+      // Create header with logo on the left and marketplace/store + logout on the right
       const header = document.createElement('div');
       header.className = 'dashboard-header-new';
       header.innerHTML = `
@@ -679,7 +679,7 @@ class DashboardTrader extends HTMLElement {
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
             </svg>
           </button>
-          <img src="../logo_small.png" alt="GenoStock">
+          <img src="../../logo_small.png" alt="GenoStock">
           <span>GenoStock</span>
         </div>
         
@@ -710,7 +710,7 @@ class DashboardTrader extends HTMLElement {
             localStorage.removeItem('username');
             localStorage.removeItem('name');
             localStorage.removeItem('role');
-            window.location.href = '../index.html';
+            window.location.href = '../../index.html';
           });
         }
         
@@ -720,7 +720,7 @@ class DashboardTrader extends HTMLElement {
           marketplaceBtn.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Marketplace clicked - redirecting to marketplace.html');
-            window.location.href = '../marketplace.html';
+            window.location.href = '../../marketplace.html';
           });
         }
         
@@ -730,7 +730,7 @@ class DashboardTrader extends HTMLElement {
           headerLogo.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Logo clicked - redirecting to marketplace.html');
-            window.location.href = '../marketplace.html';
+            window.location.href = '../../marketplace.html';
           });
           headerLogo.style.cursor = 'pointer';
         }
@@ -748,7 +748,7 @@ class DashboardTrader extends HTMLElement {
     
     try {
       if (!window.createAuthFooter) {
-        await this.loadScript('../components/footer-auth.js');
+        await this.loadScript('../../components/footer-auth.js');
       }
       
       if (window.createAuthFooter) {
@@ -808,7 +808,7 @@ class DashboardTrader extends HTMLElement {
         if (sec.id === sectionName) {
           sec.classList.add('active');
           sec.style.display = '';
-          void sec.offsetWidth; // Forzar reflow
+          void sec.offsetWidth; // Force reflow
           sec.classList.add('active');
         } else {
           sec.classList.remove('active');
@@ -863,12 +863,12 @@ class DashboardTrader extends HTMLElement {
       mobileMenuBtn.addEventListener('click', showMobileMenu);
     }
     
-    // Cerrar al hacer clic en overlay
+    // Close when clicking on overlay
     if (overlay) {
       overlay.addEventListener('click', hideMobileMenu);
     }
     
-    // Cerrar con Escape
+    // Close with Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         hideMobileMenu();

@@ -493,7 +493,7 @@ class GenoHeader extends HTMLElement {
         floatingInput.value = '';
       }
     });
-    // Cerrar search al hacer click fuera
+    // Close search when clicking outside
     document.addEventListener('mousedown', (e) => {
       if (!this.contains(e.target) && !shadow.contains(e.target)) {
         searchActive = false;
