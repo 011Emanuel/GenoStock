@@ -119,17 +119,6 @@ class GenoFooter extends HTMLElement {
         }
         
         .footer-links a {
-<<<<<<< HEAD
-          color: #ff8c00 !important;
-          text-decoration: none !important;
-          font-size: 1.12rem;
-          font-weight: 500;
-          letter-spacing: 0.01em;
-          transition: color 0.2s, border-bottom 0.2s;
-          border-bottom: 2px solid transparent;
-          padding-bottom: 2px;
-          display: inline-block;
-=======
           color: #fff !important;
           text-decoration: none !important;
           font-size: 1.12rem !important;
@@ -138,24 +127,14 @@ class GenoFooter extends HTMLElement {
           transition: color 0.2s, border-bottom 0.2s !important;
           border-bottom: 2px solid transparent !important;
           padding-bottom: 2px !important;
-          display: block !important;
-          padding-left: 0 !important;
-          margin-left: 0 !important;
-          text-indent: 0 !important;
-          box-sizing: border-box !important;
+          display: inline-block !important;
           position: relative !important;
-          left: 0 !important;
->>>>>>> 84f194b17e9fbd6d7ddfaaac3fa6d37bd550a407
         }
         
         .footer-links a:hover {
-<<<<<<< HEAD
-          color: #ffa500 !important;
-          border-bottom: 2px solid #ff8c00 !important;
-=======
-          color: #ffa726;
-          border-bottom: 2px solid #ffa726;
->>>>>>> 84f194b17e9fbd6d7ddfaaac3fa6d37bd550a407
+          color: #ffa726 !important;
+          border-bottom: 2px solid #ffa726 !important;
+          width: fit-content !important;
         }
         
         .footer-contact p {

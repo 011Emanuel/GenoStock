@@ -452,9 +452,9 @@ class TraderLivestock extends HTMLElement {
           </div>
         </div>
 
-        <!-- Grid de ganado -->
+        <!-- Livestock Grid -->
         <div class="livestock-grid">
-          <!-- Tarjeta de Brahman -->
+          <!-- Brahman Card -->
           <div class="livestock-card">
             <div class="livestock-image-container">
               <img src="https://static.vecteezy.com/system/resources/previews/024/940/349/non_2x/beef-cattle-breeder-american-brahman-red-on-the-ground-in-the-fram-big-male-brahman-cow-photo.jpg" class="livestock-image" alt="Brahman">
@@ -507,7 +507,7 @@ class TraderLivestock extends HTMLElement {
             </div>
           </div>
 
-          <!-- Tarjeta de Gyr -->
+          <!-- Gyr Card -->
           <div class="livestock-card">
             <div class="livestock-image-container">
               <img src="https://revistageneticabovina.com/wp-content/uploads/2020/08/gyr.png" class="livestock-image" alt="Gyr">
@@ -560,7 +560,7 @@ class TraderLivestock extends HTMLElement {
             </div>
           </div>
 
-          <!-- Tarjeta de Nelore -->
+          <!-- Nelore Card -->
           <div class="livestock-card">
             <div class="livestock-image-container">
               <img src="https://agrosinergia.com.bo/wp-content/uploads/2025/05/VACA-NELORE.jpg" class="livestock-image" alt="Nelore">
@@ -613,7 +613,7 @@ class TraderLivestock extends HTMLElement {
             </div>
           </div>
 
-          <!-- Tarjeta para agregar nuevo ganado -->
+          <!-- Card to add new livestock -->
           <div class="add-livestock-card">
             <div class="add-icon">
               <svg viewBox="0 0 24 24" fill="currentColor">
