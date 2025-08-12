@@ -79,7 +79,7 @@ function createAuthFooter() {
     
     <div class="footer-content">
       <div class="footer-copyright">
-        &copy; ${currentYear} GenoStock. Todos los derechos reservados.
+        <script>let date = new Date().getFullYear();</script> GenoStock. All rights reserved.
       </div>
       <div class="footer-links">
         <a href="#" class="footer-link">Privacy Policy</a>
