@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Subasta - Genostock</title>
+    <link rel="icon" type="image/png" href="logo_small.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/auctions.css">
+</head>
+<body>
+    <geno-header id="main-header"></geno-header>
+
+    <section class="main-content py-5" style="padding-top: 120px !important;">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="auctions.html">Subastas</a></li>
+                    <li class="breadcrumb-item active" id="breadcrumbTitle">Detalle</li>
+                </ol>
+            </nav>
+
+            <div id="detailLoading" class="text-center py-5">
+                <div class="spinner-border text-success"></div>
+            </div>
+
+            <div id="detailError" class="alert alert-danger d-none"></div>
+
+            <div id="detailContent" class="d-none">
+                <div class="row g-4">
+                    <div class="col-lg-7">
+                        <div class="auction-detail-gallery mb-3">
+                            <img id="mainImage" src="" alt="Subasta">
+                        </div>
+                        <div id="thumbnailRow" class="d-flex gap-2 flex-wrap mb-4"></div>
+                        <h2 id="auctionTitle" class="fw-bold mb-3"></h2>
+                        <p id="auctionDescription" class="text-muted"></p>
+                        <p class="auction-meta"><i class="fas fa-user"></i> Vendedor: <strong id="sellerName"></strong></p>
+                        <p class="auction-meta"><i class="fas fa-calendar"></i> Finaliza: <strong id="endsAtLabel"></strong></p>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div id="winnerBanner" class="winner-banner mb-4 d-none">
+                            <i class="fas fa-trophy fa-2x mb-2"></i>
+                            <h4>Subasta finalizada</h4>
+                            <p class="mb-0" id="winnerText"></p>
+                        </div>
+
+                        <div class="auction-leader-box mb-4">
+                            <p class="text-muted mb-1">Oferta actual</p>
+                            <h2 id="currentPrice" class="auction-current-price mb-2"></h2>
+                            <p class="mb-0"><i class="fas fa-crown text-warning"></i> Líder: <strong id="leaderName">—</strong></p>
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <p class="text-muted mb-1">Tiempo restante</p>
+                            <div id="detailCountdown" class="auction-detail-countdown">--:--:--</div>
+                        </div>
+
+                        <div id="bidSection" class="auction-bid-form card p-4 mb-4">
+                            <h5 class="mb-3"><i class="fas fa-gavel"></i> Realizar oferta</h5>
+                            <div id="bidAuthWarning" class="alert alert-warning d-none">
+                                <a href="login.html">Inicia sesión</a> para participar en la subasta.
+                            </div>
+                            <form id="bidForm">
+                                <div class="mb-3">
+                                    <label for="bidAmount" class="form-label">Tu oferta (USD)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="bidAmount" step="0.01" min="0" required>
+                                    </div>
+                                    <div class="form-text" id="minBidHint"></div>
+                                </div>
+                                <button type="submit" class="btn btn-dark-green w-100" id="bidSubmitBtn">
+                                    <i class="fas fa-hand-holding-usd"></i> Enviar oferta
+                                </button>
+                            </form>
+                            <div id="bidClosedMsg" class="alert alert-secondary mt-3 d-none">
+                                Esta subasta ha finalizado. No se aceptan más ofertas.
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header bg-white fw-bold">
+                                <i class="fas fa-history"></i> Historial de ofertas
+                            </div>
+                            <div class="bid-history-list" id="bidHistory">
+                                <p class="text-muted text-center py-4 mb-0">Sin ofertas aún</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <geno-footer></geno-footer>
+
+    <script src="components/header.js"></script>
+    <script src="components/header-auth.js"></script>
+    <script>
+      if (localStorage.getItem('username')) {
+        const oldHeader = document.getElementById('main-header');
+        if (oldHeader) oldHeader.remove();
+      }
+    </script>
+    <script src="components/footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="js/auctions/auction-utils.js"></script>
+    <script src="js/auctions/auction-api.js"></script>
+    <script src="js/auctions/auction-details.js"></script>
+</body>
+</html>

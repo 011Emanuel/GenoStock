@@ -438,6 +438,7 @@ class GenoHeader extends HTMLElement {
           <div class="nav-menu">
             <a class="nav-link" href="index.html">Home</a>
             <a class="nav-link" href="marketplace.html">Marketplace</a>
+            <a class="nav-link" href="auctions.html">Subastas</a>
             <a class="nav-link" href="about us.html">About Us</a>
             <a class="nav-link" href="Contactos.html">Contact Us</a>
           </div>
@@ -465,6 +466,7 @@ class GenoHeader extends HTMLElement {
       <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile menu">
         <a class="nav-link" href="index.html">Home</a>
         <a class="nav-link" href="marketplace.html">Marketplace</a>
+        <a class="nav-link" href="auctions.html">Subastas</a>
         <a class="nav-link" href="about us.html">About Us</a>
         <a class="nav-link" href="Contactos.html">Contact Us</a>
         <a href="login.html" class="auth-btn login-btn">Login</a>

@@ -1,0 +1,17 @@
+{
+  "name": "genostock-auctions-api",
+  "version": "1.0.0",
+  "description": "Livestock Auctions API module for GenoStock",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "migrate": "node db/migrate.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}
