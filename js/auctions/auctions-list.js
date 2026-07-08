@@ -39,17 +39,17 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="auction-card">
           <img src="${image}" class="auction-card-image" alt="${auction.title}">
           <div class="auction-card-body">
-            <span class="auction-status-badge ${auction.status}">${auction.status === 'active' ? 'Activa' : 'Finalizada'}</span>
+            <span class="auction-status-badge ${auction.status}">${auction.status === 'active' ? 'Active' : 'Finished'}</span>
             <h5 class="auction-card-title mt-2">${auction.title}</h5>
             <p class="auction-current-price">${AuctionUtils.formatCurrency(auction.currentPrice)}</p>
             <p class="auction-meta"><i class="fas fa-user"></i> ${auction.sellerName}</p>
-            <p class="auction-meta"><i class="fas fa-gavel"></i> ${auction.bidCount} oferta(s)</p>
+            <p class="auction-meta"><i class="fas fa-gavel"></i> ${auction.bidCount} bid${auction.bidCount !== 1 ? 's' : ''}</p>
             <div class="auction-countdown ${countdownClass}" data-ends-at="${auction.endsAt}" data-status="${auction.status}">
               <i class="fas fa-clock"></i>
-              <span class="countdown-text">${auction.status === 'ended' || countdown.ended ? 'Finalizada' : countdown.text}</span>
+              <span class="countdown-text">${auction.status === 'ended' || countdown.ended ? 'Ended' : countdown.text}</span>
             </div>
             <a href="auction-details.html?id=${auction.id}" class="btn btn-dark-green w-100 mt-3">
-              <i class="fas fa-eye"></i> Ver subasta
+              <i class="fas fa-eye"></i> View details
             </a>
           </div>
         </div>
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const textEl = el.querySelector('.countdown-text');
       if (cd.ended) {
         el.classList.add('ended');
-        textEl.textContent = 'Finalizada';
+        textEl.textContent = 'Ended';
       } else {
         el.classList.toggle('urgent', cd.urgent);
         textEl.textContent = cd.text;
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
       renderAuctions();
     } catch (err) {
       loading.classList.add('d-none');
-      errorEl.textContent = 'No se pudo conectar con el servidor de subastas. Ejecuta: cd backend && npm install && npm start';
+      errorEl.textContent = 'Could not connect to the auction server. Run: cd backend && npm install && npm start';
       errorEl.classList.remove('d-none');
     }
   }

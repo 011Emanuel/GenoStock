@@ -1,72 +1,72 @@
-# Módulo de Subastas de Ganado (Livestock Auctions)
+# Livestock Auctions Module
 
-Módulo independiente del Marketplace. No modifica archivos ni lógica de `marketplace.html` / `js/marketplace.js`.
+Independent module from Marketplace. Does not modify `marketplace.html` or `js/marketplace.js`.
 
-## Estructura
+## Structure
 
 ```
 backend/
-  server.js                    # Servidor Express + Socket.io
+  server.js                    # Express + Socket.io server
   package.json
   migrations/
-    001_create_auctions.sql    # Tablas auctions y auction_bids
+    001_create_auctions.sql    # auctions and auction_bids tables
   db/
-    database.js                # SQLite + migraciones
+    database.js                # SQLite + migrations
     migrate.js
   middleware/
-    auth.js                    # Autenticación compartida (headers)
+    auth.js                    # Shared auth (headers)
   modules/auctions/
-    auction.service.js         # Lógica de negocio
-    auction.routes.js          # Endpoints REST
+    auction.service.js         # Business logic
+    auction.routes.js          # REST endpoints
 
-auctions.html                  # Listado de subastas
-auction-details.html           # Detalle, pujas e historial
-auction-create.html            # Crear subasta (vendedores)
+auctions.html                  # Auction listing
+auction-details.html           # Detail, bids, and history
+auction-create.html            # Create auction (sellers)
 css/auctions.css
 js/auctions/
-  auction-api.js               # Cliente API + WebSocket
-  auction-utils.js             # Utilidades UI
+  auction-api.js               # API client + WebSocket
+  auction-utils.js             # UI utilities
   auctions-list.js
   auction-details.js
   auction-create.js
 ```
 
-## Base de datos
+## Database
 
-| Tabla | Campos principales |
-|-------|-------------------|
+| Table | Main fields |
+|-------|-------------|
 | `auctions` | title, description, images (JSON), starting_price, current_price, seller, ends_at, status, winner |
 | `auction_bids` | auction_id, bidder, amount, created_at |
 
 ## API Endpoints
 
-| Método | Ruta | Auth | Descripción |
+| Method | Route | Auth | Description |
 |--------|------|------|-------------|
-| GET | `/api/auctions` | No | Listar subastas (`?status=active\|ended`) |
-| GET | `/api/auctions/:id` | No | Detalle + historial de ofertas |
-| GET | `/api/auctions/:id/bids` | No | Solo historial |
-| POST | `/api/auctions` | Sí (rancher/buyer) | Crear subasta |
-| POST | `/api/auctions/:id/bids` | Sí | Registrar oferta |
+| GET | `/api/auctions` | No | List auctions (`?status=active\|ended`) |
+| GET | `/api/auctions/:id` | No | Detail + bid history |
+| GET | `/api/auctions/:id/bids` | No | Bid history only |
+| POST | `/api/auctions` | Yes (rancher/buyer) | Create auction |
+| POST | `/api/auctions/:id/bids` | Yes | Place bid |
 
-Headers de autenticación (desde localStorage del login existente):
+Auth headers (from existing login localStorage):
 - `X-Username`, `X-Role`, `X-Name`
 
-## Tiempo real (Socket.io)
+## Real-time (Socket.io)
 
-Eventos emitidos:
-- `auction:bid` — nueva oferta
-- `auction:ended` — subasta finalizada
-- `auction:created` — nueva subasta publicada
+Events emitted:
+- `auction:bid` — new bid
+- `auction:ended` — auction finished
+- `auction:created` — new auction published
 
-## Reglas de negocio
+## Business rules
 
-- Oferta debe ser **mayor** que la actual (mínimo: current_price + 1)
-- No se permiten ofertas en subastas finalizadas
-- Vendedores no pueden pujar en sus propias subastas
-- Al finalizar: se bloquean ofertas, se selecciona ganador automáticamente
-- Historial completo en `auction_bids`
+- Bid must be **greater** than the current offer (minimum: current_price + 1)
+- No bids allowed on ended auctions
+- Sellers cannot bid on their own auctions
+- On end: bids are blocked and winner is selected automatically
+- Full history stored in `auction_bids`
 
-## Instalación y uso
+## Setup
 
 ```bash
 cd backend
@@ -74,12 +74,12 @@ npm install
 npm start
 ```
 
-Abrir: **http://localhost:3001/auctions.html**
+Open: **http://localhost:3001/auctions.html**
 
-Usuarios de prueba (login existente):
-- Vendedor: `rancher1@email.com` / `1234`
-- Comprador: `trader1@email.com` / `1234`
+Test users (existing login):
+- Seller: `rancher1@email.com` / `1234`
+- Buyer: `trader1@email.com` / `1234`
 
 ## Marketplace
 
-El Marketplace permanece intacto en `marketplace.html`. Solo se añadió el enlace "Subastas" en el header compartido.
+Marketplace remains unchanged in `marketplace.html`. Only an "Auctions" link was added to the shared header.

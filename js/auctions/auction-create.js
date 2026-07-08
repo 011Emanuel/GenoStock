@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
       };
 
       const { auction } = await AuctionAPI.createAuction(body);
-      AuctionUtils.showNotification('Subasta creada exitosamente.', 'success');
+      AuctionUtils.showNotification('Auction created successfully.', 'success');
       setTimeout(() => {
         window.location.href = `auction-details.html?id=${auction.id}`;
       }, 800);

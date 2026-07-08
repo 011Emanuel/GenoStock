@@ -322,7 +322,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path d="M14 9V5a3 3 0 0 0-6 0v4M5 9h14l1 12H4L5 9z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              Subastas
+              Auctions
             </a>
             <a href="${localStorage.getItem('role') === 'rancher' ? 'dashboard/rancher/rancher.html' : 'dashboard/trader/trader.html'}" class="dropdown-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">

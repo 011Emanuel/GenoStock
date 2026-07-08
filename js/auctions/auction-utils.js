@@ -3,7 +3,7 @@ function formatCurrency(amount) {
 }
 
 function formatDateTime(iso) {
-  return new Date(iso).toLocaleString('es-PA', {
+  return new Date(iso).toLocaleString('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short'
   });
@@ -11,7 +11,7 @@ function formatDateTime(iso) {
 
 function getCountdownParts(endsAt) {
   const diff = new Date(endsAt).getTime() - Date.now();
-  if (diff <= 0) return { ended: true, text: 'Finalizada', parts: null };
+  if (diff <= 0) return { ended: true, text: 'Ended', parts: null };
 
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
@@ -20,7 +20,7 @@ function getCountdownParts(endsAt) {
 
   let text;
   if (days > 0) {
-    text = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    text = `${days} Day${days !== 1 ? 's' : ''} ${hours} Hour${hours !== 1 ? 's' : ''}`;
   } else {
     text = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }

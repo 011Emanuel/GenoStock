@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subastas de Ganado - Genostock</title>
+    <title>Livestock Auctions - Genostock</title>
     <link rel="icon" type="image/png" href="logo_small.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,20 +16,20 @@
 
     <section class="auctions-hero">
         <div class="container text-center">
-            <h1 class="display-4 mb-3 fw-bold" data-aos="fade-up">Subastas de Ganado</h1>
+            <h1 class="display-4 mb-3 fw-bold" data-aos="fade-up">Livestock Auctions</h1>
             <p class="lead mb-0" data-aos="fade-up" data-aos-delay="200">
-                Puja en tiempo real por ganado de calidad
+                Bid in real time on quality cattle
             </p>
         </div>
     </section>
 
     <section class="auction-filters">
         <div class="container text-center">
-            <button class="auction-filter-btn active" data-filter="active">Activas</button>
-            <button class="auction-filter-btn" data-filter="ended">Finalizadas</button>
-            <button class="auction-filter-btn" data-filter="all">Todas</button>
+            <button class="auction-filter-btn active" data-filter="active">Active</button>
+            <button class="auction-filter-btn" data-filter="ended">Finished</button>
+            <button class="auction-filter-btn" data-filter="all">All</button>
             <a href="auction-create.html" class="auction-filter-btn ms-2" id="createAuctionBtn" style="display:none;">
-                <i class="fas fa-plus"></i> Crear subasta
+                <i class="fas fa-plus"></i> Create Auction
             </a>
         </div>
     </section>
@@ -38,14 +38,14 @@
         <div class="container">
             <div id="auctionsLoading" class="text-center py-5">
                 <div class="spinner-border text-success" role="status"></div>
-                <p class="mt-3 text-muted">Cargando subastas...</p>
+                <p class="mt-3 text-muted">Loading auctions...</p>
             </div>
             <div id="auctionsError" class="alert alert-danger d-none"></div>
             <div id="auctionsGrid" class="row g-4 d-none"></div>
             <div id="auctionsEmpty" class="auction-empty-state d-none">
                 <i class="fas fa-gavel d-block"></i>
-                <h4>No hay subastas disponibles</h4>
-                <p class="text-muted">Vuelve pronto o crea una nueva subasta si eres vendedor.</p>
+                <h4>No auctions available</h4>
+                <p class="text-muted">Check back soon or create a new auction if you are a seller.</p>
             </div>
         </div>
     </section>
