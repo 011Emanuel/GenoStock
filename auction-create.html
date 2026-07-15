@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Subasta - Genostock</title>
+    <title>Create Auction - Genostock</title>
     <link rel="icon" type="image/png" href="logo_small.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,36 +17,36 @@
         <div class="container" style="max-width: 720px;">
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="auctions.html">Subastas</a></li>
-                    <li class="breadcrumb-item active">Crear subasta</li>
+                    <li class="breadcrumb-item"><a href="auctions.html">Auctions</a></li>
+                    <li class="breadcrumb-item active">Create auction</li>
                 </ol>
             </nav>
 
-            <h2 class="fw-bold mb-4"><i class="fas fa-plus-circle text-success"></i> Nueva subasta</h2>
+            <h2 class="fw-bold mb-4"><i class="fas fa-plus-circle text-success"></i> New auction</h2>
 
             <div id="authBlock" class="alert alert-warning d-none">
-                Debes <a href="login.html">iniciar sesión</a> como vendedor (rancher) para crear subastas.
+                You must <a href="login.html">log in</a> as a seller (rancher) to create auctions.
             </div>
 
             <div id="roleBlock" class="alert alert-warning d-none">
-                Solo los vendedores pueden crear subastas. Los traders pueden participar pujando.
+                Only sellers can create auctions. Traders can participate by placing bids.
             </div>
 
             <form id="createAuctionForm" class="card p-4 d-none">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Título *</label>
+                    <label for="title" class="form-label">Title *</label>
                     <input type="text" class="form-control" id="title" required maxlength="200"
-                           placeholder="Ej: Toro Brahman Premium — Lote #101">
+                           placeholder="e.g. Premium Brahman Bull — Lot #101">
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Descripción *</label>
+                    <label for="description" class="form-label">Description *</label>
                     <textarea class="form-control" id="description" rows="4" required
-                              placeholder="Describe el ganado, peso, raza, ubicación, certificados..."></textarea>
+                              placeholder="Describe the livestock, weight, breed, location, certificates..."></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="startingPrice" class="form-label">Precio inicial (USD) *</label>
+                    <label for="startingPrice" class="form-label">Starting price (USD) *</label>
                     <div class="input-group">
                         <span class="input-group-text">$</span>
                         <input type="number" class="form-control" id="startingPrice" step="0.01" min="1" required>
@@ -54,12 +54,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="endsAt" class="form-label">Fecha y hora de finalización *</label>
+                    <label for="endsAt" class="form-label">End date and time *</label>
                     <input type="datetime-local" class="form-control" id="endsAt" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Imágenes (URLs)</label>
+                    <label class="form-label">Images (URLs)</label>
                     <div id="imageUrlList">
                         <div class="input-group mb-2">
                             <input type="url" class="form-control image-url-input" placeholder="https://...">
@@ -69,16 +69,16 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-sm btn-outline-success" id="addImageBtn">
-                        <i class="fas fa-plus"></i> Agregar otra imagen
+                        <i class="fas fa-plus"></i> Add another image
                     </button>
                     <div id="imagePreview" class="image-preview-grid"></div>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-dark-green flex-grow-1" id="submitBtn">
-                        <i class="fas fa-gavel"></i> Publicar subasta
+                        <i class="fas fa-gavel"></i> Publish auction
                     </button>
-                    <a href="auctions.html" class="btn btn-outline-secondary">Cancelar</a>
+                    <a href="auctions.html" class="btn btn-outline-secondary">Cancel</a>
                 </div>
             </form>
         </div>

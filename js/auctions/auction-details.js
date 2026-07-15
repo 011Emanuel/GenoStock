@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const auctionId = Number(params.get('id'));
 
   if (!auctionId) {
-    showError('ID de subasta no válido.');
+    showError('Invalid auction ID.');
     return;
   }
 
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     els.mainImage.src = images[0];
     els.thumbnailRow.innerHTML = images.map((src, i) => `
-      <img src="${src}" alt="Imagen ${i + 1}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid ${i === 0 ? '#2c5530' : '#ddd'};"
+      <img src="${src}" alt="Image ${i + 1}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid ${i === 0 ? '#2c5530' : '#ddd'};"
            data-index="${i}">
     `).join('');
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderBidHistory() {
     if (!bids.length) {
-      els.bidHistory.innerHTML = '<p class="text-muted text-center py-4 mb-0">Sin ofertas aún</p>';
+      els.bidHistory.innerHTML = '<p class="text-muted text-center py-4 mb-0">No bids yet</p>';
       els.leaderName.textContent = '—';
       return;
     }
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const cd = AuctionUtils.getCountdownParts(auction.endsAt);
 
     if (auction.status === 'ended' || cd.ended) {
-      els.countdown.textContent = 'FINALIZADA';
+      els.countdown.textContent = 'ENDED';
       els.countdown.classList.add('ended');
       disableBidding();
       return;
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateBidUI() {
     const minBid = auction.currentPrice + 1;
-    els.minBidHint.textContent = `Oferta mínima: ${AuctionUtils.formatCurrency(minBid)}`;
+    els.minBidHint.textContent = `Minimum bid: ${AuctionUtils.formatCurrency(minBid)}`;
     els.bidAmount.min = minBid;
     els.bidAmount.placeholder = minBid.toFixed(2);
 
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (auction.winnerUsername) {
       els.winnerBanner.classList.remove('d-none');
-      els.winnerText.textContent = `Ganador: ${auction.winnerName} — ${AuctionUtils.formatCurrency(auction.winningBid)}`;
+      els.winnerText.textContent = `Winner: ${auction.winnerName} — ${AuctionUtils.formatCurrency(auction.winningBid)}`;
     } else if (auction.status === 'ended') {
       els.winnerBanner.classList.remove('d-none');
-      els.winnerText.textContent = 'Subasta finalizada sin ofertas.';
+      els.winnerText.textContent = 'Auction ended with no bids.';
     }
   }
 
@@ -158,14 +158,14 @@ document.addEventListener('DOMContentLoaded', function () {
       bids = data.bids;
       renderAll();
     } catch (err) {
-      showError(err.message || 'No se pudo cargar la subasta.');
+      showError(err.message || 'Could not load the auction.');
     }
   }
 
   els.bidForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (!AuctionAPI.isAuthenticated()) {
-      AuctionUtils.showNotification('Debes iniciar sesión para ofertar.', 'warning');
+      AuctionUtils.showNotification('You must log in to place a bid.', 'warning');
       return;
     }
 
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
       bids.unshift(result.bid);
       renderAll();
       els.bidAmount.value = '';
-      AuctionUtils.showNotification('¡Oferta registrada exitosamente!', 'success');
+      AuctionUtils.showNotification('Bid placed successfully!', 'success');
     } catch (err) {
       AuctionUtils.showNotification(err.message, 'danger');
     } finally {
