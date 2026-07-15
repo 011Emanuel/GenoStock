@@ -9,6 +9,48 @@ function formatDateTime(iso) {
   });
 }
 
+function formatTimeOnly(iso) {
+  return new Date(iso).toLocaleTimeString('es-PA', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function formatDayShort(iso) {
+  return new Date(iso).toLocaleDateString('es-PA', { weekday: 'short' }).replace('.', '');
+}
+
+function formatDayNumber(iso) {
+  return new Date(iso).toLocaleDateString('es-PA', { day: 'numeric' });
+}
+
+function formatMonthShort(iso) {
+  return new Date(iso).toLocaleDateString('es-PA', { month: 'short' }).replace('.', '');
+}
+
+function formatFullDate(iso) {
+  return new Date(iso).toLocaleDateString('es-PA', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  });
+}
+
+function dateKey(iso) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function groupAuctionsByEndDate(auctions) {
+  const groups = new Map();
+  for (const auction of auctions) {
+    const key = dateKey(auction.endsAt);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(auction);
+  }
+  return groups;
+}
+
 function getCountdownParts(endsAt) {
   const diff = new Date(endsAt).getTime() - Date.now();
   if (diff <= 0) return { ended: true, text: 'Finalizada', parts: null };
@@ -37,4 +79,16 @@ function showNotification(message, type = 'info') {
   setTimeout(() => notification.remove(), 5000);
 }
 
-window.AuctionUtils = { formatCurrency, formatDateTime, getCountdownParts, showNotification };
+window.AuctionUtils = {
+  formatCurrency,
+  formatDateTime,
+  formatTimeOnly,
+  formatDayShort,
+  formatDayNumber,
+  formatMonthShort,
+  formatFullDate,
+  dateKey,
+  groupAuctionsByEndDate,
+  getCountdownParts,
+  showNotification
+};

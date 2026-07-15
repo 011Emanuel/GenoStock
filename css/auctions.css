@@ -1,14 +1,731 @@
 /* Livestock Auctions — styles (extends marketplace visual language) */
 
 .auctions-hero {
-    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(26, 58, 31, 0.75)),
         url('https://recorriendopanama.com/wp-content/uploads/2018/12/vacas.jpg?w=1000');
     background-size: cover;
     background-position: center 35%;
-    height: 350px;
+    min-height: 420px;
     display: flex;
     align-items: center;
     color: white;
+    position: relative;
+}
+
+.auctions-hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.03em;
+}
+
+.auction-hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.auction-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auction-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: capitalize;
+}
+
+.auction-stat-label {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 0.25rem;
+}
+
+/* Agenda section */
+.auction-agenda-section {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, #f8faf8 0%, #ffffff 100%);
+}
+
+.agenda-section-label {
+    display: inline-block;
+    color: var(--primary, #2c5530);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+}
+
+/* Section navigation */
+.auction-section-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.auction-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.55rem 1.25rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.25s, transform 0.25s;
+}
+
+.auction-nav-link span {
+    background: rgba(255, 255, 255, 0.2);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.auction-nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Shared section headers */
+.auction-section {
+    padding: 4.5rem 0;
+}
+
+.auction-section-header {
+    margin-bottom: 3rem;
+}
+
+.auction-section-num {
+    display: block;
+    font-size: 3rem;
+    font-weight: 800;
+    color: rgba(44, 85, 48, 0.12);
+    line-height: 1;
+    margin-bottom: -0.5rem;
+}
+
+.auction-section-label {
+    display: inline-block;
+    color: var(--primary, #2c5530);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+}
+
+.auction-section-label.live-label i {
+    font-size: 0.5rem;
+    color: #e65100;
+    animation: agenda-pulse 1.2s ease-in-out infinite;
+    vertical-align: middle;
+    margin-right: 0.35rem;
+}
+
+.auction-section-title {
+    color: #1a3a1f;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.auction-section-subtitle {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+}
+
+/* Section 1 — Agenda */
+.auction-agenda-section {
+    background: linear-gradient(180deg, #f8faf8 0%, #ffffff 100%);
+}
+
+.agenda-section-label,
+.agenda-title,
+.agenda-subtitle {
+    /* legacy aliases kept for compatibility */
+}
+
+/* Section 2 — Live Auctions */
+.auction-live-section {
+    background: #ffffff;
+    border-top: 1px solid #e8ece8;
+    border-bottom: 1px solid #e8ece8;
+}
+
+.auction-filters-inner {
+    background: var(--light, #f8f9fa);
+    padding: 1rem;
+    border-radius: 50px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+/* Section 3 — Lotes */
+.auction-lots-section {
+    background: linear-gradient(180deg, #f4f8f4 0%, #ffffff 100%);
+}
+
+.lots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.lot-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+}
+
+.lot-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(44, 85, 48, 0.14);
+}
+
+.lot-card-image-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.lot-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--primary, #2c5530);
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    z-index: 2;
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.lot-card-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.lot-card:hover .lot-card-image {
+    transform: scale(1.05);
+}
+
+.lot-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.lot-breed {
+    color: #1a3a1f;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(44, 85, 48, 0.1);
+}
+
+.lot-specs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.lot-specs li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.lot-specs li:last-child {
+    border-bottom: none;
+}
+
+.lot-spec-label {
+    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.lot-spec-label i {
+    color: var(--primary, #2c5530);
+    width: 16px;
+    text-align: center;
+}
+
+.lot-spec-value {
+    color: #333;
+    font-weight: 600;
+    text-align: right;
+    max-width: 55%;
+}
+
+.lot-price-box {
+    background: linear-gradient(135deg, rgba(44, 85, 48, 0.08), rgba(139, 195, 74, 0.1));
+    border: 1px solid rgba(44, 85, 48, 0.15);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-top: auto;
+}
+
+.lot-price-label {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.lot-price-value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary, #2c5530);
+}
+
+.lot-card-btn {
+    margin-top: 0;
+}
+
+/* Footer countdown */
+.auction-countdown-section {
+    background: linear-gradient(135deg, #1a3a1f 0%, #2c5530 50%, #1a5f1a 100%);
+    padding: 4rem 0;
+    color: white;
+}
+
+.auction-countdown-box {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.auction-countdown-label {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.auction-countdown-event {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.auction-countdown-date {
+    opacity: 0.85;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    text-transform: capitalize;
+}
+
+.auction-countdown-timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.countdown-unit {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    min-width: 90px;
+}
+
+.countdown-value {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.countdown-unit .countdown-label {
+    display: block;
+    background: none;
+    padding: 0;
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.countdown-separator {
+    font-size: 2rem;
+    font-weight: 700;
+    opacity: 0.5;
+    line-height: 1;
+}
+
+.auction-countdown-timer.is-live .countdown-value {
+    color: #ffcc80;
+}
+
+/* Legacy / shared */
+.agenda-title {
+    color: #1a3a1f;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.agenda-subtitle {
+    max-width: 620px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+}
+
+.agenda-sessions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.agenda-session-card {
+    display: flex;
+    gap: 1rem;
+    background: #fff;
+    border: 1px solid #e8ece8;
+    border-radius: 14px;
+    padding: 1.25rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.agenda-session-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary, #2c5530);
+    opacity: 0.35;
+    transition: opacity 0.25s ease;
+}
+
+.agenda-session-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(44, 85, 48, 0.12);
+    border-color: rgba(44, 85, 48, 0.25);
+}
+
+.agenda-session-card:hover::before {
+    opacity: 1;
+}
+
+.agenda-session-card.is-today {
+    border-color: rgba(44, 85, 48, 0.4);
+    background: linear-gradient(135deg, #ffffff, #f4faf4);
+}
+
+.agenda-session-card.is-live {
+    border-color: #e65100;
+    box-shadow: 0 0 0 1px rgba(230, 81, 0, 0.15), 0 8px 24px rgba(230, 81, 0, 0.12);
+}
+
+.agenda-session-card.is-live::before {
+    background: #e65100;
+    opacity: 1;
+}
+
+.agenda-session-date {
+    flex-shrink: 0;
+    width: 72px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(44, 85, 48, 0.08);
+    border-radius: 10px;
+    padding: 0.75rem 0.5rem;
+}
+
+.agenda-day-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary, #2c5530);
+    letter-spacing: 0.05em;
+}
+
+.agenda-day-num {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1a3a1f;
+    line-height: 1.1;
+}
+
+.agenda-month {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: capitalize;
+}
+
+.agenda-session-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.agenda-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.04em;
+}
+
+.agenda-live-badge i {
+    font-size: 0.45rem;
+    animation: agenda-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes agenda-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.agenda-session-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.35rem;
+}
+
+.agenda-session-time {
+    font-size: 0.95rem;
+    color: var(--primary, #2c5530);
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.agenda-session-time i {
+    margin-right: 0.35rem;
+    opacity: 0.8;
+}
+
+.agenda-session-meta {
+    font-size: 0.85rem;
+    color: #777;
+    margin: 0;
+}
+
+.agenda-session-meta i {
+    color: var(--primary, #2c5530);
+    margin-right: 0.3rem;
+}
+
+/* Events timeline */
+.agenda-events-panel {
+    background: #fff;
+    border: 1px solid #e8ece8;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.agenda-events-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.agenda-events-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a3a1f;
+    margin-bottom: 0.35rem;
+}
+
+.agenda-events-header h3 i {
+    color: var(--primary, #2c5530);
+    margin-right: 0.5rem;
+}
+
+.agenda-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.agenda-event-row {
+    display: flex;
+    align-items: stretch;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.agenda-event-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.agenda-event-date-block {
+    flex-shrink: 0;
+    width: 80px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.agenda-event-day {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary, #2c5530);
+}
+
+.agenda-event-date {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+    text-transform: capitalize;
+}
+
+.agenda-event-hour {
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 600;
+}
+
+.agenda-event-line {
+    width: 2px;
+    background: linear-gradient(180deg, var(--primary, #2c5530), rgba(44, 85, 48, 0.15));
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.agenda-event-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.agenda-event-content h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0.35rem 0 0.5rem;
+}
+
+.agenda-event-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.88rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.agenda-event-detail i {
+    color: var(--primary, #2c5530);
+    margin-right: 0.25rem;
+}
+
+.agenda-event-countdown {
+    font-weight: 600;
+    color: var(--primary, #2c5530);
+}
+
+.agenda-event-countdown.urgent {
+    color: #e65100;
+}
+
+.agenda-event-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary, #2c5530);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.agenda-event-link:hover {
+    color: #1a3a1f;
+}
+
+.agenda-events-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #888;
+}
+
+.agenda-events-empty i {
+    font-size: 2.5rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Features strip — removed from page, styles kept minimal */
+.auction-features-strip {
+    display: none;
+}
+
+.auction-grid-title {
+    color: #1a3a1f;
+    font-weight: 700;
+    font-size: 1.35rem;
 }
 
 .auction-filters {
@@ -229,7 +946,78 @@
 
 @media (max-width: 768px) {
     .auctions-hero {
-        height: 200px !important;
+        min-height: 320px !important;
+    }
+
+    .auction-hero-stats {
+        gap: 1.5rem;
+    }
+
+    .auction-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .auction-section {
+        padding: 3rem 0;
+    }
+
+    .auction-section-num {
+        font-size: 2rem;
+    }
+
+    .auction-section-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .auction-filters-inner {
+        border-radius: 16px;
+        padding: 0.75rem;
+    }
+
+    .lots-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .countdown-unit {
+        min-width: 70px;
+        padding: 0.75rem;
+    }
+
+    .countdown-value {
+        font-size: 1.75rem;
+    }
+
+    .countdown-separator {
+        display: none;
+    }
+
+    .auction-countdown-timer {
+        gap: 0.75rem;
+    }
+
+    .agenda-sessions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .agenda-events-panel {
+        padding: 1.25rem;
+    }
+
+    .agenda-event-row {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .agenda-event-date-block {
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 0.75rem;
+    }
+
+    .agenda-event-line {
+        display: none;
     }
 
     .auction-detail-gallery img {

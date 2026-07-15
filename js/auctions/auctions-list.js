@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateCountdowns() {
-    document.querySelectorAll('.auction-countdown').forEach(el => {
+    document.querySelectorAll('.auction-countdown, .agenda-event-countdown[data-ends-at]').forEach(el => {
       const status = el.dataset.status;
       if (status === 'ended') return;
 
@@ -82,10 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const textEl = el.querySelector('.countdown-text');
       if (cd.ended) {
         el.classList.add('ended');
-        textEl.textContent = 'Finalizada';
+        if (textEl) textEl.textContent = 'Finalizada';
       } else {
         el.classList.toggle('urgent', cd.urgent);
-        textEl.textContent = cd.text;
+        if (textEl) textEl.textContent = cd.text;
       }
     });
   }
@@ -95,9 +95,13 @@ document.addEventListener('DOMContentLoaded', function () {
       errorEl.classList.add('d-none');
       const data = await AuctionAPI.listAuctions();
       auctions = data.auctions;
+      AuctionSchedule.render(auctions);
+      AuctionLots.render(auctions);
       renderAuctions();
     } catch (err) {
       loading.classList.add('d-none');
+      AuctionSchedule.render([]);
+      AuctionLots.render([]);
       errorEl.textContent = 'No se pudo conectar con el servidor de subastas. Ejecuta: cd backend && npm install && npm start';
       errorEl.classList.remove('d-none');
     }
@@ -110,6 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       auctions.push(updated);
     }
+    AuctionSchedule.render(auctions);
+    AuctionLots.render(auctions);
     renderAuctions();
   }
 
@@ -118,9 +124,18 @@ document.addEventListener('DOMContentLoaded', function () {
   AuctionAPI.on('auction:ended', ({ auction }) => refreshAuction(auction));
   AuctionAPI.on('auction:created', (auction) => {
     auctions.unshift(auction);
+    AuctionSchedule.render(auctions);
+    AuctionLots.render(auctions);
     renderAuctions();
   });
 
+  AuctionCountdown.init();
   loadAuctions();
-  countdownTimer = setInterval(updateCountdowns, 1000);
+  countdownTimer = setInterval(function () {
+    updateCountdowns();
+    AuctionCountdown.tick();
+  }, 1000);
+
+  AuctionSchedule.render([]);
+  AuctionLots.render([]);
 });
