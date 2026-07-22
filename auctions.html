@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livestock Auctions - Genostock</title>
+    <title>Subastas de Ganado - Genostock</title>
     <link rel="icon" type="image/png" href="logo_small.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,18 +16,9 @@
 
     <section class="auctions-hero">
         <div class="container text-center">
-            <h1 class="display-4 mb-3 fw-bold" data-aos="fade-up">Livestock Auctions</h1>
+            <h1 class="display-4 mb-3 fw-bold" data-aos="fade-up">Subastas de Ganado</h1>
             <p class="lead mb-0" data-aos="fade-up" data-aos-delay="200">
                 Puja en tiempo real por ganado de calidad
-            </p>
-            <div id="auctionHeroStats" class="auction-hero-stats" data-aos="fade-up" data-aos-delay="300"></div>
-            <nav class="auction-section-nav" data-aos="fade-up" data-aos-delay="400">
-                <a href="#seccion-agenda" class="auction-nav-link"><span>01</span> Agenda</a>
-                <a href="#seccion-live" class="auction-nav-link"><span>02</span> Live Auctions</a>
-                <a href="#seccion-lotes" class="auction-nav-link"><span>03</span> Catálogo</a>
-            </nav>
-        </div>
-    </section>
 
     <!-- SECCIÓN 1: AGENDA -->
     <section id="seccion-agenda" class="auction-section auction-agenda-section">
@@ -40,20 +31,8 @@
                     Consulta los días y horarios de nuestros remates en línea
                 </p>
             </div>
-
-            <div id="agendaSessions" class="agenda-sessions-grid"></div>
-
-            <div class="agenda-events-panel mt-5" data-aos="fade-up">
-                <div class="agenda-events-header">
-                    <h3><i class="fas fa-list-ul"></i> Lotes con cierre programado</h3>
-                    <p class="text-muted mb-0">Fecha y hora exacta en que cierra cada subasta activa</p>
-                </div>
-                <div id="agendaEvents" class="agenda-events-list"></div>
-            </div>
-        </div>
-    </section>
-
-        <section class="auction-filters">
+            </p>
+    <section class="auction-filters">
         <div class="container text-center">
             <button class="auction-filter-btn active" data-filter="active">Activas</button>
             <button class="auction-filter-btn" data-filter="ended">Finalizadas</button>
@@ -61,18 +40,26 @@
             <a href="auction-create.html" class="auction-filter-btn ms-2" id="createAuctionBtn" style="display:none;">
                 <i class="fas fa-plus"></i> Crear subasta
             </a>
+                </div>
+                <div id="agendaEvents" class="agenda-events-list"></div>
+            </div>
         </div>
     </section>
 
+    <!-- SECCIÓN 2: LIVE AUCTIONS -->
+    <section id="seccion-live" class="auction-section auction-live-section">
+        <div class="container">
+    <section class="main-content py-5">
+        <div class="container">
             <div id="auctionsLoading" class="text-center py-5">
                 <div class="spinner-border text-success" role="status"></div>
-                    <p class="mt-3 text-muted">Loading auctions...</p>
+                <p class="mt-3 text-muted">Cargando subastas...</p>
             </div>
             <div id="auctionsError" class="alert alert-danger d-none"></div>
             <div id="auctionsGrid" class="row g-4 d-none"></div>
             <div id="auctionsEmpty" class="auction-empty-state d-none">
                 <i class="fas fa-gavel d-block"></i>
-                <h4>No hay subastas disponibles</h4
+                <h4>No hay subastas disponibles</h4>
                 <p class="text-muted">Vuelve pronto o crea una nueva subasta si eres vendedor.</p>
             </div>
         </div>
@@ -92,9 +79,6 @@
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script src="js/auctions/auction-utils.js"></script>
     <script src="js/auctions/auction-api.js"></script>
-    <script src="js/auctions/auctions-schedule.js"></script>
-    <script src="js/auctions/auctions-lots.js"></script>
-    <script src="js/auctions/auctions-countdown.js"></script>
     <script src="js/auctions/auctions-list.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>AOS.init({ duration: 800, once: true });</script>
