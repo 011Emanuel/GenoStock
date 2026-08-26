@@ -1,6 +1,10 @@
 class RancherSettings extends HTMLElement {
   constructor() {
     super();
+    const username = localStorage.getItem('username') || localStorage.getItem('name') || '';
+    const email = localStorage.getItem('email') || '';
+    const location = localStorage.getItem('location') || '';
+
     this.attachShadow({mode: 'open'}).innerHTML = `
       <style>
         :host {
@@ -391,12 +395,12 @@ class RancherSettings extends HTMLElement {
             <div class="content-body">
               <div class="form-group">
                 <label class="form-label">Full Name</label>
-                <input type="text" class="form-input" value="Carlos Mendoza">
+                <input type="text" class="form-input" value="${username}">
               </div>
               
               <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" value="carlos.mendoza@ranch.com">
+                <input type="email" class="form-input" value="${email}">
               </div>
               
               <div class="form-group">
@@ -406,7 +410,7 @@ class RancherSettings extends HTMLElement {
               
               <div class="form-group">
                 <label class="form-label">Location</label>
-                <input type="text" class="form-input" value="Texas, USA">
+                <input type="text" class="form-input" value="${location}">
               </div>
               
               <div class="form-group">

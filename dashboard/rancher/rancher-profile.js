@@ -1,6 +1,11 @@
 class RancherProfile extends HTMLElement {
   constructor() {
     super();
+    const username = localStorage.getItem('username') || localStorage.getItem('name') || 'Usuario';
+    const email = localStorage.getItem('email') || 'correo@ejemplo.com';
+    const ranchName = localStorage.getItem('ranchName') || 'Mi Rancho';
+    const location = localStorage.getItem('location') || 'Sin ubicación';
+
     this.attachShadow({mode: 'open'}).innerHTML = `
       <style>
         :host {
@@ -269,15 +274,15 @@ class RancherProfile extends HTMLElement {
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
               </div>
-              <div class="profile-name">Carlos Mendoza</div>
+              <div class="profile-name">${username}</div>
               <div class="profile-role">Professional Rancher</div>
             </div>
             <div class="profile-body">
               <div class="profile-info">
                 <h4>Contact Information</h4>
-                <p><strong>Email:</strong> carlos.mendoza@ranch.com</p>
+                <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-                <p><strong>Location:</strong> Texas, USA</p>
+                <p><strong>Location:</strong> ${location}</p>
               </div>
               
               <div class="profile-info">
@@ -315,7 +320,7 @@ class RancherProfile extends HTMLElement {
                   </h4>
                   <div class="ranch-item">
                     <span class="ranch-item-label">Ranch Name:</span>
-                    <span class="ranch-item-value">Mendoza Ranch</span>
+                    <span class="ranch-item-value">${ranchName}</span>
                   </div>
                   <div class="ranch-item">
                     <span class="ranch-item-label">Address:</span>

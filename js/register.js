@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     confirmPasswordInput.addEventListener('keyup', validatePasswords);
     
     // Manejar el envío del formulario
-    registerForm.addEventListener('submit', function(e) {
+    registerForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         // Validar campos requeridos
@@ -61,67 +61,122 @@ document.addEventListener('DOMContentLoaded', function() {
         const role = document.querySelector('input[name="role"]:checked');
 
         if (!email || !username || !password || !confirmPassword) {
-            alert('Por favor, completa todos los campos.');
+            showNotification('Por favor, completa todos los campos.', 'warning');
             return;
         }
         if (!role) {
-            alert('Por favor, selecciona un rol.');
+            showNotification('Por favor, selecciona un rol.', 'warning');
             return;
         }
         if (password !== confirmPassword) {
-            alert('Las contraseñas no coinciden.');
+            showNotification('Las contraseñas no coinciden.', 'warning');
             return;
         }
         if (!terms || !terms.checked) {
-            alert('Debes aceptar los términos y condiciones para continuar.');
+            showNotification('Debes aceptar los términos y condiciones para continuar.', 'warning');
             return;
         }
 
+        const selectedRole = role.value; // 'buyer' (rancher) or 'trader'
+        const normalizedRole = selectedRole === 'buyer' ? 'rancher' : selectedRole;
+
+        let ranchName = '';
+        let location = '';
+        let cattleCount = 0;
+
         // Validar campos específicos del rancher si es necesario
-        if (role.value === 'buyer') {
-            const ranchName = document.getElementById('ranchName')?.value.trim();
-            const location = document.getElementById('location')?.value.trim();
-            const cattleCount = document.getElementById('cattleCount')?.value;
-            
-            if (!ranchName || !location || !cattleCount) {
-                alert('Por favor, completa todos los campos específicos del rancho.');
+        if (selectedRole === 'buyer') {
+            ranchName = document.getElementById('ranchName')?.value.trim() || '';
+            location = document.getElementById('location')?.value.trim() || '';
+            cattleCount = parseInt(document.getElementById('cattleCount')?.value || '0', 10);
+
+            if (!ranchName || !location) {
+                showNotification('Por favor, completa los campos específicos del rancho.', 'warning');
                 return;
             }
         }
 
-        // Obtener el rol seleccionado
-        const selectedRole = role.value;
-        
-        // Save user information in localStorage
-        localStorage.setItem('username', username);
-        localStorage.setItem('email', email);
-        localStorage.setItem('role', selectedRole);
-        
-        // Guardar información adicional del rancher si aplica
-        if (selectedRole === 'buyer') {
-            const ranchName = document.getElementById('ranchName')?.value.trim();
-            const location = document.getElementById('location')?.value.trim();
-            const cattleCount = document.getElementById('cattleCount')?.value;
-            
+        const phone = document.getElementById('phone')?.value.trim() || '';
+        const rfc = document.getElementById('rfc')?.value.trim() || '';
+
+        const submitBtn = registerForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn ? submitBtn.innerHTML : 'Register';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Registrando...';
+        }
+
+        const supabase = window.getSupabase ? window.getSupabase() : null;
+
+        if (supabase && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            username: username,
+                            full_name: username,
+                            role: normalizedRole,
+                            ranch_name: ranchName,
+                            location: location,
+                            cattle_count: cattleCount,
+                            phone: phone,
+                            rfc: rfc
+                        }
+                    }
+                });
+
+                if (error) {
+                    showNotification(`Error en el registro: ${error.message}`, 'danger');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                    return;
+                }
+
+                if (window.syncLocalSessionWithSupabase && data.session) {
+                    window.syncLocalSessionWithSupabase(data.session);
+                }
+
+                showNotification('¡Registro exitoso! Redirigiendo a tu panel de control...', 'success');
+
+                setTimeout(() => {
+                    if (normalizedRole === 'rancher') {
+                        window.location.href = 'dashboard-rancher.html';
+                    } else {
+                        window.location.href = 'dashboard-trader.html';
+                    }
+                }, 1500);
+
+            } catch (err) {
+                console.error('Supabase Sign-Up Exception:', err);
+                showNotification('Ocurrió un error inesperado al registrar el usuario.', 'danger');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            }
+        } else {
+            // Fallback Mode
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            localStorage.setItem('role', normalizedRole);
             if (ranchName) localStorage.setItem('ranchName', ranchName);
             if (location) localStorage.setItem('location', location);
-            if (cattleCount) localStorage.setItem('cattleCount', cattleCount);
+            if (cattleCount) localStorage.setItem('cattleCount', cattleCount.toString());
+
+            showNotification('¡Registro (modo demostración) exitoso! Redirigiendo...', 'success');
+
+            setTimeout(() => {
+                if (normalizedRole === 'rancher') {
+                    window.location.href = 'dashboard-rancher.html';
+                } else {
+                    window.location.href = 'dashboard-trader.html';
+                }
+            }, 1500);
         }
-        
-        // Mostrar mensaje de éxito
-        showNotification('Registration successful! Redirecting to your dashboard...', 'success');
-        
-        // Redirigir basado en el rol seleccionado después de un breve delay
-        setTimeout(() => {
-            if (selectedRole === 'buyer') {  // Rancher
-                window.location.href = 'dashboard-rancher.html';
-            } else if (selectedRole === 'trader') {  // Trader
-                window.location.href = 'dashboard-trader.html';
-            } else {
-                // Default redirect in case no role matches
-                window.location.href = 'dashboard.html';
-            }
-        }, 1500);
     });
     
     // Validación de RFC para vendedores

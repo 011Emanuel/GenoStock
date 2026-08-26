@@ -404,14 +404,31 @@
       // Logout functionality
       const logoutBtn = dropdown.querySelector('.logout-btn');
       if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(e) {
+        logoutBtn.addEventListener('click', async function(e) {
           e.preventDefault();
           e.stopPropagation();
           console.log('Logout clicked');
-          localStorage.removeItem('username');
-          localStorage.removeItem('name');
-          localStorage.removeItem('role');
-          location.reload();
+          
+          const supabase = window.getSupabase ? window.getSupabase() : null;
+          if (supabase) {
+            try {
+              await supabase.auth.signOut();
+            } catch (err) {
+              console.error('Supabase SignOut error:', err);
+            }
+          }
+
+          if (window.syncLocalSessionWithSupabase) {
+            window.syncLocalSessionWithSupabase(null);
+          } else {
+            localStorage.removeItem('username');
+            localStorage.removeItem('name');
+            localStorage.removeItem('role');
+            localStorage.removeItem('email');
+            localStorage.removeItem('userId');
+          }
+          
+          window.location.href = 'index.html';
         });
       }
       
