@@ -296,7 +296,7 @@ class GenoFooter extends HTMLElement {
           <div class="footer-col">
             <div class="footer-logo-desc">
               <img src="logo_small.png" alt="GenoStock Logo">
-              <span>Genostock</span>
+              <span>GenoStock</span>
             </div>
             <p class="footer-desc">GenoStock is a comprehensive platform for managing cattle health, sales, and productivity. We help ranchers and traders optimize their operations with advanced tools and insights.</p>
           </div>

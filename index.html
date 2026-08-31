@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genostock - Comprehensive Livestock Management Platform</title>
+    <title>GenoStock - Comprehensive Livestock Management Platform</title>
     <link rel="icon" type="image/png" href="logo_small.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -19,7 +19,7 @@
     <section class="hero-section">
         <div class="container text-center hero-content">
             <h1 class="display-4 mb-4" data-aos="fade-up">Smart Livestock Management</h1>
-            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">Livestock management and trading within everyone's reach</p>
+            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">Livestock management and trading, accessible to everyone</p>
             <div class="role-buttons" data-aos="fade-up" data-aos-delay="400">
                 <div class="role-card">
                     <i class="fas fa-tractor fa-3x mb-3"></i>
@@ -42,13 +42,13 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="mb-4">Why choose Genostock?</h2>
+                    <h2 class="mb-4">Why choose GenoStock?</h2>
                     <div class="feature-list">
                         <div class="feature-item">
                             <i class="fas fa-clipboard-check"></i>
                             <div>
-                                <h4>Health Registry</h4>
-                                <p>Complete control of vaccinations and treatments</p>
+                                <h4>Health Records</h4>
+                                <p>Full tracking of vaccinations and treatments</p>
                             </div>
                         </div>
                         <div class="feature-item">
@@ -108,8 +108,8 @@
                         <div class="icon-wrapper">
                             <i class="fas fa-clipboard-list"></i>
                         </div>
-                        <h3>Health Control</h3>
-                        <p>Detailed record of vaccinations, treatments and health monitoring</p>
+                        <h3>Health Tracking</h3>
+                        <p>Detailed records of vaccinations, treatments, and health monitoring</p>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
@@ -127,12 +127,12 @@
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <h3>Planning</h3>
-                        <p>Scheduling inseminations, births and weanings</p>
+                        <p>Scheduling inseminations, births, and weanings</p>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-5" data-aos="fade-up">
-                <a href="register.html" class="btn btn-primary btn-lg">Register as a Cattle Owner</a>
+                <a href="register.html" class="btn btn-primary btn-lg">Register as a Rancher</a>
             </div>
         </div>
     </section>
@@ -166,7 +166,7 @@
                             <i class="fas fa-truck"></i>
                         </div>
                         <h3>Logistics</h3>
-                        <p>Assistance in transportation and delivery</p>
+                        <p>Help with transportation and delivery</p>
                     </div>
                 </div>
             </div>
@@ -228,13 +228,13 @@
     <!-- Testimonials Section -->
     <section class="testimonials py-5">
         <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">What our users say</h2>
+            <h2 class="text-center mb-5" data-aos="fade-up">What Our Users Say</h2>
             <div class="row g-4">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="testimonial-card">
                         <div class="testimonial-content">
                             <i class="fas fa-quote-left"></i>
-                            <p>"Genostock has significantly improved the management of my ranch. Health control is excellent."</p>
+                            <p>"GenoStock has significantly improved how I manage my ranch. Health tracking is excellent."</p>
                         </div>
                         <div class="testimonial-author">
                             <img src="https://cloudfront-us-east-1.images.arcpublishing.com/corprensa/W6KE3QG2GRBVDKQAPEGEMNSP7M.jpg" alt="Juan Pérez">
@@ -255,7 +255,7 @@
                             <img src="https://media.istockphoto.com/id/1335276858/es/foto/sonriente-gerente-de-granja-de-pie-en-un-corral-en-un-rancho-de-ganado.jpg?s=612x612&w=0&k=20&c=wfhVUw3dwTiLSyj96-3vSoZzB--a4Oocwv3hLSku3Uk=" alt="María García">
                             <div>
                                 <h5>Laura Ortega</h5>
-                                <p>Merchant, Los Santos</p>
+                                <p>Trader, Los Santos</p>
                             </div>
                         </div>
                     </div>
@@ -281,16 +281,11 @@
 
     <!-- Footer Component -->
     <geno-footer></geno-footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/env.js"></script>
+    <script src="js/supabase-config.js"></script>
     <script src="components/header.js"></script>
     <script src="components/header-auth.js"></script>
-    <script>
-      // Reemplaza el header si el usuario está logueado
-      if (localStorage.getItem('username')) {
-        const oldHeader = document.getElementById('main-header');
-        if (oldHeader) oldHeader.remove();
-        // El header-auth.js ya inserta el header autenticado automáticamente
-      }
-    </script>
     <script src="components/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>

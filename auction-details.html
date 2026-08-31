@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auction Details - Genostock</title>
+    <title>Auction Details - GenoStock</title>
     <link rel="icon" type="image/png" href="logo_small.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -44,7 +44,7 @@
                     <div class="col-lg-5">
                         <div id="winnerBanner" class="winner-banner mb-4 d-none">
                             <i class="fas fa-trophy fa-2x mb-2"></i>
-                            <h4>Auction finished</h4>
+                            <h4>Auction Ended</h4>
                             <p class="mb-0" id="winnerText"></p>
                         </div>
 
@@ -60,7 +60,7 @@
                         </div>
 
                         <div id="bidSection" class="auction-bid-form card p-4 mb-4">
-                            <h5 class="mb-3"><i class="fas fa-gavel"></i> Place a bid</h5>
+                            <h5 class="mb-3"><i class="fas fa-gavel"></i> Place a Bid</h5>
                             <div id="bidAuthWarning" class="alert alert-warning d-none">
                                 <a href="login.html">Log in</a> to participate in this auction.
                             </div>
@@ -74,7 +74,7 @@
                                     <div class="form-text" id="minBidHint"></div>
                                 </div>
                                 <button type="submit" class="btn btn-dark-green w-100" id="bidSubmitBtn">
-                                    <i class="fas fa-hand-holding-usd"></i> Submit bid
+                                    <i class="fas fa-hand-holding-usd"></i> Submit Bid
                                 </button>
                             </form>
                             <div id="bidClosedMsg" class="alert alert-secondary mt-3 d-none">
@@ -84,7 +84,7 @@
 
                         <div class="card">
                             <div class="card-header bg-white fw-bold">
-                                <i class="fas fa-history"></i> Bid history
+                                <i class="fas fa-history"></i> Bid History
                             </div>
                             <div class="bid-history-list" id="bidHistory">
                                 <p class="text-muted text-center py-4 mb-0">No bids yet</p>
@@ -100,16 +100,11 @@
 
     <script src="components/header.js"></script>
     <script src="components/header-auth.js"></script>
-    <script>
-      if (localStorage.getItem('username')) {
-        const oldHeader = document.getElementById('main-header');
-        if (oldHeader) oldHeader.remove();
-      }
-    </script>
     <script src="components/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/env.js"></script>
     <script src="js/supabase-config.js"></script>
     <script src="js/auctions/auction-utils.js"></script>
     <script src="js/auctions/auction-api.js"></script>

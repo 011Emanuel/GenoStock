@@ -78,8 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
         images: getImageUrls()
       };
 
-      const { auction } = await AuctionAPI.createAuction(body);
-      AuctionUtils.showNotification('Auction created successfully.', 'success');
+      const result = await AuctionAPI.createAuction(body);
+      const auction = result.auction || result;
+      AuctionUtils.showNotification('Auction created and saved to the database.', 'success');
       setTimeout(() => {
         window.location.href = `auction-details.html?id=${auction.id}`;
       }, 800);

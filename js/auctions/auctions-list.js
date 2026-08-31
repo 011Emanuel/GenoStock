@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function renderAuctionCard(auction) {
-    const image = auction.images[0] || 'https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg';
+    const image = (auction.images && auction.images[0]) || 'https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg';
     const countdown = AuctionUtils.getCountdownParts(auction.endsAt);
     const countdownClass = auction.status === 'ended' || countdown.ended
       ? 'ended'
@@ -94,11 +94,14 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       errorEl.classList.add('d-none');
       const data = await AuctionAPI.listAuctions();
-      auctions = data.auctions;
+      auctions = data.auctions || [];
       renderAuctions();
     } catch (err) {
       loading.classList.add('d-none');
-      errorEl.textContent = 'Could not connect to the auction server. Run: cd backend && npm install && npm start';
+      const needsSupabase = !window.isSupabaseConfigured || !window.isSupabaseConfigured();
+      errorEl.textContent = needsSupabase
+        ? 'Could not load auctions. Connect Supabase with the banner on this page, or start the local backend: cd backend && npm start'
+        : (err.message || 'Could not load auctions from the database.');
       errorEl.classList.remove('d-none');
     }
   }

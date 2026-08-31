@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Validación de contraseñas
     function validatePasswords() {
         if (passwordInput.value !== confirmPasswordInput.value) {
-            confirmPasswordInput.setCustomValidity('Las contraseñas no coinciden');
+            confirmPasswordInput.setCustomValidity('Passwords do not match');
         } else {
             confirmPasswordInput.setCustomValidity('');
         }
@@ -61,19 +61,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const role = document.querySelector('input[name="role"]:checked');
 
         if (!email || !username || !password || !confirmPassword) {
-            showNotification('Por favor, completa todos los campos.', 'warning');
+            showNotification('Please fill in all required fields.', 'warning');
             return;
         }
         if (!role) {
-            showNotification('Por favor, selecciona un rol.', 'warning');
+            showNotification('Please select a role.', 'warning');
             return;
         }
         if (password !== confirmPassword) {
-            showNotification('Las contraseñas no coinciden.', 'warning');
+            showNotification('Passwords do not match.', 'warning');
             return;
         }
         if (!terms || !terms.checked) {
-            showNotification('Debes aceptar los términos y condiciones para continuar.', 'warning');
+            showNotification('You must accept the terms and conditions to continue.', 'warning');
             return;
         }
 
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cattleCount = parseInt(document.getElementById('cattleCount')?.value || '0', 10);
 
             if (!ranchName || !location) {
-                showNotification('Por favor, completa los campos específicos del rancho.', 'warning');
+                showNotification('Please complete the ranch details.', 'warning');
                 return;
             }
         }
@@ -103,71 +103,89 @@ document.addEventListener('DOMContentLoaded', function() {
         const originalBtnText = submitBtn ? submitBtn.innerHTML : 'Register';
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Registrando...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating account...';
         }
 
         const supabase = window.getSupabase ? window.getSupabase() : null;
+        const supabaseReady = supabase && window.isSupabaseConfigured && window.isSupabaseConfigured();
 
-        if (supabase && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
-            try {
-                const { data, error } = await supabase.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: {
-                            username: username,
-                            full_name: username,
-                            role: normalizedRole,
-                            ranch_name: ranchName,
-                            location: location,
-                            cattle_count: cattleCount,
-                            phone: phone,
-                            rfc: rfc
-                        }
-                    }
-                });
+        if (!supabaseReady) {
+            showNotification('Supabase is not connected. Paste the project URL and anon key in the orange box (or in js/env.js). The account was not saved to the database.', 'danger');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+            return;
+        }
 
-                if (error) {
-                    showNotification(`Error en el registro: ${error.message}`, 'danger');
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalBtnText;
-                    }
-                    return;
+        try {
+            const metadata = {
+                username: username,
+                full_name: username,
+                role: normalizedRole,
+                ranch_name: ranchName,
+                location: location,
+                cattle_count: cattleCount,
+                phone: phone,
+                rfc: rfc
+            };
+
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: metadata,
+                    emailRedirectTo: window.location.origin + '/login.html'
                 }
+            });
 
-                if (window.syncLocalSessionWithSupabase && data.session) {
-                    window.syncLocalSessionWithSupabase(data.session);
-                }
-
-                showNotification('¡Registro exitoso! Redirigiendo a tu panel de control...', 'success');
-
-                setTimeout(() => {
-                    if (normalizedRole === 'rancher') {
-                        window.location.href = 'dashboard-rancher.html';
-                    } else {
-                        window.location.href = 'dashboard-trader.html';
-                    }
-                }, 1500);
-
-            } catch (err) {
-                console.error('Supabase Sign-Up Exception:', err);
-                showNotification('Ocurrió un error inesperado al registrar el usuario.', 'danger');
+            if (error) {
+                showNotification(`Registration error: ${error.message}`, 'danger');
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
                 }
+                return;
             }
-        } else {
-            // Fallback Mode
-            localStorage.setItem('username', username);
-            localStorage.setItem('email', email);
-            localStorage.setItem('role', normalizedRole);
-            if (ranchName) localStorage.setItem('ranchName', ranchName);
-            if (location) localStorage.setItem('location', location);
-            if (cattleCount) localStorage.setItem('cattleCount', cattleCount.toString());
 
-            showNotification('¡Registro (modo demostración) exitoso! Redirigiendo...', 'success');
+            if (!data.user) {
+                showNotification('Could not create the user in Supabase. Check Authentication in the project dashboard.', 'danger');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+                return;
+            }
+
+            if (window.ensureUserProfile) {
+                await window.ensureUserProfile(data.user, metadata);
+            }
+
+            if (window.syncLocalSessionWithSupabase && data.session) {
+                window.syncLocalSessionWithSupabase(data.session);
+            } else {
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', email);
+                localStorage.setItem('role', normalizedRole);
+                localStorage.setItem('name', username);
+                if (ranchName) localStorage.setItem('ranchName', ranchName);
+                if (location) localStorage.setItem('location', location);
+            }
+
+            if (!data.session) {
+                showNotification('Account created in the database. Confirm your email (or turn off Confirm email in Supabase Auth) and then log in.', 'success');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2200);
+                return;
+            }
+
+            showNotification('Registration successful. Your account was saved to the database. Redirecting...', 'success');
 
             setTimeout(() => {
                 if (normalizedRole === 'rancher') {
@@ -176,6 +194,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = 'dashboard-trader.html';
                 }
             }, 1500);
+
+        } catch (err) {
+            console.error('Supabase Sign-Up Exception:', err);
+            showNotification('An unexpected error occurred while registering the account.', 'danger');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         }
     });
     
@@ -185,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rfcInput.addEventListener('input', function() {
             const rfcPattern = /^[A-Z]{4}[0-9]{6}[A-Z0-9]{3}$/;
             if (!rfcPattern.test(this.value)) {
-                this.setCustomValidity('RFC inválido. Debe tener el formato correcto (ej: ABCD123456XYZ)');
+                this.setCustomValidity('Invalid RFC. Use the correct format (e.g. ABCD123456XYZ)');
             } else {
                 this.setCustomValidity('');
             }
@@ -198,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         phoneInput.addEventListener('input', function() {
             const phonePattern = /^[0-9]{10}$/;
             if (!phonePattern.test(this.value)) {
-                this.setCustomValidity('Teléfono inválido. Debe tener 10 dígitos');
+                this.setCustomValidity('Invalid phone number. It must have 10 digits.');
             } else {
                 this.setCustomValidity('');
             }

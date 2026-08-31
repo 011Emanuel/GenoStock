@@ -383,11 +383,33 @@ class DashboardRancher extends HTMLElement {
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
   }
   
+  rootPrefix() {
+    const path = (window.location.pathname || '').replace(/\\/g, '/');
+    return /\/dashboard\/(rancher|trader)\//.test(path) ? '../../' : '';
+  }
+
   connectedCallback() {
     this.loadComponents();
     this.setupSidebarToggle();
     this.setupNavigation();
     this.setupMobileOverlay();
+    this._onProfileUpdated = (event) => this.refreshSidebarUser(event.detail);
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+  }
+
+  refreshSidebarUser(profile) {
+    if (!profile) return;
+    const name = profile.full_name || profile.username || 'User';
+    const nameEl = this.shadowRoot.querySelector('.sidebar-username');
+    const img = this.shadowRoot.querySelector('.sidebar-avatar img');
+    if (nameEl) nameEl.textContent = name;
+    if (img) img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2c5530&color=fff`;
   }
   
   async loadComponents() {
@@ -464,12 +486,17 @@ class DashboardRancher extends HTMLElement {
           <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(localStorage.getItem('name') || localStorage.getItem('username') || 'U')}" alt="Avatar">
         </div>
         <div class="sidebar-user-info">
-          <div class="sidebar-username">${localStorage.getItem('name') || localStorage.getItem('username') || 'Usuario'}</div>
+          <div class="sidebar-username">${localStorage.getItem('name') || localStorage.getItem('username') || 'User'}</div>
           <div class="sidebar-user-role">${localStorage.getItem('role') ? (localStorage.getItem('role').charAt(0).toUpperCase() + localStorage.getItem('role').slice(1)) : ''}</div>
         </div>
       `;
       
       headerContainer.appendChild(header);
+
+      if (typeof window.loadUserProfile === 'function') {
+        const { data } = await window.loadUserProfile();
+        if (data) this.refreshSidebarUser(data);
+      }
     } catch (error) {
       console.error('Error loading sidebar header:', error);
     }
@@ -647,7 +674,7 @@ class DashboardRancher extends HTMLElement {
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
             </svg>
           </button>
-          <img src="../../logo_small.png" alt="GenoStock">
+          <img src="${this.rootPrefix()}logo_small.png" alt="GenoStock">
           <span>GenoStock</span>
         </div>
         
@@ -668,37 +695,35 @@ class DashboardRancher extends HTMLElement {
         </div>
       `;
       
-      // Add logout functionality (sign out and navigate to index.html)
       setTimeout(() => {
+        const home = this.rootPrefix();
         const logoutBtn = header.querySelector('#dashboardLogout');
         if (logoutBtn) {
-          logoutBtn.addEventListener('click', function(e) {
+          logoutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            console.log('Dashboard logout clicked - performing full logout');
-            localStorage.removeItem('username');
-            localStorage.removeItem('name');
-            localStorage.removeItem('role');
-            window.location.href = '../../index.html';
+            const supabase = window.getSupabase && window.getSupabase();
+            if (supabase) {
+              try { await supabase.auth.signOut(); } catch (err) { console.warn(err); }
+            }
+            ['username', 'name', 'role', 'email', 'userId', 'ranchName', 'location', 'phone', 'cattleCount', 'rfc']
+              .forEach((key) => localStorage.removeItem(key));
+            window.location.href = home + 'index.html';
           });
         }
-        
-        // Agregar funcionalidad de marketplace (redirigir a marketplace.html con header auth)
+
         const marketplaceBtn = header.querySelector('#marketplaceBtn');
         if (marketplaceBtn) {
-          marketplaceBtn.addEventListener('click', function(e) {
+          marketplaceBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Marketplace clicked - redirecting to marketplace.html');
-            window.location.href = '../../marketplace.html';
+            window.location.href = home + 'marketplace.html';
           });
         }
-        
-        // Agregar funcionalidad al logo (redirigir a marketplace.html con header auth)
+
         const headerLogo = header.querySelector('.header-logo');
         if (headerLogo) {
-          headerLogo.addEventListener('click', function(e) {
+          headerLogo.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Logo clicked - redirecting to marketplace.html');
-            window.location.href = '../../marketplace.html';
+            window.location.href = home + 'marketplace.html';
           });
           headerLogo.style.cursor = 'pointer';
         }
@@ -716,7 +741,7 @@ class DashboardRancher extends HTMLElement {
     
     try {
       if (!window.createAuthFooter) {
-        await this.loadScript('../../components/footer-auth.js');
+        await this.loadScript(this.rootPrefix() + 'components/footer-auth.js');
       }
       
       if (window.createAuthFooter) {

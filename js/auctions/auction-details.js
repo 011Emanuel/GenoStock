@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(window.location.search);
-  const auctionId = Number(params.get('id'));
+  const auctionId = params.get('id');
 
   if (!auctionId) {
     showError('Invalid auction ID.');
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function renderGallery() {
-    const images = auction.images.length
+    const images = (auction.images && auction.images.length)
       ? auction.images
       : ['https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg'];
 
@@ -189,9 +189,9 @@ document.addEventListener('DOMContentLoaded', function () {
   AuctionAPI.joinAuction(auctionId);
 
   AuctionAPI.on('auction:bid', ({ auctionId: id, bid, auction: updated }) => {
-    if (id !== auctionId) return;
+    if (String(id) !== String(auctionId)) return;
     auction = updated;
-    const exists = bids.some(b => b.id === bid.id);
+    const exists = bids.some(b => String(b.id) === String(bid.id));
     if (!exists) bids.unshift(bid);
     els.currentPrice.textContent = AuctionUtils.formatCurrency(auction.currentPrice);
     renderBidHistory();
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   AuctionAPI.on('auction:ended', ({ auctionId: id, auction: updated }) => {
-    if (id !== auctionId) return;
+    if (String(id) !== String(auctionId)) return;
     auction = updated;
     renderAll();
   });

@@ -485,6 +485,7 @@
 
 // Function to render auth header if user is logged in
 function renderAuthHeaderIfLoggedIn() {
+  if (document.querySelector('geno-header')) return;
   const username = localStorage.getItem('username');
   if (username) {
     // Eliminar header anterior si existe
