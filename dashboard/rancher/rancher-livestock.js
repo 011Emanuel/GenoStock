@@ -321,20 +321,20 @@ class RancherLivestock extends HTMLElement {
         <!-- Stats Summary -->
         <div class="stats-summary">
           <div class="stat-item">
-            <div class="stat-number">234</div>
+            <div class="stat-number" id="statTotal">0</div>
             <div class="stat-label">Total Cattle</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">156</div>
+            <div class="stat-number" id="statBrahman">0</div>
             <div class="stat-label">Brahman</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">78</div>
+            <div class="stat-number" id="statNelore">0</div>
             <div class="stat-label">Nelore</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">15</div>
-            <div class="stat-label">Pregnant</div>
+            <div class="stat-number" id="statGuzera">0</div>
+            <div class="stat-label">Guzerá / Gyr</div>
           </div>
         </div>
         
@@ -344,17 +344,18 @@ class RancherLivestock extends HTMLElement {
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
             </svg>
-            <input type="text" placeholder="Search cattle...">
+            <input type="text" id="searchInput" placeholder="Search cattle by tag ID, breed...">
           </div>
           
           <div class="filter-buttons">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Brahman</button>
-            <button class="filter-btn">Nelore</button>
-            <button class="filter-btn">Pregnant</button>
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Brahman">Brahman</button>
+            <button class="filter-btn" data-filter="Nelore">Nelore</button>
+            <button class="filter-btn" data-filter="Gyr">Gyr</button>
+            <button class="filter-btn" data-filter="Guzerá">Guzerá</button>
           </div>
           
-          <button class="add-btn">
+          <button class="add-btn" onclick="window.location.href='add-cattle.html'">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 5v14M5 12h14"/>
             </svg>
@@ -362,208 +363,117 @@ class RancherLivestock extends HTMLElement {
           </button>
         </div>
         
-        <!-- Cattle Grid -->
-        <div class="cattle-grid">
-          <!-- Cattle Card 1 -->
-          <div class="cattle-card">
-            <div class="cattle-header">
-              <div class="cattle-id">B-156</div>
-              <div class="cattle-status status-healthy">Healthy</div>
-            </div>
-            <div class="cattle-body">
-              <div class="cattle-info">
-                <div class="info-item">
-                  <div class="info-label">Breed</div>
-                  <div class="info-value">Brahman</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Age</div>
-                  <div class="info-value">4 years</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Weight</div>
-                  <div class="info-value">1,200 kg</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Last Check</div>
-                  <div class="info-value">2 days ago</div>
-                </div>
-              </div>
-              <div class="cattle-actions">
-                <button class="action-btn">View Details</button>
-                <button class="action-btn">Health Check</button>
-                <button class="action-btn primary">Edit</button>
-              </div>
-            </div>
+        <!-- Cattle Grid (Populated Dynamically) -->
+        <div class="cattle-grid" id="cattleGrid"></div>
+      </div>
+    `;
+  }
+
+  connectedCallback() {
+    this.loadCattle();
+  }
+
+  async loadCattle() {
+    const shadow = this.shadowRoot;
+    const grid = shadow.querySelector('#cattleGrid');
+    if (!grid) return;
+
+    let items = [];
+
+    // Read local storage records first
+    try {
+      const local = JSON.parse(localStorage.getItem('genostock_cattle_list') || '[]');
+      items = [...local];
+    } catch(e) {}
+
+    // Fetch records from Supabase cattle table
+    try {
+      if (window.supabase && window.supabase.from) {
+        const { data, error } = await window.supabase.from('cattle').select('*').order('created_at', { ascending: false });
+        if (data && data.length > 0) {
+          data.forEach(dbItem => {
+            if (!items.some(i => i.id === dbItem.id)) {
+              items.push({
+                id: dbItem.id,
+                tagId: dbItem.title,
+                title: dbItem.title,
+                breed: dbItem.breed,
+                category: dbItem.category,
+                weight: dbItem.weight,
+                age: dbItem.age,
+                imageUrl: dbItem.image_url,
+                description: dbItem.description,
+                status: dbItem.status || 'Active'
+              });
+            }
+          });
+        }
+      }
+    } catch(e) {
+      console.warn('Could not fetch Supabase cattle:', e);
+    }
+
+    // Update Stats
+    const totalEl = shadow.querySelector('#statTotal');
+    const brahmanEl = shadow.querySelector('#statBrahman');
+    const neloreEl = shadow.querySelector('#statNelore');
+    const guzeraEl = shadow.querySelector('#statGuzera');
+
+    if (totalEl) totalEl.textContent = items.length;
+    if (brahmanEl) brahmanEl.textContent = items.filter(i => (i.breed || '').toLowerCase() === 'brahman').length;
+    if (neloreEl) neloreEl.textContent = items.filter(i => (i.breed || '').toLowerCase() === 'nelore').length;
+    if (guzeraEl) guzeraEl.textContent = items.filter(i => ['guzerá', 'guzera', 'gyr'].includes((i.breed || '').toLowerCase())).length;
+
+    // Render Cards or Empty State
+    if (items.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; background: #ffffff; border-radius: 16px; border: 2px dashed #cbd5e1;">
+          <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" style="margin-bottom: 1rem;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          <h4 style="color: #2c5530; font-weight: 700; margin-bottom: 0.5rem;">No Cattle Registered Yet</h4>
+          <p style="color: #64748b; max-width: 440px; margin: 0 auto 1.5rem; font-size: 0.95rem;">Your livestock inventory is currently empty. Register your first cattle record using the button below.</p>
+          <button class="add-btn" style="margin: 0 auto;" onclick="window.location.href='add-cattle.html'">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            Add Your First Cattle
+          </button>
+        </div>
+      `;
+    } else {
+      grid.innerHTML = items.map(c => `
+        <div class="cattle-card">
+          <div class="cattle-header">
+            <div class="cattle-id">${c.tagId || c.title || 'Cattle Record'}</div>
+            <div class="cattle-status status-healthy">${c.status || 'Active'}</div>
           </div>
-          
-          <!-- Cattle Card 2 -->
-          <div class="cattle-card">
-            <div class="cattle-header">
-              <div class="cattle-id">N-078</div>
-              <div class="cattle-status status-pregnant">Pregnant</div>
-            </div>
-            <div class="cattle-body">
-              <div class="cattle-info">
-                <div class="info-item">
-                  <div class="info-label">Breed</div>
-                  <div class="info-value">Nelore</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Age</div>
-                  <div class="info-value">6 years</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Weight</div>
-                  <div class="info-value">1,350 kg</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Due Date</div>
-                  <div class="info-value">Next month</div>
-                </div>
+          ${c.imageUrl ? `<div style="height:160px; overflow:hidden; border-radius:10px; margin-bottom:1rem;"><img src="${c.imageUrl}" style="width:100%; height:100%; object-fit:cover;" alt="${c.title || 'Cattle'}"></div>` : ''}
+          <div class="cattle-body">
+            <div class="cattle-info">
+              <div class="info-item">
+                <div class="info-label">Breed</div>
+                <div class="info-value">${c.breed || 'N/A'}</div>
               </div>
-              <div class="cattle-actions">
-                <button class="action-btn">View Details</button>
-                <button class="action-btn">Health Check</button>
-                <button class="action-btn primary">Edit</button>
+              <div class="info-item">
+                <div class="info-label">Age</div>
+                <div class="info-value">${c.age ? c.age + ' mths' : 'N/A'}</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Weight</div>
+                <div class="info-value">${c.weight ? c.weight + ' kg' : 'N/A'}</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Type</div>
+                <div class="info-value">${c.category || 'Livestock'}</div>
               </div>
             </div>
-          </div>
-          
-          <!-- Cattle Card 3 -->
-          <div class="cattle-card">
-            <div class="cattle-header">
-              <div class="cattle-id">B-203</div>
-              <div class="cattle-status status-healthy">Healthy</div>
-            </div>
-            <div class="cattle-body">
-              <div class="cattle-info">
-                <div class="info-item">
-                  <div class="info-label">Breed</div>
-                  <div class="info-value">Brahman</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Age</div>
-                  <div class="info-value">3 years</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Weight</div>
-                  <div class="info-value">1,100 kg</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Last Check</div>
-                  <div class="info-value">1 week ago</div>
-                </div>
-              </div>
-              <div class="cattle-actions">
-                <button class="action-btn">View Details</button>
-                <button class="action-btn">Health Check</button>
-                <button class="action-btn primary">Edit</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Cattle Card 4 -->
-          <div class="cattle-card">
-            <div class="cattle-header">
-              <div class="cattle-id">N-045</div>
-              <div class="cattle-status status-sick">Sick</div>
-            </div>
-            <div class="cattle-body">
-              <div class="cattle-info">
-                <div class="info-item">
-                  <div class="info-label">Breed</div>
-                  <div class="info-value">Nelore</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Age</div>
-                  <div class="info-value">5 years</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Weight</div>
-                  <div class="info-value">1,280 kg</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Issue</div>
-                  <div class="info-value">Respiratory</div>
-                </div>
-              </div>
-              <div class="cattle-actions">
-                <button class="action-btn">View Details</button>
-                <button class="action-btn">Health Check</button>
-                <button class="action-btn primary">Edit</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Cattle Card 5 -->
-          <div class="cattle-card">
-            <div class="cattle-header">
-              <div class="cattle-id">B-189</div>
-              <div class="cattle-status status-pregnant">Pregnant</div>
-            </div>
-            <div class="cattle-body">
-              <div class="cattle-info">
-                <div class="info-item">
-                  <div class="info-label">Breed</div>
-                  <div class="info-value">Brahman</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Age</div>
-                  <div class="info-value">7 years</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Weight</div>
-                  <div class="info-value">1,400 kg</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Due Date</div>
-                  <div class="info-value">2 weeks</div>
-                </div>
-              </div>
-              <div class="cattle-actions">
-                <button class="action-btn">View Details</button>
-                <button class="action-btn">Health Check</button>
-                <button class="action-btn primary">Edit</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Cattle Card 6 -->
-          <div class="cattle-card">
-            <div class="cattle-header">
-              <div class="cattle-id">N-112</div>
-              <div class="cattle-status status-healthy">Healthy</div>
-            </div>
-            <div class="cattle-body">
-              <div class="cattle-info">
-                <div class="info-item">
-                  <div class="info-label">Breed</div>
-                  <div class="info-value">Nelore</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Age</div>
-                  <div class="info-value">4 years</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Weight</div>
-                  <div class="info-value">1,250 kg</div>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Last Check</div>
-                  <div class="info-value">3 days ago</div>
-                </div>
-              </div>
-              <div class="cattle-actions">
-                <button class="action-btn">View Details</button>
-                <button class="action-btn">Health Check</button>
-                <button class="action-btn primary">Edit</button>
-              </div>
+            <div class="cattle-actions">
+              <button class="action-btn" onclick="alert('Tag ID / Name: ${c.tagId || 'N/A'}\\nBreed: ${c.breed || 'N/A'}\\nWeight: ${c.weight || 'N/A'} kg\\nAge: ${c.age || 'N/A'} mths\\nNotes: ${c.description || 'N/A'}')">View Details</button>
+              <button class="action-btn primary" onclick="window.location.href='add-cattle.html'">Add Cattle</button>
             </div>
           </div>
         </div>
-      </div>
-    `;
+      `).join('');
+    }
   }
 }
 customElements.define('rancher-livestock', RancherLivestock); 

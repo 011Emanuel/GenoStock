@@ -642,7 +642,7 @@ class RancherOverview extends HTMLElement {
             
             <div class="quick-actions-body">
               <div class="quick-actions-grid">
-                <button class="quick-action-btn">
+                <button class="quick-action-btn" onclick="window.location.href='add-cattle.html'">
                   <div class="quick-action-icon primary">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 5v14M5 12h14"/>
