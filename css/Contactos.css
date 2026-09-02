@@ -128,15 +128,39 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .contact-container {
         flex-direction: column;
+        padding: 20px 0;
     }
     
     .contact-section:first-of-type,
     .contact-section:last-of-type {
         flex: none;
-        margin: 10px;
+        margin: 10px 15px;
+    }
+}
+
+@media (max-width: 479px) {
+    .contact-section:first-of-type,
+    .contact-section:last-of-type {
+        margin: 10px 5px;
+        padding: 20px 15px;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .social-links {
+        gap: 10px;
+    }
+
+    .social-link {
+        min-width: 70px;
+        padding: 10px;
     }
 }
 

@@ -290,6 +290,18 @@ class GenoFooter extends HTMLElement {
             gap: 1rem;
           }
         }
+        
+        @media (max-width: 479px) {
+          .footer-newsletter .input-group {
+            flex-direction: column;
+          }
+          .footer-newsletter button {
+            width: 100%;
+          }
+          .footer-bottom {
+            padding: 1rem 0.5rem;
+          }
+        }
       </style>
       <footer class="footer-main">
         <div class="footer-container">
