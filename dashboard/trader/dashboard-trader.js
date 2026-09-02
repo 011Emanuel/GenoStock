@@ -492,7 +492,7 @@ class DashboardTrader extends HTMLElement {
           <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(localStorage.getItem('name') || localStorage.getItem('username') || 'U')}" alt="Avatar">
         </div>
         <div class="sidebar-user-info">
-          <div class="sidebar-username">${localStorage.getItem('name') || localStorage.getItem('username') || 'Usuario'}</div>
+          <div class="sidebar-username">${localStorage.getItem('name') || localStorage.getItem('username') || 'User'}</div>
           <div class="sidebar-user-role">${localStorage.getItem('role') ? (localStorage.getItem('role').charAt(0).toUpperCase() + localStorage.getItem('role').slice(1)) : ''}</div>
         </div>
       `;

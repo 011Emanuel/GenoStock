@@ -1,5 +1,10 @@
 -- GenoStock Supabase PostgreSQL Database Schema
--- Run this script in your Supabase SQL Editor to set up tables, RLS policies, and triggers.
+-- Run this entire script in the Supabase SQL Editor (Dashboard → SQL Editor → New query).
+-- Safe to re-run: tables, policies, and triggers are created or replaced.
+
+-- Recommended for local/school testing:
+-- Authentication → Providers → Email → disable "Confirm email"
+-- so new users can log in immediately without a confirmation link.
 
 -- 1. PROFILES TABLE (Linked to Supabase Auth users)
 CREATE TABLE IF NOT EXISTS public.profiles (
@@ -53,6 +58,13 @@ CREATE TABLE IF NOT EXISTS public.auctions (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+ALTER TABLE public.auctions ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE public.auctions ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.auctions ADD COLUMN IF NOT EXISTS seller_name TEXT;
+ALTER TABLE public.auctions ADD COLUMN IF NOT EXISTS seller_username TEXT;
+ALTER TABLE public.auctions ADD COLUMN IF NOT EXISTS winner_name TEXT;
+ALTER TABLE public.auctions ADD COLUMN IF NOT EXISTS winning_bid NUMERIC;
+
 -- 4. BIDS TABLE
 CREATE TABLE IF NOT EXISTS public.bids (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -90,12 +102,21 @@ BEGIN
         NEW.raw_user_meta_data->>'phone',
         NEW.raw_user_meta_data->>'rfc',
         NEW.raw_user_meta_data->>'avatar_url'
-    );
+    )
+    ON CONFLICT (id) DO UPDATE SET
+        username = EXCLUDED.username,
+        full_name = EXCLUDED.full_name,
+        role = EXCLUDED.role,
+        ranch_name = EXCLUDED.ranch_name,
+        location = EXCLUDED.location,
+        cattle_count = EXCLUDED.cattle_count,
+        phone = EXCLUDED.phone,
+        rfc = EXCLUDED.rfc,
+        updated_at = NOW();
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Drop trigger if exists and recreate
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
@@ -107,40 +128,82 @@ ALTER TABLE public.cattle ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.auctions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bids ENABLE ROW LEVEL SECURITY;
 
--- Profiles Policies
-CREATE POLICY "Public profiles are viewable by everyone" 
+DROP POLICY IF EXISTS "Public profiles are viewable by everyone" ON public.profiles;
+DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Cattle listings are viewable by everyone" ON public.cattle;
+DROP POLICY IF EXISTS "Authenticated users can insert cattle" ON public.cattle;
+DROP POLICY IF EXISTS "Sellers can update their own cattle listings" ON public.cattle;
+DROP POLICY IF EXISTS "Auctions are viewable by everyone" ON public.auctions;
+DROP POLICY IF EXISTS "Authenticated users can create auctions" ON public.auctions;
+DROP POLICY IF EXISTS "Sellers can update their own auctions" ON public.auctions;
+DROP POLICY IF EXISTS "Bids are viewable by everyone" ON public.bids;
+DROP POLICY IF EXISTS "Authenticated users can place bids" ON public.bids;
+
+CREATE POLICY "Public profiles are viewable by everyone"
     ON public.profiles FOR SELECT USING (true);
 
-CREATE POLICY "Users can update their own profile" 
+CREATE POLICY "Users can insert their own profile"
+    ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "Users can update their own profile"
     ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
--- Cattle Policies
-CREATE POLICY "Cattle listings are viewable by everyone" 
+CREATE POLICY "Cattle listings are viewable by everyone"
     ON public.cattle FOR SELECT USING (true);
 
-CREATE POLICY "Authenticated users can insert cattle" 
-    ON public.cattle FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can insert cattle"
+    ON public.cattle FOR INSERT WITH CHECK (auth.uid() = seller_id);
 
-CREATE POLICY "Sellers can update their own cattle listings" 
+CREATE POLICY "Sellers can update their own cattle listings"
     ON public.cattle FOR UPDATE USING (auth.uid() = seller_id);
 
--- Auctions Policies
-CREATE POLICY "Auctions are viewable by everyone" 
+CREATE POLICY "Auctions are viewable by everyone"
     ON public.auctions FOR SELECT USING (true);
 
-CREATE POLICY "Authenticated users can create auctions" 
-    ON public.auctions FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can create auctions"
+    ON public.auctions FOR INSERT WITH CHECK (auth.uid() = seller_id);
 
-CREATE POLICY "Sellers can update their own auctions" 
+CREATE POLICY "Sellers can update their own auctions"
     ON public.auctions FOR UPDATE USING (auth.uid() = seller_id);
 
--- Bids Policies
-CREATE POLICY "Bids are viewable by everyone" 
+CREATE POLICY "Bids are viewable by everyone"
     ON public.bids FOR SELECT USING (true);
 
-CREATE POLICY "Authenticated users can place bids" 
-    ON public.bids FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Authenticated users can place bids"
+    ON public.bids FOR INSERT WITH CHECK (auth.uid() = bidder_id);
+
+-- Sellers cannot update current_price on someone else's auction, so a trigger
+-- applies the new bid amount with definer rights after a successful insert.
+CREATE OR REPLACE FUNCTION public.handle_new_bid()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE public.auctions
+    SET current_price = NEW.amount,
+        updated_at = NOW()
+    WHERE id = NEW.auction_id
+      AND status = 'active'
+      AND NEW.amount > current_price;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+DROP TRIGGER IF EXISTS on_bid_created ON public.bids;
+CREATE TRIGGER on_bid_created
+    AFTER INSERT ON public.bids
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_bid();
 
 -- 7. ENABLE REALTIME FOR LIVE AUCTIONS AND BIDS
-ALTER PUBLICATION supabase_realtime ADD TABLE public.auctions;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.bids;
+DO $$
+BEGIN
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.auctions;
+    EXCEPTION WHEN duplicate_object THEN
+        NULL;
+    END;
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.bids;
+    EXCEPTION WHEN duplicate_object THEN
+        NULL;
+    END;
+END $$;

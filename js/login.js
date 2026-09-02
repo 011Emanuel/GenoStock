@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = passwordInput?.value;
 
             if (!email || !password) {
-                showNotification('Por favor, completa todos los campos.', 'warning');
+                showNotification('Please fill in all required fields.', 'warning');
                 return;
             }
 
@@ -25,64 +25,60 @@ document.addEventListener('DOMContentLoaded', function() {
             const originalBtnText = submitBtn ? submitBtn.innerHTML : 'Login';
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Iniciando sesión...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Signing in...';
             }
 
             const supabase = window.getSupabase ? window.getSupabase() : null;
+            const supabaseReady = supabase && window.isSupabaseConfigured && window.isSupabaseConfigured();
 
-            if (supabase && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
-                // Real Supabase Authentication
-                try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
+            if (!supabaseReady) {
+                showNotification('Supabase is not connected. Paste the project URL and anon key in the orange box (or in js/env.js). Local login does not use the database.', 'danger');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+                return;
+            }
 
-                    if (error) {
-                        showNotification(`Error de inicio de sesión: ${error.message}`, 'danger');
-                        if (submitBtn) {
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = originalBtnText;
-                        }
-                        return;
-                    }
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
 
-                    const user = data.user;
-                    const meta = user?.user_metadata || {};
-                    const role = meta.role || 'rancher';
-
-                    if (window.syncLocalSessionWithSupabase) {
-                        window.syncLocalSessionWithSupabase(data.session);
-                    }
-
-                    showNotification('¡Inicio de sesión exitoso! Redirigiendo...', 'success');
-
-                    setTimeout(() => {
-                        redirectUserByRole(role);
-                    }, 1200);
-
-                } catch (err) {
-                    console.error('Supabase Sign-In Exception:', err);
-                    showNotification('Ocurrió un error inesperado al conectar con el servidor.', 'danger');
+                if (error) {
+                    showNotification(`Sign-in error: ${error.message}`, 'danger');
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalBtnText;
                     }
+                    return;
                 }
-            } else {
-                // Fallback Mock Authentication
-                const username = email.split('@')[0];
-                const storedRole = localStorage.getItem('role') || 'rancher';
 
-                localStorage.setItem('username', username);
-                localStorage.setItem('email', email);
-                localStorage.setItem('role', storedRole);
+                const user = data.user;
+                const meta = user?.user_metadata || {};
+                const role = meta.role || 'rancher';
 
-                showNotification('Inicio de sesión (modo demostración) exitoso! Redirigiendo...', 'info');
+                if (window.syncLocalSessionWithSupabase) {
+                    window.syncLocalSessionWithSupabase(data.session);
+                }
+                if (window.ensureUserProfile && user) {
+                    await window.ensureUserProfile(user);
+                }
+
+                showNotification('Signed in successfully. Redirecting...', 'success');
 
                 setTimeout(() => {
-                    redirectUserByRole(storedRole);
+                    redirectUserByRole(role);
                 }, 1200);
+
+            } catch (err) {
+                console.error('Supabase Sign-In Exception:', err);
+                showNotification('An unexpected error occurred while connecting to the database.', 'danger');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
             }
         });
     }
@@ -99,9 +95,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         redirectTo: window.location.origin + '/dashboard/rancher/rancher.html'
                     }
                 });
-                if (error) showNotification(`Error OAuth: ${error.message}`, 'danger');
+                if (error) showNotification(`OAuth error: ${error.message}`, 'danger');
             } else {
-                showNotification('Autenticación con Google requiere configurar Supabase.', 'warning');
+                showNotification('Google sign-in requires Supabase to be configured.', 'warning');
             }
         });
     }
@@ -118,9 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         redirectTo: window.location.origin + '/dashboard/rancher/rancher.html'
                     }
                 });
-                if (error) showNotification(`Error OAuth: ${error.message}`, 'danger');
+                if (error) showNotification(`OAuth error: ${error.message}`, 'danger');
             } else {
-                showNotification('Autenticación con Facebook requiere configurar Supabase.', 'warning');
+                showNotification('Facebook sign-in requires Supabase to be configured.', 'warning');
             }
         });
     }

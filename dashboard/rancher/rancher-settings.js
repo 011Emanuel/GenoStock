@@ -394,23 +394,33 @@ class RancherSettings extends HTMLElement {
             </div>
             <div class="content-body">
               <div class="form-group">
-                <label class="form-label">Full Name</label>
-                <input type="text" class="form-input" value="${username}">
+                <label class="form-label" for="settingsFullName">Full Name</label>
+                <input id="settingsFullName" type="text" class="form-input" value="${username}">
               </div>
               
               <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" value="${email}">
+                <label class="form-label" for="settingsEmail">Email Address</label>
+                <input id="settingsEmail" type="email" class="form-input" value="${email}" readonly>
               </div>
               
               <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" class="form-input" value="+1 (555) 123-4567">
+                <label class="form-label" for="settingsPhone">Phone Number</label>
+                <input id="settingsPhone" type="tel" class="form-input" value="${localStorage.getItem('phone') || ''}">
               </div>
               
               <div class="form-group">
-                <label class="form-label">Location</label>
-                <input type="text" class="form-input" value="${location}">
+                <label class="form-label" for="settingsLocation">Location</label>
+                <input id="settingsLocation" type="text" class="form-input" value="${location}">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingsRanchName">Ranch Name</label>
+                <input id="settingsRanchName" type="text" class="form-input" value="${localStorage.getItem('ranchName') || ''}">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingsCattleCount">Cattle Count</label>
+                <input id="settingsCattleCount" type="number" min="0" class="form-input" value="${localStorage.getItem('cattleCount') || 0}">
               </div>
               
               <div class="form-group">
@@ -424,7 +434,7 @@ class RancherSettings extends HTMLElement {
               
               <div class="form-group">
                 <label class="form-label">Specialty</label>
-                <textarea class="form-input form-textarea">Brahman & Nelore Cattle breeding and management. Specialized in genetic improvement and health monitoring.</textarea>
+                <textarea class="form-input form-textarea">Brahman and Nelore cattle breeding and management. Specialized in genetic improvement and health monitoring.</textarea>
               </div>
               
               <div class="toggle-group">
@@ -451,16 +461,97 @@ class RancherSettings extends HTMLElement {
                 <div class="toggle-switch"></div>
               </div>
               
+              <p id="settingsStatus" class="form-label" style="min-height:1.2rem;"></p>
               <div class="button-group">
-                <button class="btn btn-primary">Save Changes</button>
-                <button class="btn btn-secondary">Reset</button>
-                <button class="btn btn-danger">Delete Account</button>
+                <button type="button" class="btn btn-primary" id="settingsSaveBtn">Save Changes</button>
+                <button type="button" class="btn btn-secondary" id="settingsResetBtn">Reset</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     `;
+  }
+
+  connectedCallback() {
+    this.loadFromDatabase();
+    const saveBtn = this.shadowRoot.getElementById('settingsSaveBtn');
+    const resetBtn = this.shadowRoot.getElementById('settingsResetBtn');
+    if (saveBtn) saveBtn.addEventListener('click', () => this.saveProfile());
+    if (resetBtn) resetBtn.addEventListener('click', () => this.loadFromDatabase());
+    this._onProfileUpdated = (event) => {
+      if (event.detail) this.fillForm(event.detail, localStorage.getItem('email') || '');
+    };
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+  }
+
+  setStatus(message, color = '#6c757d') {
+    const el = this.shadowRoot.getElementById('settingsStatus');
+    if (el) {
+      el.textContent = message || '';
+      el.style.color = color;
+    }
+  }
+
+  fillForm(profile, email) {
+    const setVal = (id, value) => {
+      const el = this.shadowRoot.getElementById(id);
+      if (el) el.value = value == null ? '' : value;
+    };
+    setVal('settingsFullName', profile.full_name || profile.username || '');
+    setVal('settingsEmail', email || '');
+    setVal('settingsPhone', profile.phone || '');
+    setVal('settingsLocation', profile.location || '');
+    setVal('settingsRanchName', profile.ranch_name || '');
+    setVal('settingsCattleCount', profile.cattle_count || 0);
+  }
+
+  async loadFromDatabase() {
+    if (typeof window.loadUserProfile !== 'function') return;
+    const { data, user } = await window.loadUserProfile();
+    if (data) this.fillForm(data, user?.email || localStorage.getItem('email') || '');
+  }
+
+  async saveProfile() {
+    if (typeof window.saveUserProfile !== 'function') {
+      this.setStatus('Supabase is not connected.', '#c62828');
+      return;
+    }
+    const saveBtn = this.shadowRoot.getElementById('settingsSaveBtn');
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+    }
+    this.setStatus('Saving to the database...');
+
+    const { data, error } = await window.saveUserProfile({
+      full_name: this.shadowRoot.getElementById('settingsFullName').value.trim(),
+      username: localStorage.getItem('username') || this.shadowRoot.getElementById('settingsFullName').value.trim(),
+      phone: this.shadowRoot.getElementById('settingsPhone').value.trim(),
+      location: this.shadowRoot.getElementById('settingsLocation').value.trim(),
+      ranch_name: this.shadowRoot.getElementById('settingsRanchName').value.trim(),
+      cattle_count: this.shadowRoot.getElementById('settingsCattleCount').value,
+      role: 'rancher'
+    });
+
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Changes';
+    }
+
+    if (error) {
+      this.setStatus(error.message || 'Could not save the profile.', '#c62828');
+      return;
+    }
+
+    this.fillForm(data, localStorage.getItem('email') || '');
+    this.setStatus('Profile saved to the database.', '#2e7d32');
   }
 }
 customElements.define('rancher-settings', RancherSettings); 

@@ -150,6 +150,92 @@ class GenoHeader extends HTMLElement {
         .register-btn:hover {
           background: var(--primary-dark);
         }
+        .user-menu {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+        .user-section {
+          display: flex;
+          align-items: center;
+          gap: 0.55rem;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.25rem 0.4rem;
+          border-radius: 999px;
+          color: var(--white);
+        }
+        .user-section:hover,
+        .user-section[aria-expanded="true"] {
+          background: rgba(255,255,255,0.12);
+        }
+        .user-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 2px solid var(--accent);
+          object-fit: cover;
+        }
+        .user-meta {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          line-height: 1.15;
+          text-align: left;
+        }
+        .username {
+          font-weight: 600;
+          font-size: 0.95rem;
+          max-width: 120px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .user-role {
+          font-size: 0.72rem;
+          color: #ffe0a3;
+          text-transform: capitalize;
+        }
+        .user-dropdown {
+          display: none;
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          min-width: 180px;
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+          overflow: hidden;
+          z-index: 1200;
+          padding: 0.4rem 0;
+        }
+        .user-dropdown.open {
+          display: block;
+        }
+        .user-dropdown a {
+          display: block;
+          padding: 0.75rem 1.1rem;
+          color: #333;
+          text-decoration: none;
+          font-weight: 500;
+        }
+        .user-dropdown a:hover {
+          background: #f8f9fa;
+        }
+        .user-dropdown .logout-btn {
+          color: #dc3545;
+          border-top: 1px solid #e9ecef;
+        }
+        .mobile-user-links {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+        [hidden] {
+          display: none !important;
+        }
         /* Hamburger styles */
         .hamburger {
           display: none;
@@ -434,13 +520,16 @@ class GenoHeader extends HTMLElement {
           .mobile-menu {
             padding: 1rem 0.75rem;
           }
+          .user-meta {
+            display: none;
+          }
         }
       </style>
       <header class="header-bar">
         <div class="header-col logo">
           <a class="navbar-brand" href="index.html">
-            <img src="logo_small.png" alt="Genostock logo">
-            <span>Genostock</span>
+            <img src="logo_small.png" alt="GenoStock logo">
+            <span>GenoStock</span>
           </a>
         </div>
         <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -463,9 +552,22 @@ class GenoHeader extends HTMLElement {
               <svg class="search-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             </button>
           </div>
-          <div class="auth-buttons">
+          <div class="auth-buttons" id="guest-auth">
             <a href="login.html" class="auth-btn login-btn">Login</a>
             <a href="register.html" class="auth-btn register-btn">Register</a>
+          </div>
+          <div class="user-menu" id="user-auth" hidden>
+            <button type="button" class="user-section" id="user-toggle" aria-haspopup="true" aria-expanded="false">
+              <img class="user-avatar" id="user-avatar" alt="Avatar">
+              <span class="user-meta">
+                <span class="username" id="user-name"></span>
+                <span class="user-role" id="user-role"></span>
+              </span>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+              <a href="dashboard-rancher.html" id="dashboard-link">Dashboard</a>
+              <a href="#" class="logout-btn" id="logout-btn">Logout</a>
+            </div>
           </div>
         </div>
       </header>
@@ -483,8 +585,14 @@ class GenoHeader extends HTMLElement {
         <a class="nav-link" href="auctions.html">Auctions</a>
         <a class="nav-link" href="about us.html">About Us</a>
         <a class="nav-link" href="Contactos.html">Contact Us</a>
-        <a href="login.html" class="auth-btn login-btn">Login</a>
-        <a href="register.html" class="auth-btn register-btn">Register</a>
+        <div id="mobile-guest">
+          <a href="login.html" class="auth-btn login-btn">Login</a>
+          <a href="register.html" class="auth-btn register-btn">Register</a>
+        </div>
+        <div class="mobile-user-links" id="mobile-user" hidden>
+          <a href="dashboard-rancher.html" class="auth-btn register-btn" id="mobile-dashboard-link">Dashboard</a>
+          <a href="#" class="auth-btn login-btn" id="mobile-logout-btn">Logout</a>
+        </div>
       </nav>
     `;
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
@@ -579,6 +687,103 @@ class GenoHeader extends HTMLElement {
         this.classList.add('active');
       });
     });
+
+    this.applyAuthState();
+    this._onProfileUpdated = () => this.applyAuthState();
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+  }
+
+  dashboardHref() {
+    return localStorage.getItem('role') === 'trader' ? 'dashboard-trader.html' : 'dashboard-rancher.html';
+  }
+
+  applyAuthState() {
+    const shadow = this.shadowRoot;
+    const loggedIn = !!(localStorage.getItem('username') || localStorage.getItem('userId'));
+    const guestAuth = shadow.getElementById('guest-auth');
+    const userAuth = shadow.getElementById('user-auth');
+    const mobileGuest = shadow.getElementById('mobile-guest');
+    const mobileUser = shadow.getElementById('mobile-user');
+    if (!guestAuth || !userAuth) return;
+
+    guestAuth.hidden = loggedIn;
+    userAuth.hidden = !loggedIn;
+    if (mobileGuest) mobileGuest.hidden = loggedIn;
+    if (mobileUser) mobileUser.hidden = !loggedIn;
+    if (!loggedIn) return;
+
+    const name = localStorage.getItem('name') || localStorage.getItem('username') || 'User';
+    const role = localStorage.getItem('role') || '';
+    const nameEl = shadow.getElementById('user-name');
+    const roleEl = shadow.getElementById('user-role');
+    const avatar = shadow.getElementById('user-avatar');
+    const dashLink = shadow.getElementById('dashboard-link');
+    const mobileDash = shadow.getElementById('mobile-dashboard-link');
+    if (nameEl) nameEl.textContent = name;
+    if (roleEl) roleEl.textContent = role;
+    if (avatar) {
+      avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2c5530&color=fff`;
+    }
+    const dashboardUrl = this.dashboardHref();
+    if (dashLink) dashLink.href = dashboardUrl;
+    if (mobileDash) mobileDash.href = dashboardUrl;
+
+    this.bindUserMenu();
+  }
+
+  bindUserMenu() {
+    if (this._userMenuBound) return;
+    this._userMenuBound = true;
+    const shadow = this.shadowRoot;
+    const toggle = shadow.getElementById('user-toggle');
+    const dropdown = shadow.getElementById('user-dropdown');
+    const logoutBtn = shadow.getElementById('logout-btn');
+    const mobileLogout = shadow.getElementById('mobile-logout-btn');
+
+    const closeMenu = () => {
+      if (dropdown) dropdown.classList.remove('open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const open = !dropdown.classList.contains('open');
+        dropdown.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('mousedown', (e) => {
+        if (!this.contains(e.target) && !shadow.contains(e.target)) closeMenu();
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+    }
+
+    const handleLogout = async (e) => {
+      e.preventDefault();
+      const supabase = window.getSupabase && window.getSupabase();
+      if (supabase) {
+        try { await supabase.auth.signOut(); } catch (err) { console.warn(err); }
+      }
+      if (window.syncLocalSessionWithSupabase) {
+        window.syncLocalSessionWithSupabase(null);
+      } else {
+        ['username', 'name', 'role', 'email', 'userId', 'ranchName', 'location', 'phone', 'cattleCount', 'rfc']
+          .forEach((key) => localStorage.removeItem(key));
+      }
+      window.location.href = 'index.html';
+    };
+
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+    if (mobileLogout) mobileLogout.addEventListener('click', handleLogout);
   }
 }
 customElements.define('geno-header', GenoHeader); 
