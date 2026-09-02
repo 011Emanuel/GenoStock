@@ -280,6 +280,22 @@
             height: 32px;
           }
         }
+        @media (max-width: 479px) {
+          .header-bar {
+            grid-template-columns: ${config.showSearch ? 'auto 1fr auto' : 'auto auto'};
+            padding: 0 0.5rem;
+            gap: 0.4rem;
+          }
+          .navbar-brand span {
+            display: none;
+          }
+          .username {
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
       </style>
       ${config.showLogo ? `
         <div class="header-col logo">

@@ -373,52 +373,66 @@ class GenoHeader extends HTMLElement {
         }
         @media (max-width: 991px) {
           .header-bar {
-            grid-template-columns: 1fr 44px 1fr;
-            padding: 0 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
             height: var(--header-height);
           }
           .header-col.menu {
             display: none;
           }
           .header-col.auth {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          .auth-buttons {
             display: none;
           }
           .hamburger {
             display: flex;
-            grid-column: 3;
-            justify-self: end;
+            margin-left: 0.2rem;
           }
           .mobile-menu {
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            max-width: 95vw;
+            left: 0;
+            top: var(--header-height);
+            transform: translateY(-20px);
+            width: 100%;
+            max-width: 100%;
             border-radius: 0 0 18px 18px;
-            padding: 2.2rem 1.2rem 1.2rem 1.2rem;
+            padding: 1.5rem 1rem 1.2rem 1rem;
+            box-sizing: border-box;
+          }
+          .mobile-menu.open {
+            transform: translateY(0);
           }
         }
         @media (max-width: 600px) {
           .header-bar {
-            grid-template-columns: 1fr 44px 1fr;
-            padding: 0 0.2rem;
+            padding: 0 0.75rem;
+          }
+          .navbar-brand span {
+            font-size: 1.3rem;
           }
           .navbar-brand img {
-            height: 32px;
-          }
-          .floating-search-form {
-            max-width: 99vw;
-          }
-          .floating-search-input {
-            font-size: 1.05rem;
-            padding: 1rem 2.2rem 1rem 1.2rem;
-          }
-          .floating-search-send {
-            right: 1rem;
-            width: 36px;
             height: 36px;
           }
+          .floating-search-form {
+            width: 92vw;
+            max-width: 100%;
+          }
+          .floating-search-input {
+            font-size: 1rem;
+            padding: 0.8rem 2.5rem 0.8rem 1.2rem;
+          }
+          .floating-search-send {
+            right: 0.75rem;
+            width: 32px;
+            height: 32px;
+          }
           .mobile-menu {
-            max-width: 99vw;
-            padding: 1.2rem 0.5rem 1rem 0.5rem;
+            padding: 1rem 0.75rem;
           }
         }
       </style>

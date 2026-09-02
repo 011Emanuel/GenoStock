@@ -19,11 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterCattle(category) {
         const cards = document.querySelectorAll('.cattle-card');
         cards.forEach(card => {
+            const col = card.closest('[class*="col-"]') || card;
             const breed = card.querySelector('.cattle-breed').textContent.toLowerCase();
             if (category === 'all' || breed.includes(category)) {
-                card.style.display = 'block';
+                col.style.display = '';
             } else {
-                card.style.display = 'none';
+                col.style.display = 'none';
             }
         });
     }
@@ -83,12 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterByPrice(maxPrice) {
         const cards = document.querySelectorAll('.cattle-card');
         cards.forEach(card => {
+            const col = card.closest('[class*="col-"]') || card;
             const priceText = card.querySelector('.cattle-price').textContent;
             const price = parseInt(priceText.replace(/[^0-9]/g, ''));
             if (price <= maxPrice) {
-                card.style.display = 'block';
+                col.style.display = '';
             } else {
-                card.style.display = 'none';
+                col.style.display = 'none';
             }
         });
     }

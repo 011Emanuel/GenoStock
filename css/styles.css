@@ -85,4 +85,10 @@ body {
     .card {
         margin-bottom: 1rem;
     }
+}
+
+@media (max-width: 479px) {
+    .carousel-item {
+        height: 220px;
+    }
 } 

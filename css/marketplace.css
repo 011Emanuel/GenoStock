@@ -3,7 +3,8 @@
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../imagen para fondo hoomepage.jpg');
     background-size: cover;
     background-position: center top;
-    min-height: 60vh;
+    min-height: 40vh;
+    padding: 3rem 1rem;
     display: flex;
     align-items: center;
     color: white;
@@ -112,6 +113,15 @@
     gap: 10px;
     justify-content: center;
     margin-top: 0 !important;
+}
+
+.cattle-actions .btn {
+    width: 100%;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .cattle-actions .btn-primary {
@@ -376,6 +386,11 @@
 }
 
 @media (max-width: 767px) {
+    .marketplace-hero {
+        min-height: 220px;
+        padding: 2rem 1rem;
+    }
+
     .cattle-details {
         padding-top: 80px;
     }
@@ -386,11 +401,44 @@
 
     .thumbnail-gallery {
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .thumbnail-gallery img {
         width: 60px;
         height: 60px;
+    }
+
+    .seller-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .quantity-selector .input-group {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 479px) {
+    .cattle-image {
+        height: 200px;
+    }
+
+    .cattle-breed {
+        font-size: 1.2rem;
+    }
+
+    .cattle-price {
+        font-size: 1.1rem;
+    }
+
+    .purchase-card, .seller-card, .info-section {
+        padding: 15px;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
     }
 }
 

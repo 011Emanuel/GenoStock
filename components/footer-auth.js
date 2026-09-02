@@ -75,6 +75,19 @@ function createAuthFooter() {
           gap: 1rem;
         }
       }
+
+      @media (max-width: 479px) {
+        .auth-footer {
+          padding: 1rem;
+        }
+        .footer-separator {
+          display: none;
+        }
+        .footer-links {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+      }
     </style>
     
     <div class="footer-content">
