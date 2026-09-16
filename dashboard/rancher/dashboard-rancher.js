@@ -834,6 +834,20 @@ class DashboardRancher extends HTMLElement {
         }
       });
     });
+
+    this._onNavigateSection = (e) => {
+      const targetSection = e.detail;
+      if (!targetSection) return;
+      links.forEach(l => {
+        if (l.getAttribute('data-section') === targetSection) {
+          l.classList.add('active');
+        } else {
+          l.classList.remove('active');
+        }
+      });
+      updateSections(targetSection);
+    };
+    window.addEventListener('genostock-navigate-section', this._onNavigateSection);
   }
   
   setupMobileOverlay() {

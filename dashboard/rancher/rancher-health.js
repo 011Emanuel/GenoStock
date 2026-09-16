@@ -1,6 +1,7 @@
 class RancherHealth extends HTMLElement {
   constructor() {
     super();
+    this.scheduleList = [];
     this.attachShadow({mode: 'open'}).innerHTML = `
       <style>
         :host {
@@ -41,6 +42,7 @@ class RancherHealth extends HTMLElement {
         .section-header { 
           margin-bottom: 2rem;
           text-align: center;
+          position: relative;
         }
         
         .section-header h2 {
@@ -53,7 +55,26 @@ class RancherHealth extends HTMLElement {
         .section-header p {
           font-size: 1.1rem;
           color: var(--gray);
-          margin: 0;
+          margin: 0 0 1rem 0;
+        }
+
+        .btn-schedule-main {
+          background: var(--gradient-primary);
+          color: var(--white);
+          border: none;
+          padding: 0.8rem 1.6rem;
+          border-radius: 10px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: var(--transition);
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .btn-schedule-main:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-hover);
         }
         
         /* Health Stats */
@@ -260,17 +281,9 @@ class RancherHealth extends HTMLElement {
           flex-shrink: 0;
         }
         
-        .alert-icon.urgent {
-          background: var(--danger);
-        }
-        
-        .alert-icon.warning {
-          background: var(--warning);
-        }
-        
-        .alert-icon.info {
-          background: var(--info);
-        }
+        .alert-icon.urgent { background: var(--danger); }
+        .alert-icon.warning { background: var(--warning); }
+        .alert-icon.info { background: var(--info); }
         
         .alert-content h6 {
           margin: 0 0 0.2rem 0;
@@ -352,91 +365,59 @@ class RancherHealth extends HTMLElement {
         
         /* Responsive */
         @media (max-width: 1200px) {
-          .health-stats {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          
-          .health-grid {
-            grid-template-columns: 1fr;
-          }
+          .health-stats { grid-template-columns: repeat(2, 1fr); }
+          .health-grid { grid-template-columns: 1fr; }
         }
         
         @media (max-width: 768px) {
-          :host {
-            padding: 1rem;
-          }
-          
-          .health-stats {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-          
-          .section-header h2 {
-            font-size: 2rem;
-          }
-          
-          .health-stat {
-            padding: 1.2rem;
-          }
-          
-          .health-stat-icon {
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-          }
-          
-          .health-stat-number {
-            font-size: 1.8rem;
-          }
+          :host { padding: 1rem; }
+          .health-stats { grid-template-columns: 1fr; gap: 1rem; }
+          .section-header h2 { font-size: 2rem; }
         }
       </style>
       
       <div class="health-container">
         <div class="section-header">
           <h2>Health Management</h2>
-          <p>Monitor cattle health and veterinary records</p>
+          <p>Monitor cattle health, veterinary records & interactive agenda</p>
+          <button class="btn-schedule-main" id="btnOpenAgendaModal">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z"/></svg>
+            Schedule Veterinary Visit
+          </button>
         </div>
         
         <!-- Health Stats -->
         <div class="health-stats">
           <div class="health-stat">
             <div class="health-stat-icon" style="background: var(--gradient-success);">
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
-              </svg>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/></svg>
             </div>
-            <div class="health-stat-number">98%</div>
+            <div class="health-stat-number" id="statHealthRate">100%</div>
             <div class="health-stat-label">Health Rate</div>
           </div>
           
           <div class="health-stat">
             <div class="health-stat-icon" style="background: var(--gradient-primary);">
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2v20M2 12h20"/>
-              </svg>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
             </div>
-            <div class="health-stat-number">15</div>
+            <div class="health-stat-number" id="statPregnant">0</div>
             <div class="health-stat-label">Pregnant Cows</div>
           </div>
           
           <div class="health-stat">
             <div class="health-stat-icon" style="background: var(--gradient-warning);">
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <div class="health-stat-number">3</div>
-            <div class="health-stat-label">Sick Cattle</div>
+            <div class="health-stat-number" id="statSick">0</div>
+            <div class="health-stat-label">Sick / In Treatment</div>
           </div>
           
           <div class="health-stat">
             <div class="health-stat-icon" style="background: var(--gradient-info);">
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-              </svg>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             </div>
-            <div class="health-stat-number">12</div>
-            <div class="health-stat-label">Due for Check</div>
+            <div class="health-stat-number" id="statScheduled">0</div>
+            <div class="health-stat-label">Agenda Visits</div>
           </div>
         </div>
         
@@ -445,110 +426,22 @@ class RancherHealth extends HTMLElement {
           <!-- Health Records -->
           <div class="health-records">
             <div class="health-header">
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
-              </svg>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
               <h3>Recent Health Records</h3>
             </div>
-            <div class="health-body">
-              <div class="health-record">
-                <div class="health-record-icon" style="background: var(--gradient-success);">
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
-                  </svg>
-                </div>
-                <div class="health-record-content">
-                  <h6>Vaccination Completed</h6>
-                  <p>Brahman cattle group vaccinated against common diseases</p>
-                  <small>2 hours ago</small>
-                </div>
-              </div>
-              
-              <div class="health-record">
-                <div class="health-record-icon" style="background: var(--gradient-primary);">
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 21c4.97-4.97 8-8.13 8-11.5A5.5 5.5 0 0 0 12 4.5 5.5 5.5 0 0 0 4 9.5C4 12.87 7.03 16.03 12 21Z"/>
-                  </svg>
-                </div>
-                <div class="health-record-content">
-                  <h6>Pregnancy Confirmed</h6>
-                  <p>Nelore cow N-078 confirmed pregnant, due next month</p>
-                  <small>1 day ago</small>
-                </div>
-              </div>
-              
-              <div class="health-record">
-                <div class="health-record-icon" style="background: var(--gradient-warning);">
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2v20M2 12h20"/>
-                  </svg>
-                </div>
-                <div class="health-record-content">
-                  <h6>Respiratory Issue Detected</h6>
-                  <p>Nelore cow N-045 showing respiratory symptoms</p>
-                  <small>3 days ago</small>
-                </div>
-              </div>
-              
-              <div class="health-record">
-                <div class="health-record-icon" style="background: var(--gradient-info);">
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-                  </svg>
-                </div>
-                <div class="health-record-content">
-                  <h6>Routine Health Check</h6>
-                  <p>Brahman cattle group scheduled for routine examination</p>
-                  <small>1 week ago</small>
-                </div>
-              </div>
+            <div class="health-body" id="healthRecordsBody">
+              <!-- Dynamic records -->
             </div>
           </div>
           
           <!-- Health Alerts -->
           <div class="health-alerts">
             <div class="alerts-header">
-              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
               <h3>Health Alerts</h3>
             </div>
-            <div class="alerts-body">
-              <div class="alert-item urgent">
-                <div class="alert-icon urgent">
-                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                  </svg>
-                </div>
-                <div class="alert-content">
-                  <h6>Urgent: Respiratory Treatment</h6>
-                  <p>Nelore cow N-045 needs immediate veterinary attention</p>
-                </div>
-              </div>
-              
-              <div class="alert-item warning">
-                <div class="alert-icon warning">
-                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2v20M2 12h20"/>
-                  </svg>
-                </div>
-                <div class="alert-content">
-                  <h6>Pregnancy Monitoring</h6>
-                  <p>15 pregnant cows due for ultrasound examination</p>
-                </div>
-              </div>
-              
-              <div class="alert-item info">
-                <div class="alert-icon info">
-                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-                  </svg>
-                </div>
-                <div class="alert-content">
-                  <h6>Vaccination Due</h6>
-                  <p>12 cattle due for annual vaccination next week</p>
-                </div>
-              </div>
+            <div class="alerts-body" id="healthAlertsBody">
+              <!-- Dynamic alerts -->
             </div>
           </div>
         </div>
@@ -556,47 +449,185 @@ class RancherHealth extends HTMLElement {
         <!-- Schedule Section -->
         <div class="schedule-section">
           <div class="schedule-header">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-            </svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             <h3>Upcoming Health Schedule</h3>
           </div>
-          <div class="schedule-body">
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h6>Veterinary Visit</h6>
-                <p>Routine health check for Brahman group</p>
-              </div>
-              <div class="schedule-date">Tomorrow</div>
-            </div>
-            
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h6>Pregnancy Ultrasound</h6>
-                <p>Examination for pregnant Nelore cows</p>
-              </div>
-              <div class="schedule-date">Next Week</div>
-            </div>
-            
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h6>Vaccination Program</h6>
-                <p>Annual vaccination for all cattle</p>
-              </div>
-              <div class="schedule-date">2 Weeks</div>
-            </div>
-            
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h6>Breeding Season Prep</h6>
-                <p>Health assessment for breeding program</p>
-              </div>
-              <div class="schedule-date">1 Month</div>
-            </div>
+          <div class="schedule-body" id="scheduleListBody">
+            <!-- Dynamic schedule -->
           </div>
         </div>
       </div>
     `;
   }
+
+  connectedCallback() {
+    this.setupEventListeners();
+    this.loadHealthData();
+
+    this._onHealthUpdated = () => this.loadHealthData();
+    window.addEventListener('genostock-health-updated', this._onHealthUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onHealthUpdated) {
+      window.removeEventListener('genostock-health-updated', this._onHealthUpdated);
+    }
+  }
+
+  setupEventListeners() {
+    const btn = this.shadowRoot.querySelector('#btnOpenAgendaModal');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        // Dispatch open agenda modal event or trigger overview
+        const overview = document.querySelector('rancher-overview');
+        if (overview && typeof overview.openAgendaModal === 'function') {
+          overview.openAgendaModal();
+        } else {
+          window.dispatchEvent(new CustomEvent('genostock-navigate-section', { detail: 'overview' }));
+          setTimeout(() => {
+            const ov = document.querySelector('rancher-overview');
+            if (ov && typeof ov.openAgendaModal === 'function') ov.openAgendaModal();
+          }, 200);
+        }
+      });
+    }
+  }
+
+  loadHealthData() {
+    let cattle = [];
+    try {
+      cattle = JSON.parse(localStorage.getItem('genostock_cattle_list') || '[]');
+    } catch(e) {}
+
+    let schedule = [];
+    try {
+      schedule = JSON.parse(localStorage.getItem('genostock_health_schedule') || '[]');
+    } catch(e) {}
+
+    this.scheduleList = schedule;
+
+    const shadow = this.shadowRoot;
+
+    // Calculate Stats
+    const total = cattle.length || (localStorage.getItem('cattleCount') ? Number(localStorage.getItem('cattleCount')) : 0);
+    const pregnant = cattle.filter(c => (c.status || '').toLowerCase() === 'pregnant' || (c.description || '').toLowerCase().includes('pregnant')).length;
+    const sick = cattle.filter(c => (c.status || '').toLowerCase() === 'sick').length;
+    const scheduled = schedule.filter(s => s.status !== 'canceled').length;
+
+    let rate = '100%';
+    if (total > 0) {
+      rate = `${Math.round(((total - sick) / total) * 100)}%`;
+    }
+
+    const rateEl = shadow.querySelector('#statHealthRate');
+    const pregEl = shadow.querySelector('#statPregnant');
+    const sickEl = shadow.querySelector('#statSick');
+    const schedEl = shadow.querySelector('#statScheduled');
+
+    if (rateEl) rateEl.textContent = rate;
+    if (pregEl) pregEl.textContent = pregnant;
+    if (sickEl) sickEl.textContent = sick;
+    if (schedEl) schedEl.textContent = scheduled;
+
+    // Render Records
+    const recordsBody = shadow.querySelector('#healthRecordsBody');
+    if (recordsBody) {
+      if (schedule.length === 0) {
+        recordsBody.innerHTML = `
+          <div style="text-align:center; padding:2rem 1rem; color:var(--gray);">
+            <p style="margin:0; font-weight:600;">No veterinary health records yet.</p>
+            <small>Use the "Schedule Veterinary Visit" button above to add visits.</small>
+          </div>
+        `;
+      } else {
+        recordsBody.innerHTML = schedule.slice(0, 4).map(s => `
+          <div class="health-record">
+            <div class="health-record-icon" style="background: var(--gradient-primary);">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/></svg>
+            </div>
+            <div class="health-record-content">
+              <h6>${s.visitType}</h6>
+              <p>Target: ${s.cattleTag} | Doctor: ${s.vetName}</p>
+              <small>${new Date(s.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</small>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Render Alerts
+    const alertsBody = shadow.querySelector('#healthAlertsBody');
+    if (alertsBody) {
+      if (sick === 0 && pregnant === 0 && scheduled === 0) {
+        alertsBody.innerHTML = `
+          <div class="alert-item info">
+            <div class="alert-icon info">ℹ</div>
+            <div class="alert-content">
+              <h6>All Systems Normal</h6>
+              <p>No active health alerts or emergency notifications at this time.</p>
+            </div>
+          </div>
+        `;
+      } else {
+        let alertsHtml = '';
+        if (sick > 0) {
+          alertsHtml += `
+            <div class="alert-item urgent">
+              <div class="alert-icon urgent">!</div>
+              <div class="alert-content">
+                <h6>Urgent Attention Required</h6>
+                <p>${sick} cattle reported sick or showing symptoms.</p>
+              </div>
+            </div>
+          `;
+        }
+        if (pregnant > 0) {
+          alertsHtml += `
+            <div class="alert-item warning">
+              <div class="alert-icon warning">⚡</div>
+              <div class="alert-content">
+                <h6>Pregnancy Monitoring</h6>
+                <p>${pregnant} pregnant cows due for health monitoring.</p>
+              </div>
+            </div>
+          `;
+        }
+        if (scheduled > 0) {
+          alertsHtml += `
+            <div class="alert-item info">
+              <div class="alert-icon info">📅</div>
+              <div class="alert-content">
+                <h6>Upcoming Agenda Visits</h6>
+                <p>${scheduled} visits currently scheduled on your agenda.</p>
+              </div>
+            </div>
+          `;
+        }
+        alertsBody.innerHTML = alertsHtml;
+      }
+    }
+
+    // Render Schedule Section
+    const scheduleBody = shadow.querySelector('#scheduleListBody');
+    if (scheduleBody) {
+      if (schedule.length === 0) {
+        scheduleBody.innerHTML = `
+          <div style="text-align:center; padding:2rem 1rem; color:var(--gray);">
+            <p style="margin:0;">No upcoming scheduled health visits.</p>
+          </div>
+        `;
+      } else {
+        scheduleBody.innerHTML = schedule.map(s => `
+          <div class="schedule-item">
+            <div class="schedule-info">
+              <h6>${s.visitType} (${s.cattleTag})</h6>
+              <p>Specialist: ${s.vetName} ${s.notes ? `• ${s.notes}` : ''}</p>
+            </div>
+            <div class="schedule-date">${new Date(s.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
+          </div>
+        `).join('');
+      }
+    }
+  }
 }
-customElements.define('rancher-health', RancherHealth); 
+customElements.define('rancher-health', RancherHealth);

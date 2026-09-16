@@ -1,6 +1,9 @@
 class RancherLivestock extends HTMLElement {
   constructor() {
     super();
+    this.items = [];
+    this.currentFilter = 'all';
+    this.searchQuery = '';
     this.attachShadow({mode: 'open'}).innerHTML = `
       <style>
         :host {
@@ -88,6 +91,7 @@ class RancherLivestock extends HTMLElement {
         .filter-buttons {
           display: flex;
           gap: 0.5rem;
+          flex-wrap: wrap;
         }
         
         .filter-btn {
@@ -99,6 +103,11 @@ class RancherLivestock extends HTMLElement {
           transition: var(--transition);
           font-size: 0.9rem;
           font-weight: 500;
+        }
+        
+        .filter-btn:hover {
+          border-color: var(--primary);
+          color: var(--primary);
         }
         
         .filter-btn.active {
@@ -347,7 +356,7 @@ class RancherLivestock extends HTMLElement {
             <input type="text" id="searchInput" placeholder="Search cattle by tag ID, breed...">
           </div>
           
-          <div class="filter-buttons">
+          <div class="filter-buttons" id="filterContainer">
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="Brahman">Brahman</button>
             <button class="filter-btn" data-filter="Nelore">Nelore</button>
@@ -355,7 +364,7 @@ class RancherLivestock extends HTMLElement {
             <button class="filter-btn" data-filter="Guzerá">Guzerá</button>
           </div>
           
-          <button class="add-btn" onclick="window.location.href='add-cattle.html'">
+          <button class="add-btn" id="addCattleBtnTop">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 5v14M5 12h14"/>
             </svg>
@@ -370,14 +379,43 @@ class RancherLivestock extends HTMLElement {
   }
 
   connectedCallback() {
+    this.setupEventListeners();
     this.loadCattle();
   }
 
-  async loadCattle() {
+  setupEventListeners() {
     const shadow = this.shadowRoot;
-    const grid = shadow.querySelector('#cattleGrid');
-    if (!grid) return;
+    
+    // Add Cattle navigation
+    const addTop = shadow.querySelector('#addCattleBtnTop');
+    if (addTop) {
+      addTop.addEventListener('click', () => {
+        window.location.href = 'add-cattle.html';
+      });
+    }
 
+    // Search Input Real-Time Listener
+    const searchInput = shadow.querySelector('#searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.searchQuery = e.target.value.toLowerCase().trim();
+        this.renderGrid();
+      });
+    }
+
+    // Filter Buttons Click Listener
+    const filterButtons = shadow.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.currentFilter = btn.getAttribute('data-filter');
+        this.renderGrid();
+      });
+    });
+  }
+
+  async loadCattle() {
     let items = [];
 
     // Read local storage records first
@@ -413,7 +451,10 @@ class RancherLivestock extends HTMLElement {
       console.warn('Could not fetch Supabase cattle:', e);
     }
 
-    // Update Stats
+    this.items = items;
+
+    // Update Stats Summary
+    const shadow = this.shadowRoot;
     const totalEl = shadow.querySelector('#statTotal');
     const brahmanEl = shadow.querySelector('#statBrahman');
     const neloreEl = shadow.querySelector('#statNelore');
@@ -424,23 +465,79 @@ class RancherLivestock extends HTMLElement {
     if (neloreEl) neloreEl.textContent = items.filter(i => (i.breed || '').toLowerCase() === 'nelore').length;
     if (guzeraEl) guzeraEl.textContent = items.filter(i => ['guzerá', 'guzera', 'gyr'].includes((i.breed || '').toLowerCase())).length;
 
+    this.renderGrid();
+  }
+
+  renderGrid() {
+    const shadow = this.shadowRoot;
+    const grid = shadow.querySelector('#cattleGrid');
+    if (!grid) return;
+
+    let filtered = this.items;
+
+    // Apply Filter Button Selection
+    if (this.currentFilter && this.currentFilter.toLowerCase() !== 'all') {
+      const targetFilter = this.currentFilter.toLowerCase();
+      filtered = filtered.filter(item => {
+        const breed = (item.breed || '').toLowerCase();
+        if (targetFilter === 'guzerá' || targetFilter === 'guzera') {
+          return breed === 'guzerá' || breed === 'guzera';
+        }
+        return breed === targetFilter;
+      });
+    }
+
+    // Apply Search Query
+    if (this.searchQuery) {
+      const q = this.searchQuery;
+      filtered = filtered.filter(item => {
+        const tag = (item.tagId || '').toLowerCase();
+        const title = (item.title || '').toLowerCase();
+        const breed = (item.breed || '').toLowerCase();
+        const category = (item.category || '').toLowerCase();
+        const desc = (item.description || '').toLowerCase();
+        return tag.includes(q) || title.includes(q) || breed.includes(q) || category.includes(q) || desc.includes(q);
+      });
+    }
+
     // Render Cards or Empty State
-    if (items.length === 0) {
+    if (filtered.length === 0) {
+      const isFilteredOut = this.items.length > 0;
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; background: #ffffff; border-radius: 16px; border: 2px dashed #cbd5e1;">
           <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" style="margin-bottom: 1rem;">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
           </svg>
-          <h4 style="color: #2c5530; font-weight: 700; margin-bottom: 0.5rem;">No Cattle Registered Yet</h4>
-          <p style="color: #64748b; max-width: 440px; margin: 0 auto 1.5rem; font-size: 0.95rem;">Your livestock inventory is currently empty. Register your first cattle record using the button below.</p>
-          <button class="add-btn" style="margin: 0 auto;" onclick="window.location.href='add-cattle.html'">
+          <h4 style="color: #2c5530; font-weight: 700; margin-bottom: 0.5rem;">${isFilteredOut ? 'No Cattle Match Your Filter' : 'No Cattle Registered Yet'}</h4>
+          <p style="color: #64748b; max-width: 440px; margin: 0 auto 1.5rem; font-size: 0.95rem;">${isFilteredOut ? 'Try clearing your search query or selecting a different breed filter.' : 'Your livestock inventory is currently empty. Register your first cattle record using the button below.'}</p>
+          <button class="add-btn" style="margin: 0 auto;" id="emptyAddBtn">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-            Add Your First Cattle
+            ${isFilteredOut ? 'Clear Filter & View All' : 'Add Your First Cattle'}
           </button>
         </div>
       `;
+
+      const emptyAdd = grid.querySelector('#emptyAddBtn');
+      if (emptyAdd) {
+        emptyAdd.addEventListener('click', () => {
+          if (isFilteredOut) {
+            this.currentFilter = 'all';
+            this.searchQuery = '';
+            const searchInput = shadow.querySelector('#searchInput');
+            if (searchInput) searchInput.value = '';
+            const filterButtons = shadow.querySelectorAll('.filter-btn');
+            filterButtons.forEach(b => {
+              if (b.getAttribute('data-filter') === 'all') b.classList.add('active');
+              else b.classList.remove('active');
+            });
+            this.renderGrid();
+          } else {
+            window.location.href = 'add-cattle.html';
+          }
+        });
+      }
     } else {
-      grid.innerHTML = items.map(c => `
+      grid.innerHTML = filtered.map(c => `
         <div class="cattle-card">
           <div class="cattle-header">
             <div class="cattle-id">${c.tagId || c.title || 'Cattle Record'}</div>
@@ -467,12 +564,30 @@ class RancherLivestock extends HTMLElement {
               </div>
             </div>
             <div class="cattle-actions">
-              <button class="action-btn" onclick="alert('Tag ID / Name: ${c.tagId || 'N/A'}\\nBreed: ${c.breed || 'N/A'}\\nWeight: ${c.weight || 'N/A'} kg\\nAge: ${c.age || 'N/A'} mths\\nNotes: ${c.description || 'N/A'}')">View Details</button>
-              <button class="action-btn primary" onclick="window.location.href='add-cattle.html'">Add Cattle</button>
+              <button class="action-btn view-detail-btn" data-tag="${c.tagId || c.title}" data-breed="${c.breed || 'N/A'}" data-weight="${c.weight || 'N/A'}" data-age="${c.age || 'N/A'}" data-desc="${c.description || 'No extra details'}">View Details</button>
+              <button class="action-btn primary card-add-btn">Add Cattle</button>
             </div>
           </div>
         </div>
       `).join('');
+
+      // Wire up card action buttons
+      grid.querySelectorAll('.view-detail-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          const tag = b.getAttribute('data-tag');
+          const breed = b.getAttribute('data-breed');
+          const weight = b.getAttribute('data-weight');
+          const age = b.getAttribute('data-age');
+          const desc = b.getAttribute('data-desc');
+          alert(`🐮 CATTLE DETAILS\n-------------------\nTag / ID: ${tag}\nBreed: ${breed}\nWeight: ${weight} kg\nAge: ${age} months\nNotes: ${desc}`);
+        });
+      });
+
+      grid.querySelectorAll('.card-add-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          window.location.href = 'add-cattle.html';
+        });
+      });
     }
   }
 }

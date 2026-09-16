@@ -10,75 +10,138 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/auctions.css">
 </head>
-<body>
+<body style="background: #f4f7f4;">
     <geno-header id="main-header"></geno-header>
 
-    <section class="main-content py-5" style="padding-top: 120px !important;">
-        <div class="container" style="max-width: 720px;">
+    <!-- Header Hero Banner for Auction Form -->
+    <div class="auction-form-hero">
+        <div class="container text-center">
+            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">
+                <i class="fas fa-gavel me-1"></i> GenoStock Auctions
+            </span>
+            <h1 class="display-6 fw-bold text-white mb-2">Create New Livestock Auction</h1>
+            <p class="text-white-50 mb-0">Publish your cattle lots to our network of verified buyers</p>
+        </div>
+    </div>
+
+    <section class="main-content py-4">
+        <div class="container" style="max-width: 820px;">
             <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="auctions.html">Auctions</a></li>
-                    <li class="breadcrumb-item active">Create Auction</li>
+                <ol class="breadcrumb bg-white p-3 rounded-3 shadow-sm border">
+                    <li class="breadcrumb-item"><a href="marketplace.html" class="text-success text-decoration-none fw-semibold"><i class="fas fa-home me-1"></i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="auctions.html" class="text-success text-decoration-none fw-semibold">Auctions</a></li>
+                    <li class="breadcrumb-item active fw-bold text-dark">Create Auction</li>
                 </ol>
             </nav>
 
-            <h2 class="fw-bold mb-4"><i class="fas fa-plus-circle text-success"></i> New Auction</h2>
-
-            <div id="authBlock" class="alert alert-warning d-none">
-                You must <a href="login.html">log in</a> as a seller (rancher) to create auctions.
+            <div id="authBlock" class="alert alert-warning shadow-sm border-0 rounded-4 d-none p-4 text-center">
+                <i class="fas fa-lock fa-2x text-warning mb-2"></i>
+                <h5>Authentication Required</h5>
+                <p class="mb-3">You must <a href="login.html" class="fw-bold text-dark">log in</a> as a rancher to create auctions.</p>
+                <a href="login.html" class="btn btn-dark-green px-4">Go to Login</a>
             </div>
 
-            <div id="roleBlock" class="alert alert-warning d-none">
-                Only sellers can create auctions. Traders can participate by placing bids.
+            <div id="roleBlock" class="alert alert-warning shadow-sm border-0 rounded-4 d-none p-4 text-center">
+                <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                <h5>Rancher Role Required</h5>
+                <p class="mb-0">Only seller users (ranchers) can create auctions. Buyers can participate by placing bids on active auctions.</p>
             </div>
 
-            <form id="createAuctionForm" class="card p-4 d-none">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title *</label>
-                    <input type="text" class="form-control" id="title" required maxlength="200"
-                           placeholder="e.g. Premium Brahman Bull — Lot #101">
-                </div>
-
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description *</label>
-                    <textarea class="form-control" id="description" rows="4" required
-                              placeholder="Describe the livestock, weight, breed, location, certificates..."></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="startingPrice" class="form-label">Starting price (USD) *</label>
-                    <div class="input-group">
-                        <span class="input-group-text">$</span>
-                        <input type="number" class="form-control" id="startingPrice" step="0.01" min="1" required>
+            <!-- Styled Auction Creation Card -->
+            <form id="createAuctionForm" class="auction-create-card d-none">
+                <!-- Section 1 Header -->
+                <div class="form-section-header">
+                    <i class="fas fa-file-alt text-warning fa-lg"></i>
+                    <div>
+                        <h5 class="mb-0 fw-bold">1. Lot Information</h5>
+                        <small class="text-white-50">Descriptive title and detailed cattle specifications</small>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="endsAt" class="form-label">End date and time *</label>
-                    <input type="datetime-local" class="form-control" id="endsAt" required>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label for="title" class="form-label fw-bold text-dark-green">
+                            Auction Title <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-lg custom-input" id="title" required maxlength="200"
+                               placeholder="e.g. Registered Purebred Brahman Bull — Lot #101">
+                        <div class="form-text text-muted">Include breed, livestock category, and lot number to attract buyers.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold text-dark-green">
+                            Detailed Description <span class="text-danger">*</span>
+                        </label>
+                        <textarea class="form-control custom-input" id="description" rows="5" required
+                                  placeholder="Detail the breed, average weight, age, ranch location, health status, lineage, or certifications..."></textarea>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Images (URLs)</label>
-                    <div id="imageUrlList">
-                        <div class="input-group mb-2">
-                            <input type="url" class="form-control image-url-input" placeholder="https://...">
-                            <button type="button" class="btn btn-outline-secondary remove-image-btn" style="display:none;">
-                                <i class="fas fa-times"></i>
-                            </button>
+                <!-- Section 2 Header -->
+                <div class="form-section-header">
+                    <i class="fas fa-dollar-sign text-warning fa-lg"></i>
+                    <div>
+                        <h5 class="mb-0 fw-bold">2. Starting Bid & Time Limit</h5>
+                        <small class="text-white-50">Set the initial starting price and bidding deadline date/time</small>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="startingPrice" class="form-label fw-bold text-dark-green">
+                                Starting Base Price (USD) <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text custom-addon">$</span>
+                                <input type="number" class="form-control custom-input" id="startingPrice" step="0.01" min="1" placeholder="1500.00" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="endsAt" class="form-label fw-bold text-dark-green">
+                                Auction End Date & Time <span class="text-danger">*</span>
+                            </label>
+                            <input type="datetime-local" class="form-control form-control-lg custom-input" id="endsAt" required>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-success" id="addImageBtn">
-                        <i class="fas fa-plus"></i> Add another image
-                    </button>
-                    <div id="imagePreview" class="image-preview-grid"></div>
                 </div>
 
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-dark-green flex-grow-1" id="submitBtn">
-                        <i class="fas fa-gavel"></i> Publish Auction
-                    </button>
-                    <a href="auctions.html" class="btn btn-outline-secondary">Cancel</a>
+                <!-- Section 3 Header -->
+                <div class="form-section-header">
+                    <i class="fas fa-images text-warning fa-lg"></i>
+                    <div>
+                        <h5 class="mb-0 fw-bold">3. Livestock Photo Gallery</h5>
+                        <small class="text-white-50">Provide direct image URLs showing your cattle lot</small>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark-green">Image URLs</label>
+                        <div id="imageUrlList">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text custom-addon"><i class="fas fa-link"></i></span>
+                                <input type="url" class="form-control custom-input image-url-input" placeholder="https://..." value="https://images.pexels.com/photos/2600277/pexels-photo-2600277.jpeg">
+                                <button type="button" class="btn btn-outline-danger remove-image-btn" style="display:none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 mt-2" id="addImageBtn">
+                            <i class="fas fa-plus me-1"></i> Add another image
+                        </button>
+                        <div id="imagePreview" class="image-preview-grid mt-3"></div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex gap-3 align-items-center">
+                        <button type="submit" class="btn btn-submit-auction flex-grow-1" id="submitBtn">
+                            <i class="fas fa-gavel me-2"></i> Publish Auction Now
+                        </button>
+                        <a href="auctions.html" class="btn btn-outline-secondary btn-lg px-4 rounded-3">Cancel</a>
+                    </div>
                 </div>
             </form>
         </div>
