@@ -363,12 +363,294 @@ class RancherHealth extends HTMLElement {
           font-weight: 600;
         }
         
+        /* Modals Overlay */
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.65);
+          backdrop-filter: blur(5px);
+          z-index: 2000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .agenda-modal {
+          background: var(--white);
+          width: 100%;
+          max-width: 900px;
+          max-height: 90vh;
+          border-radius: 20px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+          from { transform: translateY(30px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+          background: var(--gradient-primary);
+          color: var(--white);
+          padding: 1.5rem 2rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .modal-header h3 {
+          margin: 0;
+          font-size: 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+        }
+
+        .close-modal-btn {
+          background: rgba(255, 255, 255, 0.2);
+          border: none;
+          color: var(--white);
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          cursor: pointer;
+          font-size: 1.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: var(--transition);
+        }
+
+        .close-modal-btn:hover {
+          background: rgba(255, 255, 255, 0.4);
+          transform: rotate(90deg);
+        }
+
+        .modal-body {
+          padding: 2rem;
+          overflow-y: auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+
+        .agenda-section-title {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: var(--primary);
+          margin-bottom: 1.2rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .form-group {
+          margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+          display: block;
+          font-weight: 600;
+          font-size: 0.9rem;
+          color: var(--dark-gray);
+          margin-bottom: 0.4rem;
+        }
+
+        .form-control {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 0.75rem 1rem;
+          border: 1.5px solid var(--border);
+          border-radius: 10px;
+          font-size: 0.95rem;
+          font-family: inherit;
+          transition: var(--transition);
+        }
+
+        .form-control:focus {
+          outline: none;
+          border-color: var(--primary);
+          box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.15);
+        }
+
+        .toast-check-icon {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: #ffa726;
+          color: #1b3a1d;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.3rem;
+          font-weight: bold;
+          flex-shrink: 0;
+          animation: popCheck 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popCheck {
+          0% { transform: scale(0) rotate(-45deg); }
+          70% { transform: scale(1.25) rotate(10deg); }
+          100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .agenda-toast {
+          background: linear-gradient(135deg, #1b3a1d 0%, #2c5530 100%);
+          color: #ffffff;
+          padding: 0.9rem 1.2rem;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          box-shadow: 0 8px 25px rgba(44, 85, 48, 0.3);
+          border: 1px solid #4a7c59;
+          opacity: 0;
+          transform: translateY(-10px);
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          pointer-events: none;
+          max-height: 0;
+          overflow: hidden;
+          margin-bottom: 0;
+          grid-column: 1 / -1;
+        }
+
+        .agenda-toast.show {
+          opacity: 1;
+          transform: translateY(0);
+          max-height: 120px;
+          margin-bottom: 1rem;
+          pointer-events: auto;
+        }
+
+        .toast-content-title {
+          font-weight: 700;
+          font-size: 1rem;
+          color: #ffffff;
+          margin: 0 0 0.2rem 0;
+        }
+
+        .toast-content-desc {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.9);
+          margin: 0;
+        }
+
+        .btn-submit-agenda {
+          width: 100%;
+          padding: 0.9rem;
+          background: var(--gradient-primary);
+          color: var(--white);
+          border: none;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: var(--transition);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.6rem;
+          margin-top: 1rem;
+        }
+
+        .btn-submit-agenda:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(44, 85, 48, 0.25);
+        }
+
+        .agenda-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          max-height: 400px;
+          overflow-y: auto;
+          padding-right: 0.5rem;
+        }
+
+        .agenda-card-item {
+          background: var(--light-gray);
+          border-radius: 12px;
+          padding: 1rem;
+          border-left: 5px solid var(--primary);
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          position: relative;
+        }
+
+        .agenda-card-item.completed { border-left-color: var(--success); }
+        .agenda-card-item.canceled { border-left-color: var(--danger); }
+
+        .agenda-item-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .agenda-item-title {
+          font-weight: 700;
+          color: var(--primary);
+          font-size: 1rem;
+        }
+
+        .agenda-item-tag {
+          font-size: 0.75rem;
+          background: rgba(44, 85, 48, 0.1);
+          color: var(--primary);
+          padding: 0.2rem 0.6rem;
+          border-radius: 20px;
+          font-weight: 600;
+        }
+
+        .agenda-item-meta {
+          font-size: 0.85rem;
+          color: var(--gray);
+        }
+
+        .agenda-item-actions {
+          display: flex;
+          gap: 0.5rem;
+          margin-top: 0.5rem;
+        }
+
+        .btn-mini {
+          padding: 0.3rem 0.6rem;
+          font-size: 0.75rem;
+          border-radius: 6px;
+          border: none;
+          cursor: pointer;
+          font-weight: 600;
+        }
+
+        .btn-mini-success { background: #e8f5e9; color: #2e7d32; }
+        .btn-mini-danger { background: #ffebee; color: #c62828; }
+
         /* Responsive */
         @media (max-width: 1200px) {
           .health-stats { grid-template-columns: repeat(2, 1fr); }
           .health-grid { grid-template-columns: 1fr; }
         }
         
+        @media (max-width: 992px) {
+          .modal-body { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+
         @media (max-width: 768px) {
           :host { padding: 1rem; }
           .health-stats { grid-template-columns: 1fr; gap: 1rem; }
@@ -457,6 +739,80 @@ class RancherHealth extends HTMLElement {
           </div>
         </div>
       </div>
+
+      <!-- Interactive Health Agenda Modal -->
+      <div class="modal-overlay" id="agendaModal">
+        <div class="agenda-modal">
+          <div class="modal-header">
+            <h3>
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z"/></svg>
+              Health Check & Veterinary Agenda
+            </h3>
+            <button class="close-modal-btn" id="closeAgendaModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <!-- Animated Success Toast -->
+            <div class="agenda-toast" id="agendaToast">
+              <div class="toast-check-icon">✓</div>
+              <div>
+                <div class="toast-content-title" id="toastTitle">¡Cita Agendada con Éxito!</div>
+                <div class="toast-content-desc" id="toastDesc">La visita ha sido registrada en la agenda veterinaria.</div>
+              </div>
+            </div>
+
+            <!-- Form Side -->
+            <div>
+              <div class="agenda-section-title">
+                📅 Schedule New Health Visit
+              </div>
+              <form id="agendaForm">
+                <div class="form-group">
+                  <label for="agendaCattleTag">Select Cattle / Tag ID</label>
+                  <select id="agendaCattleTag" class="form-control" required>
+                    <option value="">-- Choose Cattle --</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="agendaVisitType">Visit / Check Type</label>
+                  <select id="agendaVisitType" class="form-control" required>
+                    <option value="Routine Health Checkup">Routine Health Checkup</option>
+                    <option value="Vaccination Program">Vaccination Program</option>
+                    <option value="Pregnancy Ultrasound">Pregnancy Ultrasound</option>
+                    <option value="Breeding & AI Check">Breeding & Artificial Insemination</option>
+                    <option value="Emergency Treatment">Emergency Veterinary Treatment</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="agendaDate">Appointment Date & Time</label>
+                  <input type="datetime-local" id="agendaDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="agendaVetName">Veterinarian / Specialist</label>
+                  <input type="text" id="agendaVetName" class="form-control" placeholder="Dr. Carlos Mendoza" required>
+                </div>
+                <div class="form-group">
+                  <label for="agendaNotes">Special Notes</label>
+                  <textarea id="agendaNotes" class="form-control" rows="2" placeholder="Specific symptoms, dosage or observation..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit-agenda">
+                  <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  Confirm & Schedule Visit
+                </button>
+              </form>
+            </div>
+
+            <!-- Schedule List Side -->
+            <div>
+              <div class="agenda-section-title">
+                📋 Scheduled Appointments
+              </div>
+              <div class="agenda-list" id="agendaList">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     `;
   }
 
@@ -475,22 +831,173 @@ class RancherHealth extends HTMLElement {
   }
 
   setupEventListeners() {
-    const btn = this.shadowRoot.querySelector('#btnOpenAgendaModal');
+    const shadow = this.shadowRoot;
+    const btn = shadow.querySelector('#btnOpenAgendaModal');
     if (btn) {
       btn.addEventListener('click', () => {
-        // Dispatch open agenda modal event or trigger overview
-        const overview = document.querySelector('rancher-overview');
-        if (overview && typeof overview.openAgendaModal === 'function') {
-          overview.openAgendaModal();
-        } else {
-          window.dispatchEvent(new CustomEvent('genostock-navigate-section', { detail: 'overview' }));
-          setTimeout(() => {
-            const ov = document.querySelector('rancher-overview');
-            if (ov && typeof ov.openAgendaModal === 'function') ov.openAgendaModal();
-          }, 200);
-        }
+        this.openAgendaModal();
       });
     }
+
+    const agendaModal = shadow.querySelector('#agendaModal');
+    const closeBtn = shadow.querySelector('#closeAgendaModal');
+    if (closeBtn && agendaModal) {
+      closeBtn.addEventListener('click', () => agendaModal.classList.remove('active'));
+      agendaModal.addEventListener('click', (e) => {
+        if (e.target === agendaModal) agendaModal.classList.remove('active');
+      });
+    }
+
+    const agendaForm = shadow.querySelector('#agendaForm');
+    if (agendaForm) {
+      agendaForm.addEventListener('submit', (e) => this.handleAgendaSubmit(e));
+    }
+  }
+
+  openAgendaModal() {
+    const shadow = this.shadowRoot;
+    const modal = shadow.querySelector('#agendaModal');
+    if (!modal) return;
+
+    const dateInput = shadow.querySelector('#agendaDate');
+    if (dateInput) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(9, 0, 0, 0);
+      dateInput.value = tomorrow.toISOString().slice(0, 16);
+    }
+
+    let cattle = [];
+    try {
+      cattle = JSON.parse(localStorage.getItem('genostock_cattle_list') || '[]');
+    } catch(e) {}
+
+    const tagSelect = shadow.querySelector('#agendaCattleTag');
+    if (tagSelect) {
+      if (cattle.length === 0) {
+        tagSelect.innerHTML = `<option value="All Cattle Herd">All Cattle Herd / Entire Farm</option>`;
+      } else {
+        tagSelect.innerHTML = `<option value="All Cattle Herd">All Cattle Herd / Entire Farm</option>` +
+          cattle.map(c => `<option value="${c.tagId || c.title}">${c.tagId || c.title} (${c.breed || 'Cattle'})</option>`).join('');
+      }
+    }
+
+    this.renderAgendaModalList();
+    modal.classList.add('active');
+  }
+
+  handleAgendaSubmit(e) {
+    e.preventDefault();
+    const shadow = this.shadowRoot;
+
+    const cattleTag = shadow.querySelector('#agendaCattleTag').value;
+    const visitType = shadow.querySelector('#agendaVisitType').value;
+    const date = shadow.querySelector('#agendaDate').value;
+    const vetName = shadow.querySelector('#agendaVetName').value.trim();
+    const notes = shadow.querySelector('#agendaNotes').value.trim();
+
+    if (!cattleTag || !visitType || !date || !vetName) return;
+
+    const newItem = {
+      id: 'sched_' + Date.now(),
+      cattleTag,
+      visitType,
+      date,
+      vetName,
+      notes,
+      status: 'scheduled',
+      createdAt: new Date().toISOString()
+    };
+
+    this.scheduleList.unshift(newItem);
+    localStorage.setItem('genostock_health_schedule', JSON.stringify(this.scheduleList));
+
+    let activityLog = [];
+    try {
+      activityLog = JSON.parse(localStorage.getItem('genostock_activity_log') || '[]');
+    } catch(e) {}
+    activityLog.unshift({
+      title: `${visitType} Scheduled`,
+      description: `${visitType} for ${cattleTag} with ${vetName}`,
+      time: 'Just now',
+      bgClass: 'bg-success',
+      iconPath: 'M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z'
+    });
+    localStorage.setItem('genostock_activity_log', JSON.stringify(activityLog));
+
+    window.dispatchEvent(new CustomEvent('genostock-health-updated'));
+
+    shadow.querySelector('#agendaNotes').value = '';
+    this.loadHealthData();
+    this.renderAgendaModalList();
+
+    const toast = shadow.querySelector('#agendaToast');
+    const toastTitle = shadow.querySelector('#toastTitle');
+    const toastDesc = shadow.querySelector('#toastDesc');
+
+    if (toast && toastTitle && toastDesc) {
+      toastTitle.textContent = `¡Cita Agendada: ${visitType}!`;
+      toastDesc.textContent = `Para ${cattleTag} el ${new Date(date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })} con ${vetName}`;
+      
+      toast.classList.add('show');
+      if (this._toastTimeout) clearTimeout(this._toastTimeout);
+      this._toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3200);
+    }
+  }
+
+  renderAgendaModalList() {
+    const shadow = this.shadowRoot;
+    const container = shadow.querySelector('#agendaList');
+    if (!container) return;
+
+    if (this.scheduleList.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 2rem 1rem; color: var(--gray);">
+          <svg width="40" height="40" fill="currentColor" viewBox="0 0 24 24" style="margin-bottom:0.5rem; opacity:0.5;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z"/></svg>
+          <div style="font-weight:600;">No Health Visits Scheduled</div>
+          <small>Fill out the form on the left to schedule your first veterinary appointment.</small>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = this.scheduleList.map((item, index) => {
+      const dateFormatted = new Date(item.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+      return `
+        <div class="agenda-card-item ${item.status}">
+          <div class="agenda-item-header">
+            <div class="agenda-item-title">${item.visitType}</div>
+            <div class="agenda-item-tag">${item.cattleTag}</div>
+          </div>
+          <div class="agenda-item-meta">
+            <strong>📅 ${dateFormatted}</strong> &nbsp;|&nbsp; 👨‍⚕️ ${item.vetName}
+          </div>
+          ${item.notes ? `<div class="agenda-item-meta" style="font-style:italic;">"${item.notes}"</div>` : ''}
+          <div class="agenda-item-actions">
+            ${item.status !== 'completed' ? `<button class="btn-mini btn-mini-success" data-index="${index}" data-action="complete">Mark Done</button>` : `<span style="font-size:0.75rem; color:var(--success); font-weight:700;">✓ Completed</span>`}
+            ${item.status !== 'canceled' ? `<button class="btn-mini btn-mini-danger" data-index="${index}" data-action="cancel">Cancel</button>` : `<span style="font-size:0.75rem; color:var(--danger); font-weight:700;">✕ Canceled</span>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.querySelectorAll('.btn-mini').forEach(b => {
+      b.addEventListener('click', () => {
+        const index = parseInt(b.getAttribute('data-index'), 10);
+        const action = b.getAttribute('data-action');
+        if (action === 'complete') {
+          this.scheduleList[index].status = 'completed';
+        } else if (action === 'cancel') {
+          this.scheduleList[index].status = 'canceled';
+        }
+        localStorage.setItem('genostock_health_schedule', JSON.stringify(this.scheduleList));
+        window.dispatchEvent(new CustomEvent('genostock-health-updated'));
+        this.renderAgendaModalList();
+        this.loadHealthData();
+      });
+    });
   }
 
   loadHealthData() {
