@@ -319,8 +319,260 @@ class RancherLivestock extends HTMLElement {
             font-size: 2rem;
           }
         }
+
+        /* ── Cattle Detail Modal ── */
+        .cd-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+        .cd-overlay.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .cd-modal {
+          background: var(--white);
+          border-radius: 20px;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+          width: 100%;
+          max-width: 440px;
+          overflow: hidden;
+          transform: scale(0.88) translateY(20px);
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+          opacity: 0;
+        }
+        .cd-overlay.active .cd-modal {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+        .cd-header {
+          background: var(--gradient-primary);
+          padding: 1.6rem 1.8rem 1.4rem;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        .cd-header-left {
+          display: flex;
+          align-items: center;
+          gap: 0.9rem;
+        }
+        .cd-cow-icon {
+          width: 52px;
+          height: 52px;
+          background: rgba(255,255,255,0.18);
+          border-radius: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.7rem;
+          flex-shrink: 0;
+        }
+        .cd-header-title {
+          color: var(--white);
+        }
+        .cd-header-title h4 {
+          margin: 0 0 0.15rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+        }
+        .cd-header-title span {
+          font-size: 0.85rem;
+          color: rgba(255,255,255,0.75);
+          font-weight: 500;
+        }
+        .cd-close-btn {
+          background: rgba(255,255,255,0.18);
+          border: none;
+          color: var(--white);
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          cursor: pointer;
+          font-size: 1.1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: var(--transition);
+          flex-shrink: 0;
+          margin-top: 2px;
+        }
+        .cd-close-btn:hover {
+          background: rgba(255,255,255,0.35);
+          transform: rotate(90deg);
+        }
+        .cd-body {
+          padding: 1.6rem 1.8rem;
+        }
+        .cd-details-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+          margin-bottom: 1.4rem;
+        }
+        .cd-detail-item {
+          background: var(--light-gray);
+          border-radius: 12px;
+          padding: 0.9rem 1rem;
+          border: 1px solid var(--border);
+          transition: var(--transition);
+        }
+        .cd-detail-item:hover {
+          border-color: var(--primary-light);
+          background: #f0f7f1;
+        }
+        .cd-detail-label {
+          font-size: 0.72rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--gray);
+          margin-bottom: 0.3rem;
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+        }
+        .cd-detail-value {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--primary);
+        }
+        .cd-notes {
+          background: var(--light-gray);
+          border-radius: 12px;
+          padding: 1rem 1.1rem;
+          border: 1px solid var(--border);
+          margin-bottom: 1.5rem;
+        }
+        .cd-notes-label {
+          font-size: 0.72rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--gray);
+          margin-bottom: 0.4rem;
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+        }
+        .cd-notes-text {
+          font-size: 0.95rem;
+          color: var(--dark-gray);
+          line-height: 1.5;
+        }
+        .cd-footer {
+          display: flex;
+          gap: 0.75rem;
+          padding: 0 1.8rem 1.8rem;
+        }
+        .cd-btn {
+          flex: 1;
+          padding: 0.75rem 1rem;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: var(--transition);
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.45rem;
+        }
+        .cd-btn-secondary {
+          background: var(--light-gray);
+          color: var(--dark-gray);
+          border: 1.5px solid var(--border);
+        }
+        .cd-btn-secondary:hover {
+          background: var(--border);
+          border-color: var(--gray);
+        }
+        .cd-btn-primary {
+          background: var(--gradient-primary);
+          color: var(--white);
+          box-shadow: 0 4px 14px rgba(44, 85, 48, 0.25);
+        }
+        .cd-btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(44, 85, 48, 0.35);
+        }
       </style>
       
+      <!-- ── Cattle Detail Modal ── -->
+      <div class="cd-overlay" id="cdOverlay">
+        <div class="cd-modal" id="cdModal">
+          <div class="cd-header">
+            <div class="cd-header-left">
+              <div class="cd-cow-icon">🐮</div>
+              <div class="cd-header-title">
+                <h4 id="cdTitle">Cattle Details</h4>
+                <span id="cdSubtitle">Livestock Record</span>
+              </div>
+            </div>
+            <button class="cd-close-btn" id="cdCloseBtn">✕</button>
+          </div>
+          <div class="cd-body">
+            <div class="cd-details-grid">
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">🏷️ Tag / ID</div>
+                <div class="cd-detail-value" id="cdTag">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">🐄 Breed</div>
+                <div class="cd-detail-value" id="cdBreed">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">⚖️ Weight</div>
+                <div class="cd-detail-value" id="cdWeight">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">📅 Age</div>
+                <div class="cd-detail-value" id="cdAge">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">⚧ Gender</div>
+                <div class="cd-detail-value" id="cdGender">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">🎯 Type / Purpose</div>
+                <div class="cd-detail-value" id="cdType">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">💰 Est. Value</div>
+                <div class="cd-detail-value" id="cdPrice">—</div>
+              </div>
+              <div class="cd-detail-item">
+                <div class="cd-detail-label">📍 Location</div>
+                <div class="cd-detail-value" id="cdLocation">—</div>
+              </div>
+            </div>
+            <div class="cd-notes">
+              <div class="cd-notes-label">📝 Health Notes</div>
+              <div class="cd-notes-text" id="cdNotes">No additional notes.</div>
+            </div>
+          </div>
+          <div class="cd-footer">
+            <button class="cd-btn cd-btn-secondary" id="cdCloseFooterBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="livestock-container">
         <div class="section-header">
           <h2>Livestock Management</h2>
@@ -537,10 +789,25 @@ class RancherLivestock extends HTMLElement {
         });
       }
     } else {
-      grid.innerHTML = filtered.map(c => `
+      grid.innerHTML = filtered.map(c => {
+        // Extract gender from description if stored in [Sex: ...] format
+        let gender = c.gender || '';
+        if (!gender && c.description) {
+          const m = c.description.match(/\[Sex:\s*([^\]]+)\]/);
+          if (m) gender = m[1];
+        }
+        // Extract tag from description if needed
+        let tagDisplay = c.tagId || '';
+        if (!tagDisplay && c.description) {
+          const m = c.description.match(/\[Tag:\s*([^\]]+)\]/);
+          if (m) tagDisplay = m[1];
+        }
+        tagDisplay = tagDisplay || c.title || 'Cattle Record';
+
+        return `
         <div class="cattle-card">
           <div class="cattle-header">
-            <div class="cattle-id">${c.tagId || c.title || 'Cattle Record'}</div>
+            <div class="cattle-id">${tagDisplay}</div>
             <div class="cattle-status status-healthy">${c.status || 'Active'}</div>
           </div>
           ${c.imageUrl ? `<div style="height:160px; overflow:hidden; border-radius:10px; margin-bottom:1rem;"><img src="${c.imageUrl}" style="width:100%; height:100%; object-fit:cover;" alt="${c.title || 'Cattle'}"></div>` : ''}
@@ -564,29 +831,70 @@ class RancherLivestock extends HTMLElement {
               </div>
             </div>
             <div class="cattle-actions">
-              <button class="action-btn view-detail-btn" data-tag="${c.tagId || c.title}" data-breed="${c.breed || 'N/A'}" data-weight="${c.weight || 'N/A'}" data-age="${c.age || 'N/A'}" data-desc="${c.description || 'No extra details'}">View Details</button>
-              <button class="action-btn primary card-add-btn">Add Cattle</button>
+              <button class="action-btn primary view-detail-btn"
+                style="width:100%;"
+                data-tag="${tagDisplay}"
+                data-breed="${c.breed || 'N/A'}"
+                data-weight="${c.weight || 'N/A'}"
+                data-age="${c.age || 'N/A'}"
+                data-gender="${gender || 'N/A'}"
+                data-type="${c.category || 'N/A'}"
+                data-price="${c.price ? '$' + c.price : 'N/A'}"
+                data-location="${c.location || 'N/A'}"
+                data-desc="${(c.description || 'No extra details').replace(/\[Tag:[^\]]*\]/g,'').replace(/\[Sex:[^\]]*\]/g,'').trim() || 'No additional notes.'}"
+              >🔍 View Details</button>
             </div>
           </div>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
 
       // Wire up card action buttons
-      grid.querySelectorAll('.view-detail-btn').forEach(b => {
-        b.addEventListener('click', () => {
-          const tag = b.getAttribute('data-tag');
-          const breed = b.getAttribute('data-breed');
-          const weight = b.getAttribute('data-weight');
-          const age = b.getAttribute('data-age');
-          const desc = b.getAttribute('data-desc');
-          alert(`🐮 CATTLE DETAILS\n-------------------\nTag / ID: ${tag}\nBreed: ${breed}\nWeight: ${weight} kg\nAge: ${age} months\nNotes: ${desc}`);
-        });
-      });
+      const overlay   = this.shadowRoot.getElementById('cdOverlay');
+      const cdTitle   = this.shadowRoot.getElementById('cdTitle');
+      const cdSub     = this.shadowRoot.getElementById('cdSubtitle');
+      const cdTag     = this.shadowRoot.getElementById('cdTag');
+      const cdBreed   = this.shadowRoot.getElementById('cdBreed');
+      const cdWeight  = this.shadowRoot.getElementById('cdWeight');
+      const cdAge     = this.shadowRoot.getElementById('cdAge');
+      const cdGender  = this.shadowRoot.getElementById('cdGender');
+      const cdType    = this.shadowRoot.getElementById('cdType');
+      const cdPrice   = this.shadowRoot.getElementById('cdPrice');
+      const cdLocation= this.shadowRoot.getElementById('cdLocation');
+      const cdNotes   = this.shadowRoot.getElementById('cdNotes');
 
-      grid.querySelectorAll('.card-add-btn').forEach(b => {
-        b.addEventListener('click', () => {
-          window.location.href = 'add-cattle.html';
-        });
+      const openModal = (b) => {
+        const tag      = b.getAttribute('data-tag');
+        const breed    = b.getAttribute('data-breed');
+        const weight   = b.getAttribute('data-weight');
+        const age      = b.getAttribute('data-age');
+        const gender   = b.getAttribute('data-gender');
+        const type     = b.getAttribute('data-type');
+        const price    = b.getAttribute('data-price');
+        const location = b.getAttribute('data-location');
+        const desc     = b.getAttribute('data-desc');
+
+        cdTitle.textContent    = tag    || 'Cattle Details';
+        cdSub.textContent      = breed  ? `Breed: ${breed}` : 'Livestock Record';
+        cdTag.textContent      = tag      || '—';
+        cdBreed.textContent    = breed    || '—';
+        cdWeight.textContent   = weight && weight !== 'N/A' ? `${weight} kg` : '—';
+        cdAge.textContent      = age    && age    !== 'N/A' ? `${age} months`  : '—';
+        cdGender.textContent   = gender   || '—';
+        cdType.textContent     = type     || '—';
+        cdPrice.textContent    = price    || '—';
+        cdLocation.textContent = location || '—';
+        cdNotes.textContent    = desc     || 'No additional notes.';
+        overlay.classList.add('active');
+      };
+
+      const closeModal = () => overlay.classList.remove('active');
+
+      this.shadowRoot.getElementById('cdCloseBtn').addEventListener('click', closeModal);
+      this.shadowRoot.getElementById('cdCloseFooterBtn').addEventListener('click', closeModal);
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+      grid.querySelectorAll('.view-detail-btn').forEach(b => {
+        b.addEventListener('click', () => openModal(b));
       });
     }
   }

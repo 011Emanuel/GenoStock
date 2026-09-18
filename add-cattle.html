@@ -127,6 +127,215 @@
             height: 100%;
             object-fit: cover;
         }
+        /* ── Cattle Inventory List ── */
+        .inventory-section {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .inventory-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .inventory-header-left h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c5530;
+            margin: 0 0 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .inventory-header-left p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .inventory-count-badge {
+            background: linear-gradient(135deg, #2c5530, #4a7c59);
+            color: #fff;
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .inventory-search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .inventory-search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.8rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .inventory-search-bar input:focus {
+            border-color: #2c5530;
+            box-shadow: 0 0 0 4px rgba(44, 85, 48, 0.12);
+            outline: none;
+        }
+
+        .inventory-search-bar .search-icon {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .cattle-inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .inv-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(44, 85, 48, 0.08);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .inv-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(44, 85, 48, 0.14);
+        }
+
+        .inv-card-header {
+            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            color: #fff;
+            padding: 1rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .inv-card-tag {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .inv-card-status {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+        }
+
+        .inv-card-body {
+            padding: 1.1rem 1.2rem;
+        }
+
+        .inv-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .inv-card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .inv-detail {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.5rem 0.7rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .inv-detail-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+            margin-bottom: 0.15rem;
+        }
+
+        .inv-detail-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #2c5530;
+        }
+
+        .inventory-empty {
+            text-align: center;
+            padding: 3.5rem 2rem;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .inventory-empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .inventory-empty h4 {
+            color: #2c5530;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .inventory-empty p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .inv-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 2.5rem;
+            color: #6c757d;
+        }
+
+        .inv-spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #2c5530;
+            border-radius: 50%;
+            animation: invSpin 0.7s linear infinite;
+        }
+
+        @keyframes invSpin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 576px) {
+            .cattle-inventory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -313,6 +522,32 @@
                     </div>
                 </form>
             </div>
+
+            <!-- ── Cattle Inventory List ── -->
+            <section class="inventory-section" id="inventorySection">
+                <div class="inventory-header">
+                    <div class="inventory-header-left">
+                        <h3>🐄 My Cattle Inventory</h3>
+                        <p>All cattle currently registered in your account</p>
+                    </div>
+                    <span class="inventory-count-badge" id="inventoryCountBadge">0 cattle</span>
+                </div>
+
+                <div class="inventory-search-bar">
+                    <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="inventorySearch" placeholder="Search by tag, breed or name…">
+                </div>
+
+                <div id="inventoryGrid">
+                    <div class="inv-loading">
+                        <div class="inv-spinner"></div>
+                        <span>Loading your cattle...</span>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </main>
 
@@ -326,5 +561,135 @@
     <script src="js/env.js"></script>
     <script src="js/supabase-config.js"></script>
     <script src="js/add-cattle.js"></script>
+
+    <script>
+    /* ── Cattle Inventory Loader ── */
+    (function() {
+        let allCattle = [];
+
+        function renderInventory(list) {
+            const grid   = document.getElementById('inventoryGrid');
+            const badge  = document.getElementById('inventoryCountBadge');
+            if (!grid) return;
+
+            badge.textContent = `${list.length} cattle`;
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="inventory-empty">
+                        <div class="inventory-empty-icon">🐄</div>
+                        <h4>No cattle registered yet</h4>
+                        <p>Fill out the form above to add your first cattle record.</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = `<div class="cattle-inventory-grid">${list.map(c => {
+                const tag    = c.tagId  || (c.description ? (c.description.match(/\[Tag:\s*([^\]]+)\]/) || [])[1] : '') || '—';
+                const name   = c.title  || 'Unnamed';
+                const breed  = c.breed  || '—';
+                const weight = c.weight ? `${c.weight} kg` : '—';
+                const age    = c.age    ? `${c.age} mo` : '—';
+                const type   = c.category || c.gender || '—';
+                return `
+                    <div class="inv-card">
+                        <div class="inv-card-header">
+                            <div class="inv-card-tag">🏷️ ${tag}</div>
+                            <span class="inv-card-status">${type}</span>
+                        </div>
+                        <div class="inv-card-body">
+                            <div class="inv-card-title" title="${name}">${name}</div>
+                            <div class="inv-card-details">
+                                <div class="inv-detail">
+                                    <div class="inv-detail-label">Breed</div>
+                                    <div class="inv-detail-value">${breed}</div>
+                                </div>
+                                <div class="inv-detail">
+                                    <div class="inv-detail-label">Weight</div>
+                                    <div class="inv-detail-value">${weight}</div>
+                                </div>
+                                <div class="inv-detail">
+                                    <div class="inv-detail-label">Age</div>
+                                    <div class="inv-detail-value">${age}</div>
+                                </div>
+                                <div class="inv-detail">
+                                    <div class="inv-detail-label">Type</div>
+                                    <div class="inv-detail-value">${type}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('')}</div>`;
+        }
+
+        async function loadInventory() {
+            // 1. Load from localStorage first (instant)
+            const local = JSON.parse(localStorage.getItem('genostock_cattle_list') || '[]');
+            allCattle = [...local];
+            renderInventory(allCattle);
+
+            // 2. Try Supabase
+            try {
+                const sb = window.getSupabase && window.getSupabase();
+                if (sb) {
+                    const { data: authData } = await sb.auth.getUser();
+                    const userId = authData?.user?.id;
+                    if (userId) {
+                        const { data, error } = await sb
+                            .from('cattle')
+                            .select('*')
+                            .eq('seller_id', userId)
+                            .order('created_at', { ascending: false });
+                        if (!error && data && data.length > 0) {
+                            // Merge: prefer DB data, keep local items not in DB
+                            const dbIds = new Set(data.map(d => d.id));
+                            const localOnly = local.filter(l => !dbIds.has(l.id));
+                            allCattle = [...data.map(d => ({
+                                id: d.id,
+                                tagId: (d.description && d.description.match(/\[Tag:\s*([^\]]+)\]/)) ? d.description.match(/\[Tag:\s*([^\]]+)\]/)[1] : d.tag_id || '—',
+                                title: d.title,
+                                breed: d.breed,
+                                category: d.category,
+                                gender: (d.description && d.description.match(/\[Sex:\s*([^\]]+)\]/)) ? d.description.match(/\[Sex:\s*([^\]]+)\]/)[1] : '—',
+                                weight: d.weight,
+                                age: d.age,
+                                price: d.price
+                            })), ...localOnly];
+                            renderInventory(allCattle);
+                        }
+                    }
+                }
+            } catch(e) { /* offline — keep local data */ }
+        }
+
+        // Search filter
+        document.addEventListener('DOMContentLoaded', () => {
+            loadInventory();
+
+            const searchInput = document.getElementById('inventorySearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    const q = searchInput.value.toLowerCase().trim();
+                    if (!q) { renderInventory(allCattle); return; }
+                    const filtered = allCattle.filter(c => {
+                        const tag   = (c.tagId  || '').toLowerCase();
+                        const name  = (c.title  || '').toLowerCase();
+                        const breed = (c.breed  || '').toLowerCase();
+                        return tag.includes(q) || name.includes(q) || breed.includes(q);
+                    });
+                    renderInventory(filtered);
+                });
+            }
+
+            // Refresh inventory after form submission (listen for page reload hint)
+            const form = document.getElementById('addCattleForm');
+            if (form) {
+                form.addEventListener('submit', () => {
+                    setTimeout(loadInventory, 2000);
+                });
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
