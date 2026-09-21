@@ -6,7 +6,7 @@ class DashboardTrader extends HTMLElement {
       <style>
         :host {
           --sidebar-width: 280px;
-          --sidebar-collapsed-width: 70px;
+          --sidebar-collapsed-width: 72px;
           --header-height: 70px;
           --footer-height: 60px;
           --primary: #2c5530;
@@ -63,14 +63,17 @@ class DashboardTrader extends HTMLElement {
         }
         
         .sidebar.collapsed .sidebar-header {
-          padding: 1rem 0.5rem 0.5rem 0.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 1rem 0.4rem 0.75rem;
         }
         
         .sidebar-toggle {
           background: rgba(255,255,255,0.15);
           border: 1px solid rgba(255,255,255,0.2);
           color: var(--sidebar-text);
-          padding: 0.8rem;
+          padding: 0;
           cursor: pointer;
           outline: none;
           border-radius: 8px;
@@ -81,6 +84,7 @@ class DashboardTrader extends HTMLElement {
           align-items: center;
           justify-content: center;
           margin-bottom: 1rem;
+          flex-shrink: 0;
         }
         
         .sidebar-toggle:hover {
@@ -90,9 +94,24 @@ class DashboardTrader extends HTMLElement {
         }
         
         .sidebar.collapsed .sidebar-toggle {
-          width: 32px;
-          height: 32px;
-          margin-bottom: 0.5rem;
+          width: 40px;
+          height: 40px;
+          margin: 0 auto 0.75rem;
+        }
+        
+        .sidebar.collapsed .sidebar-header-content {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+        
+        .sidebar.collapsed .sidebar-user-info {
+          display: none !important;
+        }
+        
+        .sidebar.collapsed .sidebar-avatar img {
+          width: 36px;
+          height: 36px;
         }
         
         /* Sidebar navigation */
@@ -103,11 +122,13 @@ class DashboardTrader extends HTMLElement {
           gap: 0.5rem;
           padding: 1rem 1rem 0 1rem;
           overflow-y: auto;
+          overflow-x: hidden;
         }
         
         .sidebar.collapsed .sidebar-nav {
-          padding: 0.5rem 0.5rem 0 0.5rem;
-          align-items: center;
+          padding: 0.75rem 0 0;
+          align-items: stretch;
+          gap: 0.35rem;
         }
         
         .sidebar-link {
@@ -124,12 +145,16 @@ class DashboardTrader extends HTMLElement {
           white-space: nowrap;
           font-weight: 500;
           position: relative;
+          overflow: hidden;
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar.collapsed .sidebar-link {
           justify-content: center;
-          padding: 0.8rem 0.5rem;
+          gap: 0;
+          padding: 0.9rem 0;
+          border-radius: 0;
+          width: 100%;
         }
         
         .sidebar-link:hover {
@@ -165,12 +190,18 @@ class DashboardTrader extends HTMLElement {
           font-weight: 500;
           font-size: 0.95rem;
           white-space: nowrap;
-          transition: opacity var(--transition);
+          overflow: hidden;
+          transition: opacity var(--transition), max-width var(--transition);
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar.collapsed .sidebar-label {
           opacity: 0;
+          max-width: 0;
+          width: 0;
+          margin: 0;
+          padding: 0;
+          pointer-events: none;
         }
         
         /* Main content */
@@ -247,38 +278,22 @@ class DashboardTrader extends HTMLElement {
         
         /* Responsive */
         @media (max-width: 1200px) {
-          .sidebar {
+          .sidebar:not(.collapsed) {
             width: 240px;
           }
           
-          .main-content {
+          .sidebar:not(.collapsed) ~ .main-content {
             margin-left: 240px;
-          }
-          
-          .sidebar.collapsed {
-            width: 60px;
-          }
-          
-          .sidebar.collapsed ~ .main-content {
-            margin-left: 60px;
           }
         }
         
         @media (max-width: 992px) {
-          .sidebar {
+          .sidebar:not(.collapsed) {
             width: 220px;
           }
           
-          .main-content {
+          .sidebar:not(.collapsed) ~ .main-content {
             margin-left: 220px;
-          }
-          
-          .sidebar.collapsed {
-            width: 50px;
-          }
-          
-          .sidebar.collapsed ~ .main-content {
-            margin-left: 50px;
           }
           
           .content-area {
@@ -345,7 +360,7 @@ class DashboardTrader extends HTMLElement {
           </div>
           
           <div class="sidebar-nav">
-            <a class="sidebar-link active" data-section="overview">
+            <a class="sidebar-link active" data-section="overview" title="Overview">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
@@ -353,7 +368,7 @@ class DashboardTrader extends HTMLElement {
               </span>
               <span class="sidebar-label">Overview</span>
             </a>
-            <a class="sidebar-link" data-section="profile">
+            <a class="sidebar-link" data-section="profile" title="Profile">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
@@ -361,7 +376,7 @@ class DashboardTrader extends HTMLElement {
               </span>
               <span class="sidebar-label">Profile</span>
             </a>
-            <a class="sidebar-link" data-section="sales">
+            <a class="sidebar-link" data-section="sales" title="Sales">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
@@ -369,7 +384,7 @@ class DashboardTrader extends HTMLElement {
               </span>
               <span class="sidebar-label">Sales</span>
             </a>
-            <a class="sidebar-link" data-section="livestock">
+            <a class="sidebar-link" data-section="livestock" title="My Livestock">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
@@ -377,7 +392,7 @@ class DashboardTrader extends HTMLElement {
               </span>
               <span class="sidebar-label">My Livestock</span>
             </a>
-            <a class="sidebar-link" data-section="settings">
+            <a class="sidebar-link" data-section="settings" title="Settings">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" fill="currentColor"/>
@@ -400,19 +415,37 @@ class DashboardTrader extends HTMLElement {
     `;
     this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true));
   }
+
+  rootPrefix() {
+    const path = (window.location.pathname || '').replace(/\\/g, '/');
+    return /\/dashboard\/(rancher|trader)\//.test(path) ? '../../' : '';
+  }
   
   connectedCallback() {
-    // Check authentication
-    const username = localStorage.getItem('username');
-    if (!username) {
-      window.location.href = '../login.html';
-      return;
-    }
-    
     this.loadComponents();
     this.setupSidebarToggle();
     this.setupNavigation();
     this.setupMobileOverlay();
+    this._onProfileUpdated = (event) => this.refreshSidebarUser(event.detail);
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+    if (this._onNavigateSection) {
+      window.removeEventListener('genostock-navigate-section', this._onNavigateSection);
+    }
+  }
+
+  refreshSidebarUser(profile) {
+    if (!profile) return;
+    const name = profile.full_name || profile.username || 'User';
+    const nameEl = this.shadowRoot.querySelector('.sidebar-username');
+    const img = this.shadowRoot.querySelector('.sidebar-avatar img');
+    if (nameEl) nameEl.textContent = name;
+    if (img) img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2c5530&color=fff`;
   }
   
   async loadComponents() {
@@ -484,8 +517,12 @@ class DashboardTrader extends HTMLElement {
             display: none;
           }
           .sidebar.collapsed .sidebar-avatar img {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
+          }
+          .sidebar.collapsed .sidebar-header-simple {
+            padding: 0;
+            gap: 0;
           }
         </style>
         <div class="sidebar-avatar">
@@ -498,6 +535,11 @@ class DashboardTrader extends HTMLElement {
       `;
       
       headerContainer.appendChild(header);
+
+      if (typeof window.loadUserProfile === 'function') {
+        const { data } = await window.loadUserProfile();
+        if (data) this.refreshSidebarUser(data);
+      }
     } catch (error) {
       console.error('Error loading sidebar header:', error);
     }
@@ -679,7 +721,7 @@ class DashboardTrader extends HTMLElement {
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
             </svg>
           </button>
-          <img src="../../logo_small.png" alt="GenoStock">
+          <img src="${this.rootPrefix()}logo_small.png" alt="GenoStock">
           <span>GenoStock</span>
         </div>
         
@@ -700,37 +742,35 @@ class DashboardTrader extends HTMLElement {
         </div>
       `;
       
-      // Add logout functionality (sign out and navigate to index.html)
       setTimeout(() => {
+        const home = this.rootPrefix();
         const logoutBtn = header.querySelector('#dashboardLogout');
         if (logoutBtn) {
-          logoutBtn.addEventListener('click', function(e) {
+          logoutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            console.log('Dashboard logout clicked - performing full logout');
-            localStorage.removeItem('username');
-            localStorage.removeItem('name');
-            localStorage.removeItem('role');
-            window.location.href = '../../index.html';
+            const supabase = window.getSupabase && window.getSupabase();
+            if (supabase) {
+              try { await supabase.auth.signOut(); } catch (err) { console.warn(err); }
+            }
+            ['username', 'name', 'role', 'email', 'userId', 'ranchName', 'location', 'phone', 'cattleCount', 'rfc']
+              .forEach((key) => localStorage.removeItem(key));
+            window.location.href = home + 'index.html';
           });
         }
-        
-        // Agregar funcionalidad de marketplace (redirigir a marketplace.html con header auth)
+
         const marketplaceBtn = header.querySelector('#marketplaceBtn');
         if (marketplaceBtn) {
-          marketplaceBtn.addEventListener('click', function(e) {
+          marketplaceBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Marketplace clicked - redirecting to marketplace.html');
-            window.location.href = '../../marketplace.html';
+            window.location.href = home + 'marketplace.html';
           });
         }
-        
-        // Agregar funcionalidad al logo (redirigir a marketplace.html con header auth)
+
         const headerLogo = header.querySelector('.header-logo');
         if (headerLogo) {
-          headerLogo.addEventListener('click', function(e) {
+          headerLogo.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Logo clicked - redirecting to marketplace.html');
-            window.location.href = '../../marketplace.html';
+            window.location.href = home + 'marketplace.html';
           });
           headerLogo.style.cursor = 'pointer';
         }
@@ -748,7 +788,7 @@ class DashboardTrader extends HTMLElement {
     
     try {
       if (!window.createAuthFooter) {
-        await this.loadScript('../../components/footer-auth.js');
+        await this.loadScript(this.rootPrefix() + 'components/footer-auth.js');
       }
       
       if (window.createAuthFooter) {
@@ -841,6 +881,20 @@ class DashboardTrader extends HTMLElement {
         }
       });
     });
+
+    this._onNavigateSection = (e) => {
+      const targetSection = e.detail;
+      if (!targetSection) return;
+      links.forEach(l => {
+        if (l.getAttribute('data-section') === targetSection) {
+          l.classList.add('active');
+        } else {
+          l.classList.remove('active');
+        }
+      });
+      updateSections(targetSection);
+    };
+    window.addEventListener('genostock-navigate-section', this._onNavigateSection);
   }
   
   setupMobileOverlay() {

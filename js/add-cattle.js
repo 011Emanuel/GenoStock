@@ -107,15 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving Record...`;
 
     try {
-      let savedToDb = false;
+      const supabaseClient = typeof window.getSupabase === 'function' ? window.getSupabase() : null;
+      const user = typeof window.getCurrentUser === 'function' ? await window.getCurrentUser() : null;
+      const sellerId = user?.id || localStorage.getItem('userId') || null;
+      const createdAt = new Date().toISOString();
 
-      // Check if Supabase client is available
-      if (typeof supabase !== 'undefined' && supabase.auth) {
-        const { data: authData } = await supabase.auth.getUser();
-        const user = authData?.user;
-
+      if (supabaseClient && supabaseClient.from) {
         const record = {
-          seller_id: user ? user.id : null,
+          seller_id: sellerId,
           title: title,
           breed: breed,
           category: category,
@@ -128,18 +127,17 @@ document.addEventListener('DOMContentLoaded', () => {
           status: 'active'
         };
 
-        const { data, error } = await supabase.from('cattle').insert([record]).select();
-        if (!error) {
-          savedToDb = true;
-        } else {
+        const { error } = await supabaseClient.from('cattle').insert([record]).select();
+        if (error) {
           console.warn('Supabase insertion warning:', error.message);
         }
       }
 
-      // Local storage backup for offline/demo mode
       const localRecords = JSON.parse(localStorage.getItem('genostock_cattle_list') || '[]');
       localRecords.unshift({
         id: 'cattle_' + Date.now(),
+        seller_id: sellerId,
+        userId: sellerId,
         tagId,
         title,
         breed,
@@ -151,17 +149,22 @@ document.addEventListener('DOMContentLoaded', () => {
         location,
         imageUrl,
         description,
-        createdAt: new Date().toISOString()
+        status: 'active',
+        createdAt,
+        created_at: createdAt
       });
       localStorage.setItem('genostock_cattle_list', JSON.stringify(localRecords));
+      localStorage.setItem('cattleCount', String(Number(localStorage.getItem('cattleCount') || 0) + 1));
 
       showAlert(
         `<i class="fas fa-check-circle me-2"></i> <strong>Success!</strong> Cattle record <strong>"${title}"</strong> registered successfully. Redirecting to dashboard...`,
         'success'
       );
 
+      const role = (localStorage.getItem('role') || '').toLowerCase();
+      const dashboard = role === 'trader' ? 'dashboard-trader.html' : 'dashboard-rancher.html';
       setTimeout(() => {
-        window.location.href = 'dashboard-rancher.html';
+        window.location.href = dashboard;
       }, 1800);
 
     } catch (err) {

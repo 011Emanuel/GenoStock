@@ -196,6 +196,13 @@ class TraderOverview extends HTMLElement {
           font-size: 0.85rem;
           font-weight: 500;
         }
+
+        .empty-note {
+          color: var(--gray);
+          text-align: center;
+          padding: 1.5rem 0.5rem;
+          margin: 0;
+        }
         
         /* Quick Actions Section */
         .quick-actions-card {
@@ -549,7 +556,7 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 21c4.97-4.97 8-8.13 8-11.5A5.5 5.5 0 0 0 12 4.5 5.5 5.5 0 0 0 4 9.5C4 12.87 7.03 16.03 12 21Z" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>156</h3>
+              <h3 id="statLivestock">0</h3>
               <p>Total Livestock</p>
             </div>
           </div>
@@ -559,7 +566,7 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 21V3M6 8l6-5 6 5" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>$45,230</h3>
+              <h3 id="statSales">$0</h3>
               <p>Total Sales</p>
             </div>
           </div>
@@ -569,7 +576,7 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M3 12h18M12 3v18" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>23</h3>
+              <h3 id="statMonth">0</h3>
               <p>This Month</p>
             </div>
           </div>
@@ -579,7 +586,7 @@ class TraderOverview extends HTMLElement {
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/><path d="M12 8v4l3 3" stroke="#fff" stroke-width="2"/></svg>
             </div>
             <div class="stat-content">
-              <h3>98%</h3>
+              <h3 id="statHealth">0%</h3>
               <p>Health Rate</p>
             </div>
           </div>
@@ -595,37 +602,8 @@ class TraderOverview extends HTMLElement {
               </svg>
               <h5>Recent Activity</h5>
             </div>
-            <div class="activity-body">
-              <div class="activity-item">
-                <div class="activity-icon bg-success">
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2"/></svg>
-                </div>
-                <div class="activity-content">
-                  <h6>New livestock added</h6>
-                  <p>Added 5 Brahman cattle to your inventory</p>
-                  <small>2 hours ago</small>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-icon bg-primary">
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 21V3M6 8l6-5 6 5" stroke="#fff" stroke-width="2"/></svg>
-                </div>
-                <div class="activity-content">
-                  <h6>Sale completed</h6>
-                  <p>Sold 3 Gyr cattle for $2,400</p>
-                  <small>1 day ago</small>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-icon bg-warning">
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="2"/></svg>
-                </div>
-                <div class="activity-content">
-                  <h6>Health check required</h6>
-                  <p>Schedule vaccination for Nelore cattle</p>
-                  <small>3 days ago</small>
-                </div>
-              </div>
+            <div class="activity-body" id="activityList">
+              <p class="empty-note">No activity yet. Add livestock or complete a sale to see updates here.</p>
             </div>
           </div>
           
@@ -642,7 +620,7 @@ class TraderOverview extends HTMLElement {
             
             <div class="quick-actions-body">
               <div class="quick-actions-grid">
-                <button class="quick-action-btn">
+                <button class="quick-action-btn" id="quickAddLivestock">
                   <div class="quick-action-icon primary">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 5v14M5 12h14"/>
@@ -654,7 +632,7 @@ class TraderOverview extends HTMLElement {
                   </div>
                 </button>
                 
-                <button class="quick-action-btn">
+                <button class="quick-action-btn" id="quickViewReports">
                   <div class="quick-action-icon success">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
@@ -666,7 +644,7 @@ class TraderOverview extends HTMLElement {
                   </div>
                 </button>
                 
-                <button class="quick-action-btn">
+                <button class="quick-action-btn" id="quickScheduleCheck">
                   <div class="quick-action-icon info">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -678,7 +656,7 @@ class TraderOverview extends HTMLElement {
                   </div>
                 </button>
                 
-                <button class="quick-action-btn">
+                <button class="quick-action-btn" id="quickSettings">
                   <div class="quick-action-icon warning">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
@@ -695,6 +673,114 @@ class TraderOverview extends HTMLElement {
         </div>
       </div>
     `;
+  }
+
+  connectedCallback() {
+    const nav = (section) => window.dispatchEvent(new CustomEvent('genostock-navigate-section', { detail: section }));
+    const addBtn = this.shadowRoot.getElementById('quickAddLivestock');
+    const reportsBtn = this.shadowRoot.getElementById('quickViewReports');
+    const checkBtn = this.shadowRoot.getElementById('quickScheduleCheck');
+    const settingsBtn = this.shadowRoot.getElementById('quickSettings');
+    if (addBtn) addBtn.addEventListener('click', () => nav('livestock'));
+    if (reportsBtn) reportsBtn.addEventListener('click', () => nav('sales'));
+    if (checkBtn) checkBtn.addEventListener('click', () => nav('livestock'));
+    if (settingsBtn) settingsBtn.addEventListener('click', () => nav('settings'));
+    this.loadDashboardData();
+    this._onProfileUpdated = () => this.loadDashboardData();
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+  }
+
+  isThisMonth(iso) {
+    if (!iso) return false;
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return false;
+    const now = new Date();
+    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+  }
+
+  formatMoney(value) {
+    return '$' + Number(value || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+
+  formatWhen(iso) {
+    if (!iso) return 'Just now';
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return 'Just now';
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  escape(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  async loadDashboardData() {
+    const cattle = typeof window.loadCurrentUserCattle === 'function' ? await window.loadCurrentUserCattle() : [];
+    const sales = typeof window.loadCurrentUserSales === 'function' ? await window.loadCurrentUserSales() : [];
+    const profileCount = Number(localStorage.getItem('cattleCount') || 0);
+    const livestockCount = Math.max(cattle.length, profileCount);
+    const salesTotal = sales.reduce((sum, sale) => sum + Number(sale.price || 0), 0);
+    const monthCount = sales.filter((sale) => this.isThisMonth(sale.date)).length;
+    const healthy = cattle.filter((item) => String(item.status || 'active').toLowerCase() === 'active').length;
+    const healthRate = livestockCount === 0 ? 0 : Math.round((healthy / Math.max(cattle.length, 1)) * 100);
+
+    const setText = (id, value) => {
+      const el = this.shadowRoot.getElementById(id);
+      if (el) el.textContent = value;
+    };
+    setText('statLivestock', String(livestockCount));
+    setText('statSales', this.formatMoney(salesTotal));
+    setText('statMonth', String(monthCount));
+    setText('statHealth', healthRate + '%');
+
+    const list = this.shadowRoot.getElementById('activityList');
+    if (!list) return;
+
+    const events = [];
+    cattle.slice(0, 5).forEach((item) => {
+      events.push({
+        type: 'livestock',
+        when: item.created_at || item.updated_at,
+        title: 'Livestock registered',
+        detail: item.title || item.tagId || 'New livestock added'
+      });
+    });
+    sales.slice(0, 5).forEach((sale) => {
+      events.push({
+        type: 'sale',
+        when: sale.date,
+        title: 'Sale completed',
+        detail: `Sold ${sale.title} for ${this.formatMoney(sale.price)}`
+      });
+    });
+    events.sort((a, b) => new Date(b.when || 0) - new Date(a.when || 0));
+
+    if (!events.length) {
+      list.innerHTML = '<p class="empty-note">No activity yet. Add livestock or complete a sale to see updates here.</p>';
+      return;
+    }
+
+    list.innerHTML = events.slice(0, 6).map((event) => `
+      <div class="activity-item">
+        <div class="activity-icon ${event.type === 'sale' ? 'bg-primary' : 'bg-success'}">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="${event.type === 'sale' ? 'M12 21V3M6 8l6-5 6 5' : 'M12 5v14M5 12h14'}" stroke="#fff" stroke-width="2"/></svg>
+        </div>
+        <div class="activity-content">
+          <h6>${this.escape(event.title)}</h6>
+          <p>${this.escape(event.detail)}</p>
+          <small>${this.formatWhen(event.when)}</small>
+        </div>
+      </div>
+    `).join('');
   }
 }
 customElements.define('trader-overview', TraderOverview); 

@@ -359,6 +359,30 @@ class TraderSettings extends HTMLElement {
         .settings-card:nth-child(2) {
           animation-delay: 0.2s;
         }
+
+        .button-group {
+          display: flex;
+          gap: 1rem;
+          margin: 2rem auto 0;
+          max-width: 1200px;
+          flex-wrap: wrap;
+        }
+
+        .button-group .btn {
+          width: auto;
+          min-width: 160px;
+        }
+
+        .btn-secondary {
+          background: var(--light-gray);
+          color: var(--dark-gray);
+          border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+          background: var(--gray);
+          color: var(--white);
+        }
       </style>
       
       <section>
@@ -380,37 +404,33 @@ class TraderSettings extends HTMLElement {
             </div>
             <div class="settings-body">
               <div class="form-group">
-                <label class="form-label">Display Name</label>
-                <input type="text" class="form-control" value="John Smith">
+                <label class="form-label" for="settingsFullName">Full Name</label>
+                <input id="settingsFullName" type="text" class="form-control" value="">
               </div>
               
               <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-control" value="john.smith@example.com">
+                <label class="form-label" for="settingsEmail">Email Address</label>
+                <input id="settingsEmail" type="email" class="form-control" value="" readonly>
               </div>
               
               <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" value="+1 (555) 123-4567">
+                <label class="form-label" for="settingsPhone">Phone Number</label>
+                <input id="settingsPhone" type="tel" class="form-control" value="">
               </div>
-              
+
               <div class="form-group">
-                <label class="form-label">Language</label>
-                <select class="form-select">
-                  <option>English</option>
-                  <option>Spanish</option>
-                  <option>French</option>
-                </select>
+                <label class="form-label" for="settingsRanchName">Company Name</label>
+                <input id="settingsRanchName" type="text" class="form-control" value="">
               </div>
-              
+
               <div class="form-group">
-                <label class="form-label">Time Zone</label>
-                <select class="form-select">
-                  <option>UTC-5 (Eastern Time)</option>
-                  <option>UTC-6 (Central Time)</option>
-                  <option>UTC-7 (Mountain Time)</option>
-                  <option>UTC-8 (Pacific Time)</option>
-                </select>
+                <label class="form-label" for="settingsLocation">Location</label>
+                <input id="settingsLocation" type="text" class="form-control" value="">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="settingsCattleCount">Livestock Count</label>
+                <input id="settingsCattleCount" type="number" min="0" class="form-control" value="0">
               </div>
             </div>
           </div>
@@ -607,8 +627,103 @@ class TraderSettings extends HTMLElement {
             </div>
           </div>
         </div>
+
+        <p id="settingsStatus" class="form-label" style="min-height:1.2rem; max-width:1200px; margin:1.5rem auto 0;"></p>
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" id="settingsSaveBtn">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+            <span>Save Changes</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="settingsResetBtn">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+            <span>Reset</span>
+          </button>
+        </div>
       </section>
     `;
+  }
+
+  connectedCallback() {
+    this.loadFromDatabase();
+    const saveBtn = this.shadowRoot.getElementById('settingsSaveBtn');
+    const resetBtn = this.shadowRoot.getElementById('settingsResetBtn');
+    if (saveBtn) saveBtn.addEventListener('click', () => this.saveProfile());
+    if (resetBtn) resetBtn.addEventListener('click', () => this.loadFromDatabase());
+    this._onProfileUpdated = (event) => {
+      if (event.detail) this.fillForm(event.detail, localStorage.getItem('email') || '');
+    };
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+  }
+
+  setStatus(message, color = '#6c757d') {
+    const el = this.shadowRoot.getElementById('settingsStatus');
+    if (el) {
+      el.textContent = message || '';
+      el.style.color = color;
+    }
+  }
+
+  fillForm(profile, email) {
+    const setVal = (id, value) => {
+      const el = this.shadowRoot.getElementById(id);
+      if (el) el.value = value == null ? '' : value;
+    };
+    setVal('settingsFullName', profile.full_name || profile.username || '');
+    setVal('settingsEmail', email || '');
+    setVal('settingsPhone', profile.phone || '');
+    setVal('settingsLocation', profile.location || '');
+    setVal('settingsRanchName', profile.ranch_name || '');
+    setVal('settingsCattleCount', profile.cattle_count || 0);
+  }
+
+  async loadFromDatabase() {
+    if (typeof window.loadUserProfile !== 'function') return;
+    const { data, user } = await window.loadUserProfile();
+    if (data) this.fillForm(data, user?.email || localStorage.getItem('email') || '');
+  }
+
+  async saveProfile() {
+    if (typeof window.saveUserProfile !== 'function') {
+      this.setStatus('Supabase is not connected.', '#c62828');
+      return;
+    }
+    const saveBtn = this.shadowRoot.getElementById('settingsSaveBtn');
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      const label = saveBtn.querySelector('span');
+      if (label) label.textContent = 'Saving...';
+    }
+    this.setStatus('Saving to the database...');
+
+    const { data, error } = await window.saveUserProfile({
+      full_name: this.shadowRoot.getElementById('settingsFullName').value.trim(),
+      username: localStorage.getItem('username') || this.shadowRoot.getElementById('settingsFullName').value.trim(),
+      phone: this.shadowRoot.getElementById('settingsPhone').value.trim(),
+      location: this.shadowRoot.getElementById('settingsLocation').value.trim(),
+      ranch_name: this.shadowRoot.getElementById('settingsRanchName').value.trim(),
+      cattle_count: this.shadowRoot.getElementById('settingsCattleCount').value,
+      role: 'trader'
+    });
+
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      const label = saveBtn.querySelector('span');
+      if (label) label.textContent = 'Save Changes';
+    }
+
+    if (error) {
+      this.setStatus(error.message || 'Could not save the profile.', '#c62828');
+      return;
+    }
+
+    this.fillForm(data, localStorage.getItem('email') || '');
+    this.setStatus('Profile saved to the database.', '#2e7d32');
   }
 }
 customElements.define('trader-settings', TraderSettings); 

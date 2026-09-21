@@ -1,17 +1,81 @@
 class TraderProfile extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({mode: 'open'}).innerHTML = `
+    this.profile = null;
+    this.email = localStorage.getItem('email') || '';
+    this.editing = false;
+    this.attachShadow({ mode: 'open' });
+  }
+
+  connectedCallback() {
+    this.render();
+    this.loadProfile();
+    this._onProfileUpdated = (event) => {
+      if (this.editing || !event.detail) return;
+      this.profile = event.detail;
+      this.render();
+    };
+    window.addEventListener('genostock-profile-updated', this._onProfileUpdated);
+  }
+
+  disconnectedCallback() {
+    if (this._onProfileUpdated) {
+      window.removeEventListener('genostock-profile-updated', this._onProfileUpdated);
+    }
+  }
+
+  emptyProfile() {
+    return {
+      username: localStorage.getItem('username') || localStorage.getItem('name') || '',
+      full_name: localStorage.getItem('name') || localStorage.getItem('username') || '',
+      ranch_name: localStorage.getItem('ranchName') || '',
+      location: localStorage.getItem('location') || '',
+      phone: localStorage.getItem('phone') || '',
+      cattle_count: Number(localStorage.getItem('cattleCount') || 0),
+      rfc: localStorage.getItem('rfc') || ''
+    };
+  }
+
+  async loadProfile() {
+    if (typeof window.loadUserProfile !== 'function') {
+      this.profile = this.emptyProfile();
+      this.render();
+      return;
+    }
+
+    const { data, user, error } = await window.loadUserProfile();
+    this.email = user?.email || localStorage.getItem('email') || '';
+    if (error && !data) {
+      this.profile = this.emptyProfile();
+      this.render(error.message);
+      return;
+    }
+    this.profile = data || this.emptyProfile();
+    this.render();
+  }
+
+  displayName() {
+    return this.profile?.full_name || this.profile?.username || 'Trader';
+  }
+
+  valueOrDash(value) {
+    if (value === 0) return '0';
+    return value ? String(value) : 'Not set';
+  }
+
+  render(statusMessage = '', statusType = 'info') {
+    const p = this.profile || this.emptyProfile();
+    const name = this.displayName();
+    const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2c5530&color=fff&size=128`;
+
+    this.shadowRoot.innerHTML = `
       <style>
         :host {
           --primary: #2c5530;
           --primary-light: #4a7c59;
           --accent: #ffa726;
-          --accent-light: #ffb74d;
           --success: #4caf50;
           --danger: #f44336;
-          --warning: #ff9800;
-          --info: #2196f3;
           --white: #ffffff;
           --light-gray: #f8f9fa;
           --gray: #6c757d;
@@ -23,579 +87,246 @@ class TraderProfile extends HTMLElement {
           --gradient-accent: linear-gradient(135deg, #ffa726 0%, #ffb74d 100%);
           --border-radius: 16px;
           --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .section-header {
-          margin-bottom: 2rem;
-          text-align: center;
-        }
-
-        .section-header h2 {
-          font-size: 2.5rem;
-          font-weight: 700;
-          background: var(--gradient-primary);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          margin-bottom: 0.5rem;
-        }
-
-        .section-header p {
-          color: var(--gray);
-          font-size: 1.1rem;
-          margin: 0;
-        }
-
-        .profile-container {
-          display: grid;
-          grid-template-columns: 1fr 2fr;
-          gap: 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-
-        .profile-sidebar {
-          background: var(--white);
-          border-radius: 16px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          padding: 1.5rem;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(44, 85, 48, 0.1);
-          max-width: 280px;
-          margin: 0 auto;
-        }
-
-        .profile-sidebar::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-        }
-
-        .profile-sidebar:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .profile-avatar {
-          width: 90px;
-          height: 90px;
-          margin: 0 auto 1rem;
-          border-radius: 50%;
-          position: relative;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-          border: 4px solid var(--white);
-          overflow: hidden;
-          background: var(--white);
-        }
-
-        .profile-avatar img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-
-        .avatar-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.6);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          border-radius: 50%;
-        }
-
-        .avatar-overlay svg {
-          width: 24px;
-          height: 24px;
-          color: var(--white);
-        }
-
-        .profile-avatar:hover .avatar-overlay {
-          opacity: 1;
-        }
-
-        .profile-avatar::after {
-          content: '';
-          position: absolute;
-          bottom: 5px;
-          right: 5px;
-          width: 24px;
-          height: 24px;
-          background: var(--accent);
-          border-radius: 50%;
-          border: 3px solid var(--white);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-name {
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: var(--primary);
-          margin-bottom: 0.25rem;
-        }
-
-        .profile-role {
-          color: var(--text-gray);
-          font-size: 0.9rem;
-          margin-bottom: 1rem;
-          padding: 0.4rem 0.8rem;
-          background: #f8f9fa;
-          border-radius: 12px;
-          display: inline-block;
-          font-weight: 500;
-        }
-
-        .profile-stats {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0.75rem;
-          margin: 1rem 0;
-        }
-
-        .stat-item {
-          text-align: center;
-          padding: 0.75rem;
-          background: #f8f9fa;
-          border-radius: 8px;
-          transition: all 0.2s ease;
-          border: 1px solid #e9ecef;
-        }
-
-        .stat-item:hover {
-          background: var(--white);
-          transform: translateY(-1px);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .stat-number {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: var(--primary);
-          margin-bottom: 0.2rem;
-        }
-
-        .stat-label {
-          font-size: 0.75rem;
-          color: var(--text-gray);
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .btn {
-          border-radius: 12px;
-          padding: 0.75rem 1.5rem;
-          font-weight: 600;
-          border: none;
-          cursor: pointer;
-          transition: var(--transition);
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          text-decoration: none;
-          font-size: 0.95rem;
-        }
-
-        .btn-primary {
-          background: var(--gradient-primary);
-          color: var(--white);
-        }
-
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(44, 85, 48, 0.3);
-        }
-
-        .btn-outline-primary {
-          background: transparent;
-          color: var(--primary);
-          border: 2px solid var(--primary);
-        }
-
-        .btn-outline-primary:hover {
-          background: var(--primary);
-          color: var(--white);
-          transform: translateY(-2px);
-        }
-
-        .btn-outline-danger {
-          background: transparent;
-          color: var(--danger);
-          border: 2px solid var(--danger);
-        }
-
-        .btn-outline-danger:hover {
-          background: var(--danger);
-          color: var(--white);
-          transform: translateY(-2px);
-        }
-
-        .change-photo-btn {
-          font-size: 0.85rem;
-          padding: 0.6rem 1rem;
-          margin-top: 0.5rem;
-          border-radius: 20px;
-          border-width: 1.5px;
-        }
-
-        .change-photo-btn:hover {
-          background: var(--primary);
-          color: var(--white);
-          transform: translateY(-1px);
-        }
-
-        /* Indicador de estado online mejorado */
-        .profile-avatar::before {
-          content: '';
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          width: 12px;
-          height: 12px;
-          background: #10b981;
-          border-radius: 50%;
-          border: 2px solid var(--white);
-          z-index: 2;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-form {
-          background: var(--white);
-          border-radius: 16px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          padding: 1.5rem;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(44, 85, 48, 0.1);
-          max-width: 600px;
-          margin: 0 auto;
-        }
-
-        .profile-form:hover {
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-          transform: translateY(-2px);
-        }
-
-        .form-header {
-          margin-bottom: 1.5rem;
-          padding-bottom: 1rem;
-          border-bottom: 1px solid var(--light-gray);
-          text-align: center;
-        }
-
-        .form-header h4 {
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: var(--primary);
-          margin: 0 0 0.5rem 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-        }
-
-        .form-header h4::before {
-          content: '';
-          width: 3px;
-          height: 20px;
-          background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-          border-radius: 2px;
-        }
-
-        .form-header p {
-          color: var(--text-gray);
-          font-size: 0.9rem;
-          margin: 0;
-        }
-
-        .form-group {
-          margin-bottom: 1rem;
-        }
-
-        .form-label {
-          font-weight: 600;
-          color: var(--dark-gray);
-          margin-bottom: 0.4rem;
           display: block;
-          font-size: 0.85rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
+          padding: 2rem;
         }
-
-        .form-control {
-          width: 100%;
-          padding: 0.75rem 1rem;
-          border: 1.5px solid #e1e5e9;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          transition: all 0.2s ease;
+        .profile-container { max-width: 1100px; margin: 0 auto; }
+        .section-header { margin-bottom: 2rem; text-align: center; }
+        .section-header h2 { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+        .section-header p { font-size: 1.1rem; color: var(--gray); margin: 0; }
+        .profile-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem; }
+        .card {
           background: var(--white);
-          color: var(--dark-gray);
+          border-radius: var(--border-radius);
+          box-shadow: var(--shadow);
+          border: 1px solid var(--border);
+          overflow: hidden;
         }
-
-        .form-control:focus {
-          outline: none;
-          border-color: var(--primary);
-          box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.08);
-          transform: translateY(-1px);
-        }
-
-        .form-control:hover {
-          border-color: var(--primary-light);
-        }
-
-        textarea.form-control {
-          resize: vertical;
-          min-height: 80px;
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0.75rem;
-        }
-
-        .form-actions {
-          margin-top: 1.5rem;
-          padding-top: 1rem;
-          border-top: 1px solid var(--light-gray);
-          display: flex;
-          gap: 0.75rem;
-          justify-content: center;
-        }
-
-        .btn-save {
-          background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-          color: var(--white);
-          border: none;
-          padding: 0.75rem 1.5rem;
-          border-radius: 8px;
-          font-weight: 600;
-          font-size: 0.9rem;
-          transition: all 0.2s ease;
-          min-width: 120px;
-        }
-
-        .btn-save:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(44, 85, 48, 0.3);
-        }
-
-        .btn-cancel {
-          background: transparent;
-          color: var(--text-gray);
-          border: 1.5px solid #e1e5e9;
-          padding: 0.75rem 1.5rem;
-          border-radius: 8px;
-          font-weight: 600;
-          font-size: 0.9rem;
-          transition: all 0.2s ease;
-          min-width: 120px;
-        }
-
-        .btn-cancel:hover {
-          background: #f8f9fa;
-          border-color: var(--primary-light);
-          transform: translateY(-1px);
-        }
-          gap: 1rem;
-          justify-content: flex-end;
-        }
-
-        .btn-save {
+        .profile-header {
           background: var(--gradient-primary);
           color: var(--white);
-          padding: 1rem 2rem;
-          font-size: 1rem;
+          padding: 2rem;
+          text-align: center;
         }
-
-        .btn-save:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(44, 85, 48, 0.3);
+        .profile-avatar {
+          width: 120px; height: 120px; border-radius: 50%;
+          margin: 0 auto 1rem; border: 4px solid var(--white);
+          object-fit: cover; display: block;
         }
-
-        .btn-cancel {
-          background: var(--light-gray);
-          color: var(--gray);
-          border: 2px solid var(--border);
-        }
-
-        .btn-cancel:hover {
-          background: var(--gray);
+        .profile-name { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .profile-role { font-size: 1rem; opacity: 0.9; }
+        .card-body { padding: 1.5rem 2rem 2rem; }
+        .info-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: var(--dark-gray); font-weight: 500; }
+        .info-value { color: var(--primary); font-weight: 600; text-align: right; }
+        .ranch-header {
+          background: var(--gradient-accent);
           color: var(--white);
+          padding: 1.5rem;
+          display: flex; align-items: center; gap: 0.75rem;
         }
-
+        .ranch-header h3 { margin: 0; font-size: 1.3rem; }
+        .btn {
+          border: none; border-radius: 8px; padding: 0.8rem 1.4rem;
+          font-weight: 600; cursor: pointer; transition: var(--transition);
+          display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary { background: var(--gradient-primary); color: var(--white); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: var(--light-gray); color: var(--dark-gray); }
+        .btn-row { display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; color: var(--dark-gray); margin-bottom: 0.4rem; font-size: 0.9rem; }
+        .form-group input {
+          width: 100%; box-sizing: border-box; padding: 0.7rem 0.9rem;
+          border: 1px solid var(--border); border-radius: 8px; font-size: 1rem;
+        }
+        .form-group input:focus { outline: none; border-color: var(--primary); }
+        .form-group input[readonly] { background: var(--light-gray); color: var(--gray); }
+        .status {
+          margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.95rem;
+        }
+        .status.success { background: #e8f5e9; color: #2e7d32; }
+        .status.error { background: #fdecea; color: #c62828; }
+        .status.info { background: #fff8e1; color: #8d6e00; }
+        .hint { color: var(--gray); font-size: 0.85rem; margin-top: 0.35rem; }
         @media (max-width: 768px) {
-          .profile-container {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-
-          .form-row {
-            grid-template-columns: 1fr;
-          }
-
-          .form-actions {
-            flex-direction: column;
-          }
-
-          .section-header h2 {
-            font-size: 2rem;
-          }
-        }
-
-        /* Animaciones */
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .profile-sidebar,
-        .profile-form {
-          animation: fadeInUp 0.6s ease-out;
-        }
-
-        .profile-form {
-          animation-delay: 0.2s;
+          :host { padding: 1rem; }
+          .profile-grid { grid-template-columns: 1fr; }
+          .section-header h2 { font-size: 2rem; }
         }
       </style>
-      
-      <section>
+
+      <div class="profile-container">
         <div class="section-header">
-          <h2>My Profile</h2>
-          <p>Manage your personal information and settings</p>
+          <h2>Trader Profile</h2>
+          <p>Manage your personal information and company details</p>
         </div>
-        
-        <div class="profile-container">
-          <!-- Sidebar with profile information -->
-          <div class="profile-sidebar">
-            <div class="profile-avatar">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" alt="Profile">
-              <div class="avatar-overlay">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-              </div>
-            </div>
-            <h3 class="profile-name">John Smith</h3>
-            <p class="profile-role">Livestock Trader</p>
-            
-            <div class="profile-stats">
-              <div class="stat-item">
-                <div class="stat-number">156</div>
-                <div class="stat-label">Total Livestock</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">$45,230</div>
-                <div class="stat-label">Total Sales</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">Success Rate</div>
-              </div>
-            </div>
-            
-            <button class="btn btn-outline-primary change-photo-btn">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-              </svg>
-              Change Photo
-            </button>
-            
-            <button class="btn btn-outline-danger" id="logoutBtnProfile" style="margin-top: 1rem; width: 100%;">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2"/>
-              </svg>
-              Sign Out
-            </button>
+        ${statusMessage ? `<div class="status ${statusType}">${statusMessage}</div>` : ''}
+        ${this.editing ? this.renderForm(p) : this.renderView(p, name, avatar)}
+      </div>
+    `;
+
+    this.bindEvents();
+  }
+
+  renderView(p, name, avatar) {
+    return `
+      <div class="profile-grid">
+        <div class="card">
+          <div class="profile-header">
+            <img class="profile-avatar" src="${avatar}" alt="${this.escape(name)}">
+            <div class="profile-name">${this.escape(name)}</div>
+            <div class="profile-role">Trader</div>
           </div>
-          
-          <!-- Formulario principal -->
-          <div class="profile-form">
-            <div class="form-header">
-              <h4>Personal Information</h4>
-              <p>Update your profile information and preferences</p>
+          <div class="card-body">
+            <div class="info-row"><span class="info-label">Username</span><span class="info-value">${this.escape(this.valueOrDash(p.username))}</span></div>
+            <div class="info-row"><span class="info-label">Email</span><span class="info-value">${this.escape(this.valueOrDash(this.email))}</span></div>
+            <div class="info-row"><span class="info-label">Phone</span><span class="info-value">${this.escape(this.valueOrDash(p.phone))}</span></div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="editBtn">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                <span>Edit Profile</span>
+              </button>
             </div>
-            
-            <form>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">First Name</label>
-                  <input type="text" class="form-control" value="John">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Last Name</label>
-                  <input type="text" class="form-control" value="Smith">
-                </div>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Email Address</label>
-                  <input type="email" class="form-control" value="john.smith@example.com">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Phone Number</label>
-                  <input type="tel" class="form-control" value="+1 (555) 123-4567">
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label">Company Name</label>
-                <input type="text" class="form-control" value="Smith Livestock Co.">
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label">Address</label>
-                <textarea class="form-control" rows="3">123 Cattle Drive, Farmville, TX 12345</textarea>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">City</label>
-                  <input type="text" class="form-control" value="Farmville">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">State</label>
-                  <input type="text" class="form-control" value="Texas">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">ZIP Code</label>
-                  <input type="text" class="form-control" value="12345">
-                </div>
-              </div>
-              
-              <div class="form-actions">
-                <button type="submit" class="btn btn-save">Save Changes</button>
-                <button type="button" class="btn btn-cancel">Cancel</button>
-              </div>
-            </form>
           </div>
         </div>
-      </section>
+        <div class="card">
+          <div class="ranch-header">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+            <h3>Company Information</h3>
+          </div>
+          <div class="card-body">
+            <div class="info-row"><span class="info-label">Company name</span><span class="info-value">${this.escape(this.valueOrDash(p.ranch_name))}</span></div>
+            <div class="info-row"><span class="info-label">Location</span><span class="info-value">${this.escape(this.valueOrDash(p.location))}</span></div>
+            <div class="info-row"><span class="info-label">Livestock count</span><span class="info-value">${this.escape(this.valueOrDash(p.cattle_count))}</span></div>
+          </div>
+        </div>
+      </div>
     `;
   }
+
+  renderForm(p) {
+    return `
+      <form class="card" id="profileForm">
+        <div class="ranch-header">
+          <h3>Edit Profile</h3>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="fullName">Full name</label>
+            <input id="fullName" type="text" value="${this.escape(p.full_name || '')}" required>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" type="text" value="${this.escape(p.username || '')}" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" value="${this.escape(this.email)}" readonly>
+            <div class="hint">Email is managed by your login account and cannot be changed here.</div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input id="phone" type="tel" value="${this.escape(p.phone || '')}" placeholder="5071234567">
+          </div>
+          <div class="form-group">
+            <label for="ranchName">Company name</label>
+            <input id="ranchName" type="text" value="${this.escape(p.ranch_name || '')}">
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input id="location" type="text" value="${this.escape(p.location || '')}" placeholder="Chiriquí, Panama">
+          </div>
+          <div class="form-group">
+            <label for="cattleCount">Livestock count</label>
+            <input id="cattleCount" type="number" min="0" value="${Number(p.cattle_count || 0)}">
+          </div>
+          <div class="btn-row">
+            <button type="submit" class="btn btn-primary" id="saveBtn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+              <span>Save to Database</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="cancelBtn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              <span>Cancel</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    `;
+  }
+
+  escape(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  bindEvents() {
+    const editBtn = this.shadowRoot.getElementById('editBtn');
+    if (editBtn) {
+      editBtn.addEventListener('click', () => {
+        this.editing = true;
+        this.render();
+      });
+    }
+
+    const cancelBtn = this.shadowRoot.getElementById('cancelBtn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        this.editing = false;
+        this.render();
+      });
+    }
+
+    const form = this.shadowRoot.getElementById('profileForm');
+    if (form) {
+      form.addEventListener('submit', (e) => this.handleSave(e));
+    }
+  }
+
+  async handleSave(event) {
+    event.preventDefault();
+    const saveBtn = this.shadowRoot.getElementById('saveBtn');
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      const label = saveBtn.querySelector('span');
+      if (label) label.textContent = 'Saving...';
+    }
+
+    if (typeof window.saveUserProfile !== 'function') {
+      this.render('Supabase is not connected. Add your project credentials first.', 'error');
+      return;
+    }
+
+    const updates = {
+      full_name: this.shadowRoot.getElementById('fullName').value.trim(),
+      username: this.shadowRoot.getElementById('username').value.trim(),
+      phone: this.shadowRoot.getElementById('phone').value.trim(),
+      ranch_name: this.shadowRoot.getElementById('ranchName').value.trim(),
+      location: this.shadowRoot.getElementById('location').value.trim(),
+      cattle_count: this.shadowRoot.getElementById('cattleCount').value,
+      role: 'trader'
+    };
+
+    const { data, error } = await window.saveUserProfile(updates);
+    if (error) {
+      this.editing = true;
+      this.render(error.message || 'Could not save the profile to the database.', 'error');
+      const retryBtn = this.shadowRoot.getElementById('saveBtn');
+      if (retryBtn) retryBtn.disabled = false;
+      return;
+    }
+
+    this.profile = data;
+    this.editing = false;
+    this.render('Profile saved to the database.', 'success');
+  }
 }
-customElements.define('trader-profile', TraderProfile); 
+
+customElements.define('trader-profile', TraderProfile);

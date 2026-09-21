@@ -266,6 +266,9 @@ class RancherSettings extends HTMLElement {
           cursor: pointer;
           transition: var(--transition);
           font-size: 1rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
         }
         
         .btn-primary {
@@ -463,8 +466,14 @@ class RancherSettings extends HTMLElement {
               
               <p id="settingsStatus" class="form-label" style="min-height:1.2rem;"></p>
               <div class="button-group">
-                <button type="button" class="btn btn-primary" id="settingsSaveBtn">Save Changes</button>
-                <button type="button" class="btn btn-secondary" id="settingsResetBtn">Reset</button>
+                <button type="button" class="btn btn-primary" id="settingsSaveBtn">
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                  <span>Save Changes</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="settingsResetBtn">
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+                  <span>Reset</span>
+                </button>
               </div>
             </div>
           </div>
@@ -526,7 +535,8 @@ class RancherSettings extends HTMLElement {
     const saveBtn = this.shadowRoot.getElementById('settingsSaveBtn');
     if (saveBtn) {
       saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving...';
+      const label = saveBtn.querySelector('span');
+      if (label) label.textContent = 'Saving...';
     }
     this.setStatus('Saving to the database...');
 
@@ -542,7 +552,8 @@ class RancherSettings extends HTMLElement {
 
     if (saveBtn) {
       saveBtn.disabled = false;
-      saveBtn.textContent = 'Save Changes';
+      const label = saveBtn.querySelector('span');
+      if (label) label.textContent = 'Save Changes';
     }
 
     if (error) {

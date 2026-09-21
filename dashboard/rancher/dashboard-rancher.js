@@ -6,7 +6,7 @@ class DashboardRancher extends HTMLElement {
       <style>
         :host {
           --sidebar-width: 280px;
-          --sidebar-collapsed-width: 70px;
+          --sidebar-collapsed-width: 72px;
           --header-height: 70px;
           --footer-height: 60px;
           --primary: #2c5530;
@@ -63,14 +63,17 @@ class DashboardRancher extends HTMLElement {
         }
         
         .sidebar.collapsed .sidebar-header {
-          padding: 1rem 0.5rem 0.5rem 0.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 1rem 0.4rem 0.75rem;
         }
         
         .sidebar-toggle {
           background: rgba(255,255,255,0.15);
           border: 1px solid rgba(255,255,255,0.2);
           color: var(--sidebar-text);
-          padding: 0.8rem;
+          padding: 0;
           cursor: pointer;
           outline: none;
           border-radius: 8px;
@@ -81,6 +84,7 @@ class DashboardRancher extends HTMLElement {
           align-items: center;
           justify-content: center;
           margin-bottom: 1rem;
+          flex-shrink: 0;
         }
         
         .sidebar-toggle:hover {
@@ -90,9 +94,24 @@ class DashboardRancher extends HTMLElement {
         }
         
         .sidebar.collapsed .sidebar-toggle {
-          width: 32px;
-          height: 32px;
-          margin-bottom: 0.5rem;
+          width: 40px;
+          height: 40px;
+          margin: 0 auto 0.75rem;
+        }
+        
+        .sidebar.collapsed .sidebar-header-content {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+        
+        .sidebar.collapsed .sidebar-user-info {
+          display: none !important;
+        }
+        
+        .sidebar.collapsed .sidebar-avatar img {
+          width: 36px;
+          height: 36px;
         }
         
         /* Sidebar navigation */
@@ -101,6 +120,11 @@ class DashboardRancher extends HTMLElement {
           display: flex;
           flex-direction: column;
           padding: 1rem 0;
+          overflow-x: hidden;
+        }
+        
+        .sidebar.collapsed .sidebar-nav {
+          padding: 0.75rem 0 0;
         }
         
         .sidebar-link {
@@ -112,7 +136,15 @@ class DashboardRancher extends HTMLElement {
           transition: all 0.2s ease;
           position: relative;
           gap: 1rem;
+          overflow: hidden;
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .sidebar.collapsed .sidebar-link {
+          justify-content: center;
+          gap: 0;
+          padding: 0.9rem 0;
+          width: 100%;
         }
         
         .sidebar-link:hover {
@@ -148,12 +180,18 @@ class DashboardRancher extends HTMLElement {
           font-weight: 500;
           font-size: 0.95rem;
           white-space: nowrap;
-          transition: opacity var(--transition);
+          overflow: hidden;
+          transition: opacity var(--transition), max-width var(--transition);
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .sidebar.collapsed .sidebar-label {
           opacity: 0;
+          max-width: 0;
+          width: 0;
+          margin: 0;
+          padding: 0;
+          pointer-events: none;
         }
         
         /* Contenido principal */
@@ -229,38 +267,22 @@ class DashboardRancher extends HTMLElement {
         
         /* Responsive */
         @media (max-width: 1200px) {
-          .sidebar {
+          .sidebar:not(.collapsed) {
             width: 240px;
           }
           
-          .main-content {
+          .sidebar:not(.collapsed) ~ .main-content {
             margin-left: 240px;
-          }
-          
-          .sidebar.collapsed {
-            width: 60px;
-          }
-          
-          .sidebar.collapsed ~ .main-content {
-            margin-left: 60px;
           }
         }
         
         @media (max-width: 992px) {
-          .sidebar {
+          .sidebar:not(.collapsed) {
             width: 220px;
           }
           
-          .main-content {
+          .sidebar:not(.collapsed) ~ .main-content {
             margin-left: 220px;
-          }
-          
-          .sidebar.collapsed {
-            width: 50px;
-          }
-          
-          .sidebar.collapsed ~ .main-content {
-            margin-left: 50px;
           }
           
           .content-area {
@@ -327,7 +349,7 @@ class DashboardRancher extends HTMLElement {
           </div>
           
           <div class="sidebar-nav">
-            <a class="sidebar-link active" data-section="overview">
+            <a class="sidebar-link active" data-section="overview" title="Overview">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
@@ -335,7 +357,7 @@ class DashboardRancher extends HTMLElement {
               </span>
               <span class="sidebar-label">Overview</span>
             </a>
-            <a class="sidebar-link" data-section="profile">
+            <a class="sidebar-link" data-section="profile" title="Profile">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
@@ -343,7 +365,7 @@ class DashboardRancher extends HTMLElement {
               </span>
               <span class="sidebar-label">Profile</span>
             </a>
-            <a class="sidebar-link" data-section="livestock">
+            <a class="sidebar-link" data-section="livestock" title="Livestock">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
@@ -351,7 +373,7 @@ class DashboardRancher extends HTMLElement {
               </span>
               <span class="sidebar-label">Livestock</span>
             </a>
-            <a class="sidebar-link" data-section="health">
+            <a class="sidebar-link" data-section="health" title="Health">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z" fill="currentColor"/>
@@ -359,7 +381,7 @@ class DashboardRancher extends HTMLElement {
               </span>
               <span class="sidebar-label">Health</span>
             </a>
-            <a class="sidebar-link" data-section="settings">
+            <a class="sidebar-link" data-section="settings" title="Settings">
               <span class="sidebar-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" fill="currentColor"/>
@@ -478,8 +500,12 @@ class DashboardRancher extends HTMLElement {
             display: none;
           }
           .sidebar.collapsed .sidebar-avatar img {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
+          }
+          .sidebar.collapsed .sidebar-header-simple {
+            padding: 0;
+            gap: 0;
           }
         </style>
         <div class="sidebar-avatar">

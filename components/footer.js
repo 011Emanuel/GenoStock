@@ -25,7 +25,7 @@ class GenoFooter extends HTMLElement {
         
         .footer-container {
           width: 100%;
-          padding: 0 4rem;
+          padding: 0 clamp(1.25rem, 5vw, 4rem);
           margin: 0 auto;
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -271,17 +271,18 @@ class GenoFooter extends HTMLElement {
           .footer-container {
             grid-template-columns: 1fr;
             gap: 2rem;
+            padding: 0 1.25rem;
           }
           
           .footer-main {
-            padding: 3rem 0 0 0;
+            padding: 2.5rem 0 0 0;
           }
           
           .footer-bottom {
             flex-direction: column;
             gap: 1rem;
             text-align: center;
-            padding: 1rem 2rem;
+            padding: 1rem 1.25rem;
           }
           
           .footer-bottom-right {
@@ -299,7 +300,7 @@ class GenoFooter extends HTMLElement {
             width: 100%;
           }
           .footer-bottom {
-            padding: 1rem 0.5rem;
+            padding: 1rem;
           }
         }
       </style>

@@ -143,8 +143,15 @@ class TraderSales extends HTMLElement {
 
         .stat-change {
           font-size: 0.85rem;
-          color: var(--success);
+          color: var(--gray);
           font-weight: 600;
+        }
+
+        .empty-note {
+          color: var(--gray);
+          text-align: center;
+          padding: 2rem 1rem;
+          margin: 0;
         }
 
         .sales-container {
@@ -429,9 +436,9 @@ class TraderSales extends HTMLElement {
                 </svg>
               </div>
               <div class="stat-content">
-                <div class="stat-number">$45,230</div>
+                <div class="stat-number" id="statSalesTotal">$0</div>
                 <div class="stat-label">Total Sales</div>
-                <div class="stat-change positive">+12.5%</div>
+                <div class="stat-change" id="statSalesHint">No sales yet</div>
               </div>
             </div>
           </div>
@@ -444,9 +451,9 @@ class TraderSales extends HTMLElement {
                 </svg>
               </div>
               <div class="stat-content">
-                <div class="stat-number">23</div>
+                <div class="stat-number" id="statSalesMonth">0</div>
                 <div class="stat-label">This Month</div>
-                <div class="stat-change positive">+8.2%</div>
+                <div class="stat-change" id="statMonthHint">No sales this month</div>
               </div>
             </div>
           </div>
@@ -459,9 +466,9 @@ class TraderSales extends HTMLElement {
                 </svg>
               </div>
               <div class="stat-content">
-                <div class="stat-number">156</div>
+                <div class="stat-number" id="statSalesLivestock">0</div>
                 <div class="stat-label">Total Livestock</div>
-                <div class="stat-change positive">+5.1%</div>
+                <div class="stat-change" id="statLivestockHint">No livestock yet</div>
               </div>
             </div>
           </div>
@@ -474,9 +481,9 @@ class TraderSales extends HTMLElement {
                 </svg>
               </div>
               <div class="stat-content">
-                <div class="stat-number">98%</div>
+                <div class="stat-number" id="statSalesRate">0%</div>
                 <div class="stat-label">Success Rate</div>
-                <div class="stat-change positive">+2.3%</div>
+                <div class="stat-change" id="statRateHint">No completed sales yet</div>
               </div>
             </div>
           </div>
@@ -518,117 +525,9 @@ class TraderSales extends HTMLElement {
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="salesBody">
                 <tr>
-                  <td>
-                    <div class="livestock-name">
-                      <strong>Brahman #001</strong>
-                      <span class="livestock-id">#001</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="breed">Pure Breed</span>
-                  </td>
-                  <td>
-                    <span class="price">$2,400</span>
-                  </td>
-                  <td>
-                    <span class="quantity">3 heads</span>
-                  </td>
-                  <td>
-                    <span class="date">Dec 15, 2024</span>
-                  </td>
-                  <td>
-                    <span class="badge badge-success">Completed</span>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn-icon" title="View Details">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </button>
-                      <button class="btn-icon" title="Edit Sale">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="livestock-name">
-                      <strong>Gyr #002</strong>
-                      <span class="livestock-id">#002</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="breed">Cross Breed</span>
-                  </td>
-                  <td>
-                    <span class="price">$1,800</span>
-                  </td>
-                  <td>
-                    <span class="quantity">2 heads</span>
-                  </td>
-                  <td>
-                    <span class="date">Dec 12, 2024</span>
-                  </td>
-                  <td>
-                    <span class="badge badge-success">Completed</span>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn-icon" title="View Details">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </button>
-                      <button class="btn-icon" title="Edit Sale">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="livestock-name">
-                      <strong>Nelore #003</strong>
-                      <span class="livestock-id">#003</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="breed">Pure Breed</span>
-                  </td>
-                  <td>
-                    <span class="price">$3,200</span>
-                  </td>
-                  <td>
-                    <span class="quantity">4 heads</span>
-                  </td>
-                  <td>
-                    <span class="date">Dec 10, 2024</span>
-                  </td>
-                  <td>
-                    <span class="badge badge-warning">Pending</span>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button class="btn-icon" title="View Details">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </button>
-                      <button class="btn-icon" title="Edit Sale">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
+                  <td colspan="7"><p class="empty-note">No sales yet. Completed auctions and sold livestock will appear here.</p></td>
                 </tr>
               </tbody>
             </table>
@@ -637,5 +536,81 @@ class TraderSales extends HTMLElement {
       </section>
     `;
   }
+
+  connectedCallback() {
+    this.loadSales();
+  }
+
+  formatMoney(value) {
+    return '$' + Number(value || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+
+  formatDate(iso) {
+    if (!iso) return 'Not set';
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return 'Not set';
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  isThisMonth(iso) {
+    if (!iso) return false;
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return false;
+    const now = new Date();
+    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+  }
+
+  escape(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  async loadSales() {
+    const sales = typeof window.loadCurrentUserSales === 'function' ? await window.loadCurrentUserSales() : [];
+    const cattle = typeof window.loadCurrentUserCattle === 'function' ? await window.loadCurrentUserCattle() : [];
+    const total = sales.reduce((sum, sale) => sum + Number(sale.price || 0), 0);
+    const monthSales = sales.filter((sale) => this.isThisMonth(sale.date));
+    const completed = sales.filter((sale) => String(sale.status || '').toLowerCase() === 'completed').length;
+    const rate = sales.length ? Math.round((completed / sales.length) * 100) : 0;
+
+    const setText = (id, value) => {
+      const el = this.shadowRoot.getElementById(id);
+      if (el) el.textContent = value;
+    };
+    setText('statSalesTotal', this.formatMoney(total));
+    setText('statSalesMonth', String(monthSales.length));
+    setText('statSalesLivestock', String(cattle.length));
+    setText('statSalesRate', rate + '%');
+    setText('statSalesHint', sales.length ? `${sales.length} completed sale(s)` : 'No sales yet');
+    setText('statMonthHint', monthSales.length ? `${monthSales.length} this month` : 'No sales this month');
+    setText('statLivestockHint', cattle.length ? `${cattle.length} registered` : 'No livestock yet');
+    setText('statRateHint', sales.length ? 'Based on completed sales' : 'No completed sales yet');
+
+    const body = this.shadowRoot.getElementById('salesBody');
+    if (!body) return;
+    if (!sales.length) {
+      body.innerHTML = '<tr><td colspan="7"><p class="empty-note">No sales yet. Completed auctions and sold livestock will appear here.</p></td></tr>';
+      return;
+    }
+    body.innerHTML = sales.map((sale) => `
+      <tr>
+        <td>
+          <div class="livestock-name">
+            <strong>${this.escape(sale.title)}</strong>
+          </div>
+        </td>
+        <td><span class="breed">${this.escape(sale.breed || 'Unspecified')}</span></td>
+        <td><span class="price">${this.formatMoney(sale.price)}</span></td>
+        <td><span class="quantity">${Number(sale.quantity || 1)} head${Number(sale.quantity || 1) === 1 ? '' : 's'}</span></td>
+        <td><span class="date">${this.formatDate(sale.date)}</span></td>
+        <td><span class="badge badge-success">${this.escape(sale.status || 'Completed')}</span></td>
+        <td></td>
+      </tr>
+    `).join('');
+  }
 }
-customElements.define('trader-sales', TraderSales); 
+customElements.define('trader-sales', TraderSales);
+ 

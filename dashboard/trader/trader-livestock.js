@@ -388,6 +388,14 @@ class TraderLivestock extends HTMLElement {
           font-size: 0.9rem;
         }
 
+        .empty-note {
+          grid-column: 1 / -1;
+          color: var(--gray);
+          text-align: center;
+          padding: 1rem;
+          margin: 0;
+        }
+
         @media (max-width: 768px) {
           .livestock-grid {
             grid-template-columns: 1fr;
@@ -435,197 +443,129 @@ class TraderLivestock extends HTMLElement {
         <!-- Livestock statistics -->
         <div class="livestock-stats-overview">
           <div class="stat-item">
-            <div class="stat-number">156</div>
+            <div class="stat-number" id="statTotal">0</div>
             <div class="stat-label">Total Heads</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">142</div>
+            <div class="stat-number" id="statHealthy">0</div>
             <div class="stat-label">Healthy</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">14</div>
+            <div class="stat-number" id="statReview">0</div>
             <div class="stat-label">Need Review</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">4</div>
+            <div class="stat-number" id="statBreeds">0</div>
             <div class="stat-label">Different Breeds</div>
           </div>
         </div>
 
-        <!-- Livestock Grid -->
-        <div class="livestock-grid">
-          <!-- Brahman Card -->
-          <div class="livestock-card">
-            <div class="livestock-image-container">
-              <img src="https://static.vecteezy.com/system/resources/previews/024/940/349/non_2x/beef-cattle-breeder-american-brahman-red-on-the-ground-in-the-fram-big-male-brahman-cow-photo.jpg" class="livestock-image" alt="Brahman">
-              <div class="livestock-overlay">
-                <div class="overlay-content">
-                  <div class="overlay-title">Brahman #001</div>
-                  <div class="overlay-subtitle">Pure Breed</div>
-                </div>
-              </div>
-            </div>
-            <div class="livestock-info">
-              <div class="livestock-header">
-                <div>
-                  <h5 class="livestock-title">Brahman #001</h5>
-                  <p class="livestock-breed">Pure Breed</p>
-                </div>
-                <span class="livestock-id">#001</span>
-              </div>
-              
-              <div class="livestock-stats">
-                <span class="badge badge-success">Healthy</span>
-                <span class="badge badge-info">250kg</span>
-              </div>
-              
-              <div class="livestock-details">
-                <div class="detail-item">
-                  <div class="detail-value">3 years</div>
-                  <div class="detail-label">Age</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-value">Male</div>
-                  <div class="detail-label">Gender</div>
-                </div>
-              </div>
-              
-              <div class="livestock-actions">
-                <button class="btn btn-primary">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  View
-                </button>
-                <button class="btn btn-outline-warning">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Gyr Card -->
-          <div class="livestock-card">
-            <div class="livestock-image-container">
-              <img src="https://revistageneticabovina.com/wp-content/uploads/2020/08/gyr.png" class="livestock-image" alt="Gyr">
-              <div class="livestock-overlay">
-                <div class="overlay-content">
-                  <div class="overlay-title">Gyr #002</div>
-                  <div class="overlay-subtitle">Cross Breed</div>
-                </div>
-              </div>
-            </div>
-            <div class="livestock-info">
-              <div class="livestock-header">
-                <div>
-                  <h5 class="livestock-title">Gyr #002</h5>
-                  <p class="livestock-breed">Cross Breed</p>
-                </div>
-                <span class="livestock-id">#002</span>
-              </div>
-              
-              <div class="livestock-stats">
-                <span class="badge badge-success">Healthy</span>
-                <span class="badge badge-info">220kg</span>
-              </div>
-              
-              <div class="livestock-details">
-                <div class="detail-item">
-                  <div class="detail-value">2 years</div>
-                  <div class="detail-label">Age</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-value">Female</div>
-                  <div class="detail-label">Gender</div>
-                </div>
-              </div>
-              
-              <div class="livestock-actions">
-                <button class="btn btn-primary">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  View
-                </button>
-                <button class="btn btn-outline-warning">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Nelore Card -->
-          <div class="livestock-card">
-            <div class="livestock-image-container">
-              <img src="https://agrosinergia.com.bo/wp-content/uploads/2025/05/VACA-NELORE.jpg" class="livestock-image" alt="Nelore">
-              <div class="livestock-overlay">
-                <div class="overlay-content">
-                  <div class="overlay-title">Nelore #003</div>
-                  <div class="overlay-subtitle">Pure Breed</div>
-                </div>
-              </div>
-            </div>
-            <div class="livestock-info">
-              <div class="livestock-header">
-                <div>
-                  <h5 class="livestock-title">Nelore #003</h5>
-                  <p class="livestock-breed">Pure Breed</p>
-                </div>
-                <span class="livestock-id">#003</span>
-              </div>
-              
-              <div class="livestock-stats">
-                <span class="badge badge-warning">Check Required</span>
-                <span class="badge badge-info">280kg</span>
-              </div>
-              
-              <div class="livestock-details">
-                <div class="detail-item">
-                  <div class="detail-value">4 years</div>
-                  <div class="detail-label">Age</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-value">Female</div>
-                  <div class="detail-label">Gender</div>
-                </div>
-              </div>
-              
-              <div class="livestock-actions">
-                <button class="btn btn-primary">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  View
-                </button>
-                <button class="btn btn-outline-warning">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card to add new livestock -->
-          <div class="add-livestock-card">
-            <div class="add-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 5v14M5 12h14"/>
-              </svg>
-            </div>
-            <div class="add-title">Add New Livestock</div>
-            <div class="add-description">Register a new head of cattle in your inventory</div>
-          </div>
-        </div>
+        <div class="livestock-grid" id="livestockGrid"></div>
       </section>
     `;
+  }
+
+  connectedCallback() {
+    this.loadLivestock();
+  }
+
+  pagePrefix() {
+    const path = (window.location.pathname || '').replace(/\\/g, '/');
+    return /\/dashboard\/(rancher|trader)\//.test(path) ? '../../' : '';
+  }
+
+  escape(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  async loadLivestock() {
+    const items = typeof window.loadCurrentUserCattle === 'function' ? await window.loadCurrentUserCattle() : [];
+    const healthy = items.filter((item) => String(item.status || 'active').toLowerCase() === 'active').length;
+    const breeds = new Set(items.map((item) => (item.breed || '').trim()).filter(Boolean));
+    const setText = (id, value) => {
+      const el = this.shadowRoot.getElementById(id);
+      if (el) el.textContent = String(value);
+    };
+    setText('statTotal', items.length);
+    setText('statHealthy', healthy);
+    setText('statReview', Math.max(0, items.length - healthy));
+    setText('statBreeds', breeds.size);
+    this.renderGrid(items);
+  }
+
+  renderGrid(items) {
+    const grid = this.shadowRoot.getElementById('livestockGrid');
+    if (!grid) return;
+    const addCard = `
+      <div class="add-livestock-card" id="addLivestockCard">
+        <div class="add-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </div>
+        <div class="add-title">Add New Livestock</div>
+        <div class="add-description">Register a new head of cattle in your inventory</div>
+      </div>
+    `;
+    if (!items.length) {
+      grid.innerHTML = `<p class="empty-note">No livestock yet. Add your first record to start tracking inventory.</p>${addCard}`;
+    } else {
+      grid.innerHTML = items.map((item) => {
+        const title = this.escape(item.title || item.tagId || 'Livestock');
+        const breed = this.escape(item.breed || 'Unspecified');
+        const status = String(item.status || 'active').toLowerCase();
+        const healthy = status === 'active';
+        const image = this.escape(item.imageUrl || item.image_url || 'logo_small.png');
+        const age = item.age ? `${item.age} years` : 'Not set';
+        const weight = item.weight ? `${item.weight}kg` : 'Not set';
+        const category = this.escape(item.category || 'Cattle');
+        return `
+          <div class="livestock-card">
+            <div class="livestock-image-container">
+              <img src="${image}" class="livestock-image" alt="${title}">
+              <div class="livestock-overlay">
+                <div class="overlay-content">
+                  <div class="overlay-title">${title}</div>
+                  <div class="overlay-subtitle">${breed}</div>
+                </div>
+              </div>
+            </div>
+            <div class="livestock-info">
+              <div class="livestock-header">
+                <div>
+                  <h5 class="livestock-title">${title}</h5>
+                  <p class="livestock-breed">${breed}</p>
+                </div>
+              </div>
+              <div class="livestock-stats">
+                <span class="badge ${healthy ? 'badge-success' : 'badge-warning'}">${healthy ? 'Healthy' : 'Needs Review'}</span>
+                <span class="badge badge-info">${this.escape(weight)}</span>
+              </div>
+              <div class="livestock-details">
+                <div class="detail-item">
+                  <div class="detail-value">${this.escape(age)}</div>
+                  <div class="detail-label">Age</div>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-value">${category}</div>
+                  <div class="detail-label">Category</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('') + addCard;
+    }
+    const add = this.shadowRoot.getElementById('addLivestockCard');
+    if (add) {
+      add.addEventListener('click', () => {
+        window.location.href = this.pagePrefix() + 'add-cattle.html';
+      });
+    }
   }
 }
 customElements.define('trader-livestock', TraderLivestock); 

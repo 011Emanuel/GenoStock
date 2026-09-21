@@ -244,6 +244,110 @@ async function saveUserProfile(updates) {
     return { data, error: null };
 }
 
+function mapCattleRow(row) {
+    return {
+        id: row.id,
+        tagId: row.title,
+        title: row.title,
+        breed: row.breed || '',
+        category: row.category || '',
+        weight: row.weight,
+        age: row.age,
+        price: Number(row.price || 0),
+        imageUrl: row.image_url,
+        description: row.description || '',
+        status: row.status || 'active',
+        created_at: row.created_at,
+        updated_at: row.updated_at
+    };
+}
+
+async function loadCurrentUserCattle() {
+    const items = [];
+    const user = await getCurrentUser();
+    const userId = user?.id || localStorage.getItem('userId') || '';
+
+    try {
+        const local = JSON.parse(localStorage.getItem('genostock_cattle_list') || '[]');
+        if (Array.isArray(local) && userId) {
+            local.forEach((item) => {
+                const owner = item.seller_id || item.sellerId || item.userId || '';
+                if (String(owner) !== String(userId)) return;
+                items.push(item);
+            });
+        }
+    } catch (e) {}
+
+    try {
+        const supabase = getSupabase();
+        if (supabase && user?.id && !String(user.id).startsWith('local')) {
+            const { data } = await supabase
+                .from('cattle')
+                .select('*')
+                .eq('seller_id', user.id)
+                .order('created_at', { ascending: false });
+            (data || []).forEach((row) => {
+                if (!items.some((item) => String(item.id) === String(row.id))) {
+                    items.push(mapCattleRow(row));
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('GenoStock: could not load cattle:', e);
+    }
+    return items;
+}
+
+async function loadCurrentUserSales() {
+    const sales = [];
+    try {
+        const supabase = getSupabase();
+        const user = await getCurrentUser();
+        if (!supabase || !user?.id || String(user.id).startsWith('local')) return sales;
+
+        const { data: auctions } = await supabase
+            .from('auctions')
+            .select('*')
+            .eq('seller_id', user.id)
+            .order('created_at', { ascending: false });
+
+        (auctions || []).forEach((auction) => {
+            if (auction.status !== 'ended' && !auction.winner_id) return;
+            sales.push({
+                id: auction.id,
+                title: auction.title || 'Auction',
+                breed: auction.breed || '',
+                price: Number(auction.winning_bid || auction.current_price || 0),
+                quantity: 1,
+                date: auction.updated_at || auction.ends_at || auction.created_at,
+                status: 'Completed'
+            });
+        });
+
+        const { data: soldCattle } = await supabase
+            .from('cattle')
+            .select('*')
+            .eq('seller_id', user.id)
+            .eq('status', 'sold');
+
+        (soldCattle || []).forEach((row) => {
+            if (sales.some((sale) => String(sale.id) === String(row.id))) return;
+            sales.push({
+                id: row.id,
+                title: row.title || 'Livestock',
+                breed: row.breed || '',
+                price: Number(row.price || 0),
+                quantity: 1,
+                date: row.updated_at || row.created_at,
+                status: 'Completed'
+            });
+        });
+    } catch (e) {
+        console.warn('GenoStock: could not load sales:', e);
+    }
+    return sales;
+}
+
 function saveSupabaseCredentials(url, anonKey) {
     localStorage.setItem(LS_URL_KEY, url.trim());
     localStorage.setItem(LS_ANON_KEY, anonKey.trim());
@@ -283,3 +387,5 @@ window.saveSupabaseCredentials = saveSupabaseCredentials;
 window.loadUserProfile = loadUserProfile;
 window.saveUserProfile = saveUserProfile;
 window.applyProfileToLocalStorage = applyProfileToLocalStorage;
+window.loadCurrentUserCattle = loadCurrentUserCattle;
+window.loadCurrentUserSales = loadCurrentUserSales;

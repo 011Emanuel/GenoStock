@@ -6,19 +6,27 @@ class GenoHeader extends HTMLElement {
       <style>
         :host {
           --header-height: 84px;
+          display: block;
+          width: 100%;
+        }
+        *, *::before, *::after {
+          box-sizing: border-box;
         }
         .header-bar {
           display: grid;
-          grid-template-columns: 180px 1fr 320px;
+          grid-template-columns: auto minmax(0, 1fr) auto;
           align-items: center;
+          column-gap: 1rem;
           background: var(--primary);
           position: fixed;
           width: 100%;
+          max-width: 100%;
           top: 0;
+          left: 0;
           z-index: 1000;
           height: var(--header-height);
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          padding: 0 2.2rem;
+          padding: 0 1.5rem;
         }
         .header-col.logo {
           display: flex;
@@ -47,17 +55,19 @@ class GenoHeader extends HTMLElement {
         }
         .nav-menu {
           display: flex;
-          gap: 1.2rem;
-          flex-wrap: wrap;
+          gap: clamp(0.25rem, 1vw, 1rem);
+          flex-wrap: nowrap;
           position: relative;
+          justify-content: center;
+          min-width: 0;
         }
         .nav-link {
           color: var(--white) !important;
           font-weight: 500;
-          font-size: 1.1rem;
+          font-size: clamp(0.88rem, 1.05vw, 1.05rem);
           text-decoration: none;
           position: relative;
-          padding: 0.4rem 0.6rem 0.7rem 0.6rem;
+          padding: 0.35rem 0.45rem 0.55rem;
           border-radius: 0;
           transition: color 0.2s;
           white-space: nowrap;
@@ -87,16 +97,18 @@ class GenoHeader extends HTMLElement {
         .header-col.auth {
           display: flex;
           align-items: center;
-          justify-content: flex-start;
-          gap: 0.7rem;
+          justify-content: flex-end;
+          gap: 0.45rem;
           min-width: 0;
           padding-right: 0;
+          flex-shrink: 0;
         }
         .search-wrapper {
           position: relative;
           display: flex;
           align-items: center;
-          margin-right: 0.5rem;
+          margin-right: 0;
+          flex-shrink: 0;
         }
         .search-icon {
           display: flex;
@@ -123,17 +135,29 @@ class GenoHeader extends HTMLElement {
         }
         .auth-buttons {
           display: flex;
+          align-items: center;
           gap: 0.4rem;
+          flex-shrink: 0;
         }
         .auth-btn {
-          padding: 0.45rem 1.3rem;
+          padding: 0.38rem 0.9rem;
           border-radius: 22px;
           border: none;
           font-weight: 500;
-          font-size: 1.08rem;
+          font-size: 0.95rem;
           transition: all 0.3s;
           text-decoration: none;
           white-space: nowrap;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.3rem;
+          line-height: 1.2;
+        }
+        .auth-btn svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
         }
         .login-btn {
           background: var(--white);
@@ -214,11 +238,19 @@ class GenoHeader extends HTMLElement {
           display: block;
         }
         .user-dropdown a {
-          display: block;
+          display: flex;
+          align-items: center;
+          gap: 0.7rem;
           padding: 0.75rem 1.1rem;
           color: #333;
           text-decoration: none;
           font-weight: 500;
+        }
+        .user-dropdown a svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
+          flex-shrink: 0;
         }
         .user-dropdown a:hover {
           background: #f8f9fa;
@@ -424,6 +456,7 @@ class GenoHeader extends HTMLElement {
           font-weight: 600;
           box-shadow: none;
           position: relative;
+          justify-content: center;
         }
         .mobile-menu .nav-link::after {
           content: '';
@@ -456,6 +489,26 @@ class GenoHeader extends HTMLElement {
           background: var(--accent);
           color: var(--white) !important;
           margin-bottom: 0.2rem;
+        }
+        @media (max-width: 1199px) {
+          .header-bar {
+            padding: 0 1.1rem;
+            column-gap: 0.6rem;
+          }
+          .navbar-brand {
+            font-size: 1.45rem;
+          }
+          .navbar-brand img {
+            height: 40px;
+          }
+          .auth-btn {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.88rem;
+          }
+          .auth-btn svg {
+            width: 14px;
+            height: 14px;
+          }
         }
         @media (max-width: 991px) {
           .header-bar {
@@ -553,8 +606,14 @@ class GenoHeader extends HTMLElement {
             </button>
           </div>
           <div class="auth-buttons" id="guest-auth">
-            <a href="login.html" class="auth-btn login-btn">Login</a>
-            <a href="register.html" class="auth-btn register-btn">Register</a>
+            <a href="login.html" class="auth-btn login-btn">
+              <svg viewBox="0 0 24 24"><path d="M11 7 9.6 8.4 12.2 11H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>
+              Login
+            </a>
+            <a href="register.html" class="auth-btn register-btn">
+              <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              Register
+            </a>
           </div>
           <div class="user-menu" id="user-auth" hidden>
             <button type="button" class="user-section" id="user-toggle" aria-haspopup="true" aria-expanded="false">
@@ -565,8 +624,14 @@ class GenoHeader extends HTMLElement {
               </span>
             </button>
             <div class="user-dropdown" id="user-dropdown">
-              <a href="dashboard-rancher.html" id="dashboard-link">Dashboard</a>
-              <a href="#" class="logout-btn" id="logout-btn">Logout</a>
+              <a href="dashboard-rancher.html" id="dashboard-link">
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                Dashboard
+              </a>
+              <a href="#" class="logout-btn" id="logout-btn">
+                <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                Logout
+              </a>
             </div>
           </div>
         </div>
@@ -586,12 +651,24 @@ class GenoHeader extends HTMLElement {
         <a class="nav-link" href="about us.html">About Us</a>
         <a class="nav-link" href="Contactos.html">Contact Us</a>
         <div id="mobile-guest">
-          <a href="login.html" class="auth-btn login-btn">Login</a>
-          <a href="register.html" class="auth-btn register-btn">Register</a>
+          <a href="login.html" class="auth-btn login-btn">
+            <svg viewBox="0 0 24 24"><path d="M11 7 9.6 8.4 12.2 11H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>
+            Login
+          </a>
+          <a href="register.html" class="auth-btn register-btn">
+            <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Register
+          </a>
         </div>
         <div class="mobile-user-links" id="mobile-user" hidden>
-          <a href="dashboard-rancher.html" class="auth-btn register-btn" id="mobile-dashboard-link">Dashboard</a>
-          <a href="#" class="auth-btn login-btn" id="mobile-logout-btn">Logout</a>
+          <a href="dashboard-rancher.html" class="auth-btn register-btn" id="mobile-dashboard-link">
+            <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+            Dashboard
+          </a>
+          <a href="#" class="auth-btn login-btn" id="mobile-logout-btn">
+            <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            Logout
+          </a>
         </div>
       </nav>
     `;
